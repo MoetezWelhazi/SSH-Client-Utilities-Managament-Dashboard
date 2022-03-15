@@ -1,0 +1,79 @@
+
+<link rel="stylesheet" href="signupform.component.scss">
+ <form class="loginform" (submit)="signup.emit(userInfo)">
+    <mat-label class="display-4 formheader"> Sign Up </mat-label>
+    <mat-card-content>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Email"
+          [(ngModel)]="userInfo.email"
+          type="email"
+          required
+          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@neoxam\.com)?"
+          name="email"
+          #email="ngModel"
+        />
+        <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+          <strong>Entrer un e-mail NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          [(ngModel)]="userInfo.password"
+          type="password"
+          required
+          minlength="8"
+          name="passwordA"
+          [type]="hide ? 'password' : 'text'"
+          #passwordA = "ngModel"
+        />
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint>Minimum length is 8</mat-hint>
+        <mat-error *ngIf="passwordA.invalid && (passwordA.dirty || passwordA.touched)">
+          <strong>Entrer un mot de passe valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Trigram</mat-label>
+        <input
+          matInput
+          placeholder="ex: ABA"
+          [(ngModel)]="userInfo.trigram"
+          type="text"
+          required
+          pattern="(^[A-Z]{3})"
+          name="trigram"
+          #trigram="ngModel"
+        />
+        <mat-error *ngIf="trigram.invalid && (trigram.dirty || trigram.touched)">
+          <strong>Entrer une trigramme NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions class="inputfield">
+      <div class="row">
+        <div class="col-5 my-2 mx-1">
+          <mat-checkbox
+            color="primary"
+            name="isAdmin"
+            [(ngModel)]="userInfo.isAdmin">
+          Admin?</mat-checkbox>
+        </div>
+        <div class="col-7">
+          <button type="submit" [disabled]="(passwordA.invalid)||(email.invalid)||(trigram.invalid)" class="px-c" mat-raised-button color="primary" style="color: white">Sign up</button>
+        </div>
+      </div>
+    </mat-card-actions>
+   <div class="row">
+     <div class="col-12 px-3">
+       <mat-label class="signinbutton pwd" (click)="toSignin.emit();" >Back to login?</mat-label>
+     </div>
+   </div>
+  </form>

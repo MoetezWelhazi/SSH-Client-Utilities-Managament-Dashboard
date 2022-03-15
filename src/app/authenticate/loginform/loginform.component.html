@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="loginform.component.scss">
+  <form class="loginform" (submit)="login.emit(userInfo)">
+    <mat-label class="display-4 formheader"> Sign in </mat-label>
+    <mat-card-content>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Email"
+          [(ngModel)]="userInfo.email"
+          type="email"
+          required
+          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@neoxam\.com)?"
+          name="email"
+          #email="ngModel"
+        />
+        <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+          <strong>Entrer un e-mail NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          [(ngModel)]="userInfo.password"
+          type="password"
+          required
+          minlength="8"
+          name="password"
+          #pwd = "ngModel"
+        />
+        <mat-error *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)">
+          <strong>Entrer un mot de passe valide</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions class="inputfield">
+      <div class="row">
+        <div class="col-5">
+          <mat-label class="pwd" >Forgot password?</mat-label>
+        </div>
+        <div class="col-7">
+          <button type="submit" [disabled]="(pwd.invalid)||(email.invalid)" class="px-5" mat-raised-button color="accent" style="color: white">Login</button>
+        </div>
+      </div>
+    </mat-card-actions>
+    <div class="row">
+      <div class="col-xl-12">
+        <button type="button" mat-raised-button class="signupbutton" (click)="toSignup.emit()">Don't have an account? Sign Up!</button>
+      </div>
+    </div>
+  </form>

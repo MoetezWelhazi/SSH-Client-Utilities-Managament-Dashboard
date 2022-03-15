@@ -1,0 +1,25 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "mm",
+      "description": "mm",
+      "percentComplete": 1,
+      "favorite": true
+    },
+    {
+      "id": 2,
+      "title": "m2",
+      "description": "m2",
+      "percentComplete": 13,
+      "favorite": true
+    },
+    {
+      "id": 3,
+      "title": "mmm",
+      "description": "mmm",
+      "percentComplete": 45,
+      "favorite": false
+    }
+  ]
+}
