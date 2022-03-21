@@ -15,4 +15,5 @@ export class LoginformComponent{
 
   @Output() login = new EventEmitter();
   @Output() toSignup = new EventEmitter();
+  @Output() topwd = new EventEmitter();
 }

@@ -18,6 +18,9 @@ import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { AuthenticateComponent } from "./authenticate/authenticate.component";
 import { SignupformComponent } from './authenticate/signupform/signupform.component';
 import { CheckPasswordDirective } from "./shared/directives/check-password.directive";
+import { ForgotpwdComponent } from './authenticate/forgotpwd/forgotpwd.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 
 @NgModule({
   imports: [
@@ -28,7 +31,8 @@ import { CheckPasswordDirective } from "./shared/directives/check-password.direc
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BsDropdownModule
+    BsDropdownModule,
+    MatStepperModule
   ],
   declarations: [
     AppComponent,
@@ -36,9 +40,17 @@ import { CheckPasswordDirective } from "./shared/directives/check-password.direc
     AuthenticateComponent,
     LoginformComponent,
     SignupformComponent,
-    CheckPasswordDirective
+    CheckPasswordDirective,
+    ForgotpwdComponent
   ],
-  providers: [AuthService, NotificationService],
+  providers: [
+    AuthService,
+    NotificationService,
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+      }
+    ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

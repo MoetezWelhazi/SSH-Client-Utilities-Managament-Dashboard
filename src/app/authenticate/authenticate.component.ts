@@ -54,5 +54,20 @@ export class AuthenticateComponent implements OnInit {
     console.log("TO SIGN IN!")
   }
 
+  topwd() {
+    // @ts-ignore
+    document.getElementById('pwdform').classList.remove('animate__fadeOutUp');
+    // @ts-ignore
+    document.getElementById("pwdform").classList.add('animate__animated', 'animate__fadeInDown', 'z-1');
+  }
+  tomain(){
+    // @ts-ignore
+    document.getElementById('pwdform').classList.remove('animate__fadeInDown')
+    // @ts-ignore
+    document.getElementById("pwdform").classList.add('animate__fadeOutUp');
+  }
 
+  updatepwd(userinfo: UserInfo) {
+    console.log("Password Updated! new Password: ",userinfo.password, " for user: ",userinfo.email);
+  }
 }

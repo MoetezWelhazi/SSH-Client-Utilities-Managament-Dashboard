@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="forgotpwd.component.scss">
+<div class="d-flex align-items-center flex-column" style="width:70%; height: 98%; margin: 1% 15%">
+  <mat-stepper orientation="vertical" linear="true" #stepper>
+    <mat-step label="Fill out your account email" state="mail_outline" [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput placeholder="Ex. name.lastname@neoxam.com" formControlName="firstCtrl" [(ngModel)]="userInfo.email" required>
+          <mat-hint>An Email will be sent to this address</mat-hint>
+          <mat-error *ngIf="d['firstCtrl'].invalid">Entrer un email NeoXam valide.</mat-error>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step label="Verify Account" state="vpn_key" [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>Verification Code</mat-label>
+          <input matInput formControlName="secondCtrl" placeholder="Ex. 000000"
+                 required>
+          <mat-hint>A code has been sent to your email, type it in.</mat-hint>
+          <mat-error *ngIf="e['secondCtrl'].invalid">Entrer le code envoyé</mat-error>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step label="Change password" state="password">
+      <form [formGroup]="thirdFormGroup" (submit)="updatePwd.emit(userInfo)" >
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" placeholder="Password" formControlName="password" [ngClass]="{ 'is-invalid': f['password'].errors}" >
+          <mat-error *ngIf="f['password'].hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="f['password'].hasError('minlength')">Password must have at least {{minPw}} characters</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': f['confirmPassword'].errors}" [(ngModel)]="userInfo.password" >
+          <mat-error *ngIf="f['confirmPassword'].hasError('required')">Please confirm your password</mat-error>
+          <mat-error *ngIf="f['confirmPassword'].hasError('mustMatch')">Passwords don't match</mat-error>
+        </mat-form-field>
+      <div class="d-inline-flex justify-content-center" style="margin-left: 33px">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button type="submit">Confirm</button>
+      </div>
+      </form>
+    </mat-step>
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="mail_outline">
+      <mat-icon class="p-0" style="color:white">mail_outline</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="vpn_key">
+      <mat-icon class="p-0"style="color:white" >vpn_key</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="password">
+    <mat-icon class="p-0"style="color:white">password</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="done">
+      <mat-icon class="p-0">done</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="edit">
+      <mat-icon class="p-0">edit</mat-icon>
+    </ng-template>
+  </mat-stepper>
+  <mat-label class="pwd" (click)="toMain.emit()" >Back</mat-label>
+</div>

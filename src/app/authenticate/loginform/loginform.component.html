@@ -38,7 +38,7 @@
     <mat-card-actions class="inputfield">
       <div class="row">
         <div class="col-5">
-          <mat-label class="pwd" >Forgot password?</mat-label>
+          <mat-label class="pwd" (click)="topwd.emit()" >Forgot password?</mat-label>
         </div>
         <div class="col-7">
           <button type="submit" [disabled]="(pwd.invalid)||(email.invalid)" class="px-5" mat-raised-button color="accent" style="color: white">Login</button>

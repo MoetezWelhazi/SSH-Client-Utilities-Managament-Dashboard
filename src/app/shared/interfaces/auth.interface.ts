@@ -3,5 +3,6 @@ export interface UserInfo {
     password: string;
     trigram?: string;
     isAdmin?:boolean;
+    idUser?:number;
 
 }

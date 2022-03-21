@@ -1,17 +1,30 @@
-<div class="login-container">
-  <div class="d-inline-flex " style="width: 600px;height: 412px; overflow:hidden;
-     box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
-     -webkit-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
-     -moz-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
-     ">
-    <div class="container d-flex flex-row p-0" style="width:50%;overflow:hidden;">
-      <img class="d-xl-flex stackimg" style="width: 300px;height: 412px;padding: -21px; z-index: 1; position: absolute " src="/assets/images/DGU(v2)LogoLW_Text_LI.png" />
-      <img class="d-xl-flex stackimg" style="width: 306px;height: 100%;padding: -21px; " src="/assets/images/signupOverlayNX.png"  id="signupImg"/>
+<div class="login-container" style="overflow:hidden;">
+  <div style="overflow: hidden;">
+    <div class="d-inline-flex " style="z-index:1; position:absolute;width: 600px;height: 412px; overflow:hidden;
+       box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       -webkit-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       -moz-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       ">
+      <div class="container d-flex flex-row p-0" style="width:50%;overflow:hidden;">
+        <img class="d-xl-flex stackimg" style="width: 300px;height: 412px;padding: -21px; z-index: 1; position: absolute " src="/assets/images/DGU(v2)LogoLW_Text_LI.png" />
+        <img class="d-xl-flex stackimg" style="width: 306px;height: 100%;padding: -21px; " src="/assets/images/signupOverlayNX.png"  id="signupImg"/>
+      </div>
+      <div class="container d-flex p-0" style="width:50%;background-color: white">
+        <app-loginform style="position:absolute; z-index: 1; width: 300px;height: 412px;" (topwd)="topwd()" (login)="login($event)" (toSignup)="tosignup()"></app-loginform>
+        <app-signupform id="signupForm" style="position:relative;" (toSignin)="tosignin()" (signup)="signup($event);" ></app-signupform>
+      </div>
     </div>
-    <div class="container d-flex p-0" style="width:50%;background-color: white">
-      <app-loginform style="position:absolute; z-index: 1; width: 300px;height: 412px;" (login)="login($event)" (toSignup)="tosignup()"></app-loginform>
-      <app-signupform id="signupForm" style="position:relative;" (toSignin)="tosignin()" (signup)="signup($event);" ></app-signupform>
+    <div style="position:relative;
+       width: 600px;height: 412px;
+       overflow:hidden;
+       box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       -webkit-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       -moz-box-shadow: 0px 0px 18px 2px rgba(0,0,0,0.74);
+       background-image: url('assets/images/2018-NewStyle_2560x1080-Green.png');
+       background-repeat: no-repeat;
+       background-size: cover;
+      " id="pwdform">
+      <app-forgotpwd (toMain)="tomain()" (updatePwd)="updatepwd($event)" ></app-forgotpwd>
     </div>
   </div>
-
 </div>
