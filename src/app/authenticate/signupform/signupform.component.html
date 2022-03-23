@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="signupform.component.scss">
- <form class="loginform" (submit)="signup.emit(userInfo)">
+ <form class="loginform" (submit)="signup1(userInfo)">
     <mat-label class="display-4 formheader"> Sign Up </mat-label>
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="fill">
@@ -10,7 +10,7 @@
           [(ngModel)]="userInfo.email"
           type="email"
           required
-          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@neoxam\.com)?"
+          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@(neoxam|gmail)\.com)?"
           name="email"
           #email="ngModel"
         />
@@ -44,7 +44,7 @@
         <input
           matInput
           placeholder="ex: ABA"
-          [(ngModel)]="userInfo.trigram"
+          [(ngModel)]="userInfo.trigramme"
           type="text"
           required
           pattern="(^[A-Z]{3})"
@@ -62,7 +62,7 @@
           <mat-checkbox
             color="primary"
             name="isAdmin"
-            [(ngModel)]="userInfo.isAdmin">
+            [(ngModel)]="isAdmin">
           Admin?</mat-checkbox>
         </div>
         <div class="col-7">

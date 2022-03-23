@@ -25,14 +25,14 @@ export class UsersService {
     return this.http.get<UserInfo[]>(this.getUrl());
   }
 
-  createUser(course: UserInfo) {
+  createUser(user: UserInfo) {
     this.notificationService.notify('Create User HTTP Call');
-    return this.http.post<UserInfo>(this.getUrl(), course);
+    return this.http.post<UserInfo>(this.getUrl(), user);
   }
 
   updateUser(user: UserInfo) {
     this.notificationService.notify('Update User HTTP Call');
-    return this.http.put<UserInfo>(this.getUrlWithID(user.idUser), user);
+    return this.http.put<UserInfo>(this.getUrlWithID(user.email), user);
   }
 
   deleteUser(id: number) {

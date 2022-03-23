@@ -1,36 +1,38 @@
 <link rel="stylesheet" href="forgotpwd.component.scss">
 <div class="d-flex align-items-center flex-column" style="width:70%; height: 98%; margin: 1% 15%">
   <mat-stepper orientation="vertical" linear="true" #stepper>
-    <mat-step label="Fill out your account email" state="mail_outline" [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
+    <mat-step label="Fill out your account email" state="mail_outline"  [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup" (submit)="sendEmail(email)" >
         <mat-form-field appearance="fill">
           <mat-label>E-mail</mat-label>
-          <input matInput placeholder="Ex. name.lastname@neoxam.com" formControlName="firstCtrl" [(ngModel)]="userInfo.email" required>
+          <input matInput placeholder="Ex. name.lastname@neoxam.com" formControlName="firstCtrl" [(ngModel)]="email" required>
           <mat-hint>An Email will be sent to this address</mat-hint>
           <mat-error *ngIf="d['firstCtrl'].invalid">Entrer un email NeoXam valide.</mat-error>
         </mat-form-field>
         <div>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button type="submit">Send</button>
+          <button mat-button type="button" [disabled]="completed1" matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
     <mat-step label="Verify Account" state="vpn_key" [stepControl]="secondFormGroup">
-      <form [formGroup]="secondFormGroup">
+      <form [formGroup]="secondFormGroup" (submit)="verifyCode(email,token)">
         <mat-form-field appearance="fill">
           <mat-label>Verification Code</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 000000"
+          <input matInput formControlName="secondCtrl" placeholder="Ex. 000000" [(ngModel)]="token"
                  required>
           <mat-hint>A code has been sent to your email, type it in.</mat-hint>
           <mat-error *ngIf="e['secondCtrl'].invalid">Entrer le code envoyé</mat-error>
         </mat-form-field>
         <div>
+          <button mat-button type="submit">Verify</button>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button type="button" [disabled]="completed2" matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
     <mat-step label="Change password" state="password">
-      <form [formGroup]="thirdFormGroup" (submit)="updatePwd.emit(userInfo)" >
+      <form [formGroup]="thirdFormGroup" (submit)="updatePwd(email,password)" >
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
           <input matInput type="password" placeholder="Password" formControlName="password" [ngClass]="{ 'is-invalid': f['password'].errors}" >
@@ -39,7 +41,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Confirm Password</mat-label>
-          <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': f['confirmPassword'].errors}" [(ngModel)]="userInfo.password" >
+          <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': f['confirmPassword'].errors}" [(ngModel)]="password" >
           <mat-error *ngIf="f['confirmPassword'].hasError('required')">Please confirm your password</mat-error>
           <mat-error *ngIf="f['confirmPassword'].hasError('mustMatch')">Passwords don't match</mat-error>
         </mat-form-field>
@@ -50,7 +52,7 @@
       </div>
       </form>
     </mat-step>
-    <!-- Icon overrides. -->
+  <div style="display: block"> <!--Icons-->
     <ng-template matStepperIcon="mail_outline">
       <mat-icon class="p-0" style="color:white">mail_outline</mat-icon>
     </ng-template>
@@ -66,6 +68,7 @@
     <ng-template matStepperIcon="edit">
       <mat-icon class="p-0">edit</mat-icon>
     </ng-template>
+  </div>
   </mat-stepper>
   <mat-label class="pwd" (click)="toMain.emit()" >Back</mat-label>
 </div>
