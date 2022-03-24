@@ -46,11 +46,11 @@ export class ForgotpwdComponent{
   sendEmail(email: any){
     this.authService.sendEmail(email).subscribe(
       data => {
-        this.notificationService.notify(data.message);
+        this.notificationService.success(data.message);
         this.completed1 = false;
       },
       err => {
-        this.notificationService.notify(err.error.message)
+        this.notificationService.warn(err.error.message)
         this.completed1 = true;
       }
     );
@@ -58,21 +58,22 @@ export class ForgotpwdComponent{
 
   verifyCode(email: any, token:any) {
     this.authService.verifyCode(email, token).subscribe(data => {
-        this.notificationService.notify(data.message);
+        this.notificationService.success(data.message);
         this.completed2 = false;
       },
       err => {
-        this.notificationService.notify(err.error.message)
+        this.notificationService.warn(err.error.message)
         this.completed2 = true;
       })
   }
 
   updatePwd(email:any, password:any) {
     this.authService.updatePwd(email, password).subscribe(data => {
-        this.notificationService.notify(data.message);
+        this.toMain.emit();
+        this.notificationService.success(data.message);
       },
       err => {
-        this.notificationService.notify(err.error.message)
+        this.notificationService.warn(err.error.message)
       })
   }
 }

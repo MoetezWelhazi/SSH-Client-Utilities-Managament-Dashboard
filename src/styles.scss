@@ -20,6 +20,30 @@ body {
   background-size: cover;
 }
 
+.neutral-snackbar button {
+  background-color: #09C0A3 ;
+  color: white;
+}
+
+.green-snackbar {
+  background: #09C0A3 ;
+  color: white;
+}
+.green-snackbar button {
+  background-color: #09C0A3 ;
+  color: white;
+  border: #2c2c2c;
+}
+.red-snackbar {
+  background: #F44336;
+  color: white;
+}
+.red-snackbar button {
+  background-color: #F44336;
+  color: white !important;
+  border: none;
+}
+
 p {
   margin: 16px;
 }

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { UserInfo } from '../../interfaces/auth.interface';
 import { HttpClient } from "@angular/common/http";
 import { NotificationService } from "../notifications/notification.service";
-import {TokenStorageService} from "./token-storage.service";
+import { TokenStorageService } from "./token-storage.service";
 
-const AUTHENTICATION_KEY = 'workshop:authenticated';
 const BASE_URL = 'http://localhost:8081';
 
 
@@ -36,8 +35,8 @@ export class AuthService {
         this.router.navigateByUrl('/home');},
       err => {
         if(err.error == null)
-          this.notificationService.notify("Bad Credentials: Email and/or Password are incorrect")
-        else {this.notificationService.notify(err.error.message) };
+          this.notificationService.warn("Bad Credentials: Email and/or Password are incorrect")
+        else {this.notificationService.warn(err.error.message) };
       }
     );
   }

@@ -38,20 +38,3 @@ export class AuthGuard implements CanActivate {
       );
     }
   }
-  /*
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (this.isLoggedIn()) {
-      return true;
-    }
-    // navigate to login page as user is not authenticated
-    this.router.navigateByUrl('/auth');
-    return false;
-  }
-
-  public isLoggedIn(): boolean {
-    if (!(window.sessionStorage.getItem('isLoggedIn') == "true")) {
-      return false
-    }
-    return true;
-  }
-}*/

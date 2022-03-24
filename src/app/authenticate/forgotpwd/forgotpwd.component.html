@@ -10,7 +10,7 @@
           <mat-error *ngIf="d['firstCtrl'].invalid">Entrer un email NeoXam valide.</mat-error>
         </mat-form-field>
         <div>
-          <button mat-button type="submit">Send</button>
+          <button mat-button [disabled]="d['firstCtrl'].invalid" type="submit">Send</button>
           <button mat-button type="button" [disabled]="completed1" matStepperNext>Next</button>
         </div>
       </form>
@@ -25,7 +25,7 @@
           <mat-error *ngIf="e['secondCtrl'].invalid">Entrer le code envoyé</mat-error>
         </mat-form-field>
         <div>
-          <button mat-button type="submit">Verify</button>
+          <button mat-button [disabled]="e['secondCtrl'].invalid" type="submit">Verify</button>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button type="button" [disabled]="completed2" matStepperNext>Next</button>
         </div>
