@@ -49,15 +49,15 @@ export class AuthService {
   }
 
   register(user:UserInfo): string | any{
-    //console.log("NEW USER: "+JSON.stringify(user)+"\n HAS BEEN REGISTERED!")
+    console.log("NEW USER: "+JSON.stringify(user)+"\n HAS BEEN REGISTERED!")
     this.http.post<any>(this.getUrl()+"/signup", user).subscribe(
       data => {
-        this.notificationService.notify(data.message)
+        this.notificationService.success(data.message)
       },
       err => {
         if(err.error == null)
-          this.notificationService.notify("Bad Credentials: Email and/or Password are incorrect")
-        else {this.notificationService.notify(err.error.message) };
+          this.notificationService.warn("Bad Credentials: Email and/or Password are invalid")
+        else {this.notificationService.warn(err.error.message) };
       });
   }
 

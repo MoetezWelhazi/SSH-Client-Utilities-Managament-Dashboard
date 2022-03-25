@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'DGU';
   links = [
     { path: '/home', icon: 'home', title: 'Home' },
+    { path: '/home1', icon: 'people', title: 'Users' },
   ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));

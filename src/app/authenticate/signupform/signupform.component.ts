@@ -19,7 +19,7 @@ export class SignupformComponent {
   @Output() signup = new EventEmitter();
   @Output() toSignin = new EventEmitter();
   signup1(user: UserInfo) {
-    user.roles = [ this.isAdmin? "ROLE_ADMIN": "ROLE_USER"];
+    user.roles = [ this.isAdmin? "admin": ""];
     this.signup.emit(user);
   }
 }

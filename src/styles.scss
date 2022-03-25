@@ -20,6 +20,13 @@ body {
   background-size: cover;
 }
 
+.home-background{
+  background-image: url("assets/images/2018-NewStyle_3800x1200-Green.png");
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .neutral-snackbar button {
   background-color: #09C0A3 ;
   color: white;
@@ -64,7 +71,7 @@ p {
   .mat-card-header-text {
     margin-left: 0;
     margin-bottom: 10px;
-    border-bottom: 1px solid #ffd740;
+    border-bottom: 1px solid #09c0a3;
   }
 
   .mat-toolbar {
@@ -144,6 +151,19 @@ mat-card:not(.dashboard-card) {
 
   .details {
     width: 49%;
+  }
+}
+
+.home-container {
+  display: flex;
+  justify-content: space-around;
+
+  .home-left {
+    width: 33% !important;
+  }
+
+  .home-right {
+    width: 65%;
   }
 }
 
@@ -265,7 +285,29 @@ mat-card-actions {
   align-items: center;
   padding-top: 5px;
   padding-bottom: 5px;
+
 }
+
+.active-route{
+  color: #09c0a3;
+}
+
+.mat-button-focus-indicator{
+  color: #05aa88 !important;
+}
+
+.mat-sidenav{
+  nav{
+    a:hover{
+      color: #049477 !important;
+    }
+    .cdk-focused{
+      color: #049477 !important;
+    }
+  }
+}
+
+
 
 // UI LOGIN
 .login {
