@@ -1,5 +1,7 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
-
+@import "~primeicons/primeicons.css";
+@import "~primeng/resources/themes/saga-blue/theme.css";
+@import "~primeng/resources/primeng.min.css";
 @import "animate.css";
 
 html {
@@ -12,6 +14,13 @@ body {
   height: 100%;
   display: flex;
 }
+/*
+.mat-tab-label-active{
+  background: #09c0a3 !important;
+  color: white;
+}
+*/
+
 
 .login-background{
   background-image: url("assets/images/2018-NewStyle_1280x1024.png");

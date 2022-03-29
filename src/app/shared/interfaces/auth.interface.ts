@@ -4,5 +4,4 @@ export interface UserInfo {
     trigramme?: string;
     roles?: {};
     accessToken?: any;
-
 }

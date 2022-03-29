@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatError, MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from "@angular/material/tabs";
+
 
 @NgModule({
   exports: [
@@ -34,6 +36,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatTableModule,
     MatToolbarModule,
     MatButtonToggleModule,
+    MatTabsModule,
+
   ],
 })
 export class MaterialModule {}

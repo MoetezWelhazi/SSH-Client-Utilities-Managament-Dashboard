@@ -101,27 +101,129 @@
       </mat-card-content>
     </mat-card>
   </div>
-
   <div class="home-right">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          <span>
-            Stats
-          </span>
-        </mat-card-title>
-      </mat-card-header>
-      <hr>
+      <mat-card-content>
+        <mat-tab-group >
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
+            <p-chart type="line" [data]="data" [options]="basicOptions"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
+            <p-chart type="line" [data]="data1" [options]="basicOptions"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
+            <p-chart height="60vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
+            Content 3
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
     </mat-card>
     <mat-card>
-      <mat-card-header>
+      <mat-card-header style="justify-content:space-between">
         <mat-card-title>
-          <span>
-            Execution History
-          </span>
+            <span>
+              Execution History
+            </span>
         </mat-card-title>
+        <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+        </span>
       </mat-card-header>
-      <hr>
+      <p-table #dt [value]="Executions"
+               dataKey="script"
+               [(selection)]="selectedExecution"
+               (onRowSelect)="onRowSelect($event)"
+               styleClass="p-datatable-executions"
+               [rowHover]="true"
+               [rows]="10"
+               [showCurrentPageReport]="true"
+               [rowsPerPageOptions]="[10,25,50]"
+               [loading]="loading"
+               responsiveLayout="scroll"
+               [paginator]="true"
+               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [filterDelay]="0"
+               [globalFilterFields]="['script','server','result']">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="script">
+              <div class="flex justify-content-between align-items-center">
+                Script
+                <p-sortIcon field="script"></p-sortIcon>
+                <p-columnFilter type="text" field="script" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="server">
+              <div class="flex justify-content-between align-items-center">
+                Server
+                <p-sortIcon field="server"></p-sortIcon>
+                <p-columnFilter type="text" field="server" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="date">
+              <div class="flex justify-content-between align-items-center">
+                Date
+                <p-sortIcon field="date"></p-sortIcon>
+                <p-columnFilter type="date" field="date" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+              </th>
+            <th pSortableColumn="result">
+              <div class="flex justify-content-between align-items-center">
+                Result
+                <p-sortIcon field="result"></p-sortIcon>
+                <p-columnFilter field="result" matchMode="equals" display="menu" class="ml-auto">
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
+                      <ng-template let-option pTemplate="item">
+                        <span [class]="'execution-badge status-' + option.value">{{option.label}}</span>
+                      </ng-template>
+                    </p-dropdown>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
+            </th>
+            <th style="width: 8rem"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-Execution let-rowIndex="rowIndex">
+          <tr [pSelectableRow]="Execution" [pSelectableRowIndex]="rowIndex" class="p-selectable-row">
+            <td>
+              <p-tableCheckbox [value]="Execution" ></p-tableCheckbox>
+            </td>
+            <td>
+              <span class="p-column-title">Script</span>
+              {{Execution.script}}
+            </td>
+            <td>
+              <span class="p-column-title">Server</span>
+              {{Execution.server}}
+            </td>
+            <td>
+              <span class="p-column-title">Date</span>
+              {{Execution.date | date: 'short'}}
+            </td>
+            <td>
+              <span class="p-column-title">Result</span>
+              <span [class]="'execution-badge status-' + Execution.result">{{Execution.result}}</span>
+            </td>
+            <td style="text-align: center">
+              <button pButton type="button" class="p-button-secondary" icon="pi pi-cog"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">No executions found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </mat-card>
   </div>
 </div>

@@ -22,8 +22,13 @@ import { ForgotpwdComponent } from './authenticate/forgotpwd/forgotpwd.component
 import { MatStepperModule } from "@angular/material/stepper";
 import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 import { LoaderComponent } from './shared/components/loader/loader.component';
-import {LoaderService} from "./shared/services/loader/loader.service";
-import {LoaderInterceptor} from "./shared/services/interceptors/loader-interceptor.service";
+import { LoaderService } from "./shared/services/loader/loader.service";
+import { LoaderInterceptor } from "./shared/services/interceptors/loader-interceptor.service";
+import { ChartModule } from "primeng/chart";
+import { SharedModule } from "primeng/api";
+import { PrimengModule } from './primeng.module';
+
+
 
 @NgModule({
   imports: [
@@ -35,7 +40,10 @@ import {LoaderInterceptor} from "./shared/services/interceptors/loader-intercept
     HttpClientModule,
     ReactiveFormsModule,
     BsDropdownModule,
-    MatStepperModule
+    MatStepperModule,
+    ChartModule,
+    SharedModule,
+    PrimengModule,
   ],
   declarations: [
     AppComponent,

@@ -1,4 +1,8 @@
-/* my-loader.component.css */
+/* my-loader.component.scss */
+{
+  fill:none;
+}
+
 .loading-spinner{
   background-color: #0000001f;
   position: absolute;
@@ -11,7 +15,90 @@
   display: grid;
 }
 
-.loading-spinner img{
+svg{
+  background-color:transparent;
+  overflow:visible;
+  animation:rotate 1s infinite;
+}
+
+
+.up{
+  fill:#0ed8b8;
+  animation:1s translationYnegative infinite;
+}
+
+.right{
+  fill:#0ed8b8;
+  animation:1s translationXpositive infinite;
+}
+
+.down {
+  fill:#0ed8b8;
+  animation:1s translationYpositive infinite;
+}
+
+.left {
+  fill:#232323;
+  animation:1s translationXnegative infinite;
+}
+
+@keyframes rotate{
+  0%{
+    transform:rotate(360deg)
+  }
+  100%{
+  }
+}
+
+@keyframes translationXnegative{
+  0%{
+    transform:translateX(-30px)
+  }
+  50%{
+    transform:translateX(50px)
+  }
+  100%{
+    transform:translateX(-30px)
+  }
+}
+
+@keyframes translationYnegative{
+  0%{
+    transform:translateY(-30px)
+  }
+  50%{
+    transform:translateY(50px)
+  }
+  100%{
+    transform:translateY(-30px)
+  }
+}
+
+@keyframes translationXpositive{
+  0%{
+    transform:translateX(30px)
+  }
+  50%{
+    transform:translateX(-50px)
+  }
+  100%{
+    transform:translateX(30px)
+  }
+}
+
+@keyframes translationYpositive{
+  0%{
+    transform:translateY(30px)
+  }
+  50%{
+    transform:translateY(-50px)
+  }
+  100%{
+    transform:translateY(30px)
+  }
+}
+
+.loading-spinner svg{
   align-self: end;
 }
 
