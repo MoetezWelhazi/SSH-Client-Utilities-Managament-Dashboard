@@ -27,6 +27,7 @@ import { LoaderInterceptor } from "./shared/services/interceptors/loader-interce
 import { ChartModule } from "primeng/chart";
 import { SharedModule } from "primeng/api";
 import { PrimengModule } from './primeng.module';
+import { UsersComponent } from './users/users.component';
 
 
 
@@ -53,7 +54,8 @@ import { PrimengModule } from './primeng.module';
     SignupformComponent,
     CheckPasswordDirective,
     ForgotpwdComponent,
-    LoaderComponent
+    LoaderComponent,
+    UsersComponent
   ],
   providers: [
     AuthService,
