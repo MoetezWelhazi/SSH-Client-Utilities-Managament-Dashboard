@@ -9,6 +9,8 @@ import {ToastModule} from 'primeng/toast';
 import {InputTextModule} from 'primeng/inputtext';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {DropdownModule} from 'primeng/dropdown';
+import {MenuModule} from "primeng/menu";
+
 import {NgModule} from "@angular/core";
 
 @NgModule({
@@ -24,6 +26,7 @@ import {NgModule} from "@angular/core";
     ToastModule,
     InputTextModule,
     ProgressBarModule,
+    MenuModule,
   ],
 })
 export class PrimengModule {}

@@ -13,8 +13,7 @@ import { AuthService } from './shared/services/auth/auth.service';
 import { NotificationService } from './shared/services/notifications/notification.service';
 
 import { LoginformComponent } from './authenticate/loginform/loginform.component';
-
-import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { BsDropdownConfig, BsDropdownDirective, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AuthenticateComponent } from "./authenticate/authenticate.component";
 import { SignupformComponent } from './authenticate/signupform/signupform.component';
 import { CheckPasswordDirective } from "./shared/directives/check-password.directive";
@@ -64,7 +63,9 @@ import { UsersComponent } from './users/users.component';
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
     },
-    LoaderService,{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+    LoaderService,{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: BsDropdownConfig, useValue: { autoClose: true } },
+    { provide: BsDropdownDirective }
 
   ],
   bootstrap: [AppComponent],

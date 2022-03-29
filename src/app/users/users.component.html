@@ -74,7 +74,14 @@
             </p-columnFilter>
           </div>
         </th>
-        <th style="width: 8rem"></th>
+        <th style="width: 8rem">
+        <div style="text-align: center">
+          <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
+                  (click)="menu.toggle($event)">
+          </button>
+          <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
+        </div>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
@@ -103,7 +110,10 @@
           <span [class]="'user-badge status-' + User.status">{{getStatus(User.status)}}</span>
         </td>
         <td style="text-align: center">
-          <button pButton type="button" class="p-button-secondary" icon="pi pi-cog"></button>
+          <button #btn pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+                  (click)="menu.toggle($event)">
+          </button>
+          <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItems(User)"></p-menu>
         </td>
       </tr>
     </ng-template>
