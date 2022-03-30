@@ -1,12 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserInfo} from "../shared/interfaces/auth.interface";
-import {Table} from "primeng/table";
-import {NotificationService} from "../shared/services/notifications/notification.service";
+import { UserInfo } from "../shared/interfaces/auth.interface";
+import { Table } from "primeng/table";
+import { NotificationService } from "../shared/services/notifications/notification.service";
+import { DialogService } from "primeng/dynamicdialog";
+import { AdduserformComponent } from "./adduserform/adduserform.component";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {UsersService} from "../shared/services/users/users.service";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
 
@@ -21,7 +25,7 @@ export class UsersComponent implements OnInit {
         this.add();
       }
       },
-    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: (event: Event) => {
         this.deleteAll();
       }
       },
@@ -34,54 +38,48 @@ export class UsersComponent implements OnInit {
       }
     },];
 
-  loading: boolean = false;
+  loading: boolean = true;
 
   @ViewChild('dt') table: Table | undefined;
 
-  users : UserInfo[]= [
-    {
-      email:"welhazi.moetez@gmail.com",
-      trigramme:"MWE",
-      roles: ["ROLE_ADMIN"],
-      joinDate: new Date(),
-      status: 1
-    },
-    {
-      email:"welhazi.moetez1@gmail.com",
-      trigramme:"MEE",
-      roles: ["ROLE_USER"],
-      joinDate: new Date(),
-      status: 0
-    },
-    {
-      email:"welhazi.moetez2@gmail.com",
-      trigramme:"EEE",
-      roles: ["ROLE_USER"],
-      joinDate: new Date(),
-      status: null
-    },
-    {
-      email:"welhazi.moetez3@gmail.com",
-      trigramme:"MWW",
-      roles: ["ROLE_USER"],
-      joinDate: new Date(),
-      status: null
-    },
-    {
-      email:"welhazi.moetez4@gmail.com",
-      trigramme:"WWW",
-      roles: ["ROLE_USER"],
-      joinDate: new Date(),
-      status: 0
-    },
-  ];
+  users: UserInfo[] =[{email:""}];
 
-  selectedUsers? : UserInfo[] = [];
+  selectedUsers? : UserInfo[];
 
-  constructor(private notificationService:NotificationService) { }
+  constructor(private usersService: UsersService ,
+              private notificationService:NotificationService,
+              public confirmationService:ConfirmationService ,
+              public messageService: MessageService ,
+              public dialogService: DialogService) { }
 
   ngOnInit(): void {
+    this.selectedUsers = [{email:""}]
+    this.usersService.getAllUsers(false)
+      .subscribe({
+        next: (data) => {
+          data.forEach((user)=>{
+            let newUser : UserInfo = user;
+            // @ts-ignore
+            newUser.roles = user.roles[0].name;
+            switch(user.approved){
+              case null:
+                newUser.approved = null;
+                break;
+              case true:
+                newUser.approved = 1;
+                break;
+              case false:
+                newUser.approved = 0;
+            }
+          });
+          this.loading = false;
+          console.log(data);
+          this.users = data;
+        },
+        error: (e) => this.notificationService.warn("An error has occured: "+e.error)
+      });
   }
+
 
   ngAfterViewInit() {
     document.body.classList.add('users-background');
@@ -127,81 +125,149 @@ export class UsersComponent implements OnInit {
     return "Waiting";
   }
 
-  update(email:string) {
-    this.notificationService.success("action updated for user: "+email+" !");
+  update(user:UserInfo) {
+    this.notificationService.success("action updated for user: "+user+" !");
   }
 
-  delete(email: string) {
-    this.notificationService.warn("action deleted!");
+  delete(id: number) {
+    this.usersService.deleteUser(id)
+      .subscribe({
+        next: (data)=>{
+          this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
+          this.users = this.users.filter((user)=> {
+            return user.id !== id
+          });
+        },
+        error: (err)=> {
+          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+        }
+      })
   }
 
-  approve(email: string) {
-    this.notificationService.success("user "+email+" has been approved!");
+  approve(user: UserInfo) {
+    user.approved = "approved"
+    user.roles = [this.getRoles(user.roles)]
+    this.usersService.updateUser(user)
+      .subscribe({
+        next: (data)=>{
+          this.messageService.add({severity:'success', summary:'User Updated', detail:data.message})
+          user.approved = 1;
+        },
+        error: (err)=>{
+          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+        }
+      })
+  }
+
+  private refuse(user: UserInfo) {
+    user.approved = "null"
+    user.roles = [this.getRoles(user.roles)]
+    this.usersService.updateUser(user)
+      .subscribe({
+        next: (data)=>{
+          this.messageService.add({severity:'success', summary:'User Updated', detail:data.message})
+          user.approved = null;
+        },
+        error: (err)=>{
+          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+        }
+      })
   }
 
   getItems(User: any) {
     return [
       {label: 'Update', icon: 'pi pi-refresh', command: () => {
-          this.update(User.email);
+          this.update(User);
         }
       },
       {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
-          this.delete(User.email);
+          this.delete(User.id);
         }
       },
       {label: 'Approve', icon: 'pi pi-check', command: () => {
-          this.approve(User.email);
+          this.approve(User);
         }
       },
       {label: 'Refuse', icon: 'pi pi-times', command: () => {
-          this.refuse(User.email);
+          this.refuse(User);
         }
       },
     ];
   }
 
   private add() {
-    this.notificationService.success("User Added")
-  }
-
-  private refuse(email: string) {
-    this.notificationService.warn("User "+ email +" has been refused access to the application !")
+    const ref = this.dialogService.open(AdduserformComponent, {
+      header: 'Add User',
+      width: '50%'
+    });
+    ref.onClose.subscribe((userInfo : UserInfo) => {
+      if (userInfo) {
+        this.usersService.createUser(userInfo)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'User Updated', detail:data.message + "\n Refresh the page to see it in the table."})
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+        this.messageService.add({severity:'success', summary: 'User Added', detail:'Email:' + userInfo.email});
+      }
+      console.log(JSON.stringify(userInfo))
+    });
   }
 
   private deleteAll() {
-    let cpt = 0;
-    // @ts-ignore
-    this.selectedUsers.forEach((user)=>{
-      console.log(JSON.stringify(user) + " has been deleted!");
-      cpt++;
-    })
-    this.notificationService.success(cpt+" users have been approved!");
+      this.confirmationService.confirm({
+        key:'confirmDialog',
+        header: 'Delete Confirmation',
+        message: this.selectedUsers?.length+' users will be deleted. Are you sure that you want to perform this action?',
+        accept: () => {
+          this.selectedUsers?.forEach((user)=>{
+            if (user.id != null) {
+              this.delete(user.id);
+            }
+          });
+        },
+      });
   }
 
   private approveAll() {
-    let cpt = 0;
-    // @ts-ignore
-    this.selectedUsers.forEach((user)=>{
-      if(user.status==0)
-      {
-        console.log(JSON.stringify(user) + " has been approved!");
-        cpt++;
-      }
-    })
-    this.notificationService.success(cpt+" users have been approved!");
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      // @ts-ignore
+      message: (this.selectedUsers?.length -1 )+' users will be granted access to the app. Are you sure that you want to perform this action?',
+      accept: () => {
+        this.selectedUsers?.forEach((user)=>{
+          if((user.approved==0||user.approved==null)&&(user.id!=null))
+          {
+            this.approve(user);
+          }
+        })
+      },
+    });
   }
   private refuseAll() {
-    let cpt = 0;
-    // @ts-ignore
-    this.selectedUsers.forEach((user)=>{
-      if(user.status==0)
-      {
-        console.log(JSON.stringify(user) + " has been refused!");
-        cpt++;
-      }
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      // @ts-ignore
+      message: (this.selectedUsers?.length -1 )+' users will be refused access to the app. Are you sure that you want to perform this action?',
+      accept: () => {
+        this.selectedUsers?.forEach((user)=>{
+          if((user.approved==1||user.approved==0)&&(user.id!=null))
+          {
+            this.refuse(user);
+          }
+        })
+      },
     })
-    this.notificationService.warn(cpt+" users have been refused!");
   }
 
-
+  getRoles(role: any) {
+    if(role=="ROLE_USER")
+      return "user";
+    return "admin";
+  }
 }

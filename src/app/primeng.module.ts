@@ -12,6 +12,11 @@ import {DropdownModule} from 'primeng/dropdown';
 import {MenuModule} from "primeng/menu";
 
 import {NgModule} from "@angular/core";
+import {ConfirmationService, MessageService, SharedModule} from "primeng/api";
+import {DialogService} from "primeng/dynamicdialog";
+import {ChartModule} from "primeng/chart";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   exports: [
@@ -27,6 +32,11 @@ import {NgModule} from "@angular/core";
     InputTextModule,
     ProgressBarModule,
     MenuModule,
+    ChartModule,
+    SharedModule,
+    ConfirmPopupModule,
+    ConfirmDialogModule
   ],
+  providers: [MessageService, DialogService, ConfirmationService]
 })
 export class PrimengModule {}

@@ -8,11 +8,15 @@ html {
   height: 100%;
 }
 
-body {
+body{
   margin: 0;
   font-family: MarkPro, sans-serif;
   height: 100%;
   display: flex;
+}
+
+body .p-component{
+  font-family: MarkPro, sans-serif;
 }
 /*
 .mat-tab-label-active{
@@ -42,6 +46,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 
 .neutral-snackbar button {
   background-color: #09C0A3 ;

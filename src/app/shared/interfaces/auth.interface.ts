@@ -1,9 +1,10 @@
 export interface UserInfo {
+    id?:number;
     email: string;
     password?: string;
     trigramme?: string;
     roles?: {};
-    accessToken?: any;
-    status?:any;
+    accessToken?: string;
+    approved?:any;
     joinDate?: Date;
 }

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MessageService} from "primeng/api";
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private messageService: MessageService) {}
 
   notify(message: string) {
     this.snackBar.open(message, 'CLOSE', {

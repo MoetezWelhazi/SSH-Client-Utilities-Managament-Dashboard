@@ -3,14 +3,14 @@ import { NotificationService } from '../notifications/notification.service';
 import { HttpClient } from "@angular/common/http";
 import { UserInfo } from "../../interfaces/auth.interface";
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:8081';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-  model = 'users';
+  model = 'api/users';
 
   constructor(
     private http: HttpClient,
@@ -21,23 +21,19 @@ export class UsersService {
     if (displayNotification) {
       this.notificationService.notify('Get All Users HTTP Call');
     }
-
     return this.http.get<UserInfo[]>(this.getUrl());
   }
 
   createUser(user: UserInfo) {
-    this.notificationService.notify('Create User HTTP Call');
-    return this.http.post<UserInfo>(this.getUrl(), user);
+    return this.http.post<any>(this.getUrl(), user);
   }
 
   updateUser(user: UserInfo) {
-    this.notificationService.notify('Update User HTTP Call');
-    return this.http.put<UserInfo>(this.getUrlWithID(user.email), user);
+    return this.http.put<any>(this.getUrl(), user);
   }
 
   deleteUser(id: number) {
-    this.notificationService.notify('Delete User HTTP Call');
-    return this.http.delete(this.getUrlWithID(id));
+    return this.http.delete<any>(this.getUrlWithID(id));
   }
 
   private getUrl() {

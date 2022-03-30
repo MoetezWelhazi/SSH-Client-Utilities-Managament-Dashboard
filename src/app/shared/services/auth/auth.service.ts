@@ -25,9 +25,9 @@ export class AuthService {
   ) {}
 
   login(user: UserInfo): String | void {
-    this.http.post<UserInfo>(this.getUrl()+"/signin", user).subscribe(
+    this.http.post<any>(this.getUrl()+"/signin", user).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
         this.setIsAuthenticated(true);
         this.isAuthenticated.next(true);

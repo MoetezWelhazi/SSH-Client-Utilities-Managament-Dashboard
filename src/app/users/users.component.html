@@ -31,6 +31,13 @@
         <th>
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
+        <th pSortableColumn="id">
+          <div class="flex justify-content-between align-items-center">
+            Id
+            <p-sortIcon field="id"></p-sortIcon>
+            <p-columnFilter type="text" field="id" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
         <th pSortableColumn="email">
           <div class="flex justify-content-between align-items-center">
             Email
@@ -90,6 +97,10 @@
           <p-tableCheckbox [value]="User" ></p-tableCheckbox>
         </td>
         <td>
+          <span class="p-column-title">Id</span>
+          {{User.id}}
+        </td>
+        <td>
           <span class="p-column-title">Email</span>
           {{User.email}}
         </td>
@@ -99,7 +110,7 @@
         </td>
         <td>
           <span class="p-column-title">Roles</span>
-          {{User.roles}}
+          {{getRoles(User.roles) | uppercase}}
         </td>
         <td>
           <span class="p-column-title">Date</span>
@@ -107,7 +118,7 @@
         </td>
         <td>
           <span class="p-column-title">Status</span>
-          <span [class]="'user-badge status-' + User.status">{{getStatus(User.status)}}</span>
+          <span [class]="'user-badge status-' + User.approved">{{getStatus(User.approved)}}</span>
         </td>
         <td style="text-align: center">
           <button #btn pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"

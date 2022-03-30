@@ -23,12 +23,10 @@ import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { LoaderService } from "./shared/services/loader/loader.service";
 import { LoaderInterceptor } from "./shared/services/interceptors/loader-interceptor.service";
-import { ChartModule } from "primeng/chart";
-import { SharedModule } from "primeng/api";
 import { PrimengModule } from './primeng.module';
 import { UsersComponent } from './users/users.component';
-
-
+import { AdduserformComponent } from './users/adduserform/adduserform.component';
+import { AuthInterceptor } from "./shared/services/interceptors/http-interceptor.service";
 
 @NgModule({
   imports: [
@@ -41,8 +39,6 @@ import { UsersComponent } from './users/users.component';
     ReactiveFormsModule,
     BsDropdownModule,
     MatStepperModule,
-    ChartModule,
-    SharedModule,
     PrimengModule,
   ],
   declarations: [
@@ -54,7 +50,8 @@ import { UsersComponent } from './users/users.component';
     CheckPasswordDirective,
     ForgotpwdComponent,
     LoaderComponent,
-    UsersComponent
+    UsersComponent,
+    AdduserformComponent
   ],
   providers: [
     AuthService,
@@ -63,9 +60,11 @@ import { UsersComponent } from './users/users.component';
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
     },
-    LoaderService,{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    LoaderService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: BsDropdownConfig, useValue: { autoClose: true } },
-    { provide: BsDropdownDirective }
+    { provide: BsDropdownDirective },
 
   ],
   bootstrap: [AppComponent],
