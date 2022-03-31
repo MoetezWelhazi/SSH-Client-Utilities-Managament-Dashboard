@@ -14,29 +14,14 @@ import {UsersService} from "../shared/services/users/users.service";
 })
 export class UsersComponent implements OnInit {
 
-  statuses = [
-    {label: 'Approved', value: 1},
-    {label: 'Waiting Approval', value: 0},
-    {label: 'Refused', value: null}
-  ];
+  statuses: any[] = [];
 
   tableOptions = [
-    {label: 'Add user', icon: 'pi pi-fw pi-user-plus', command: () => {
-        this.add();
-      }
-      },
-    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {
-        this.deleteAll();
-      }
-      },
-    {label: 'Approve Selected', icon: 'pi pi-fw pi-users', command: () => {
-        this.approveAll();
-      }
-    },
-    {label: 'Refuse Selected', icon: 'pi pi-fw pi-times', command: () => {
-        this.refuseAll();
-      }
-    },];
+    {label: 'Add user', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
+    {label: 'Approve Selected', icon: 'pi pi-fw pi-users', command: () => { this.approveAll(); } },
+    {label: 'Refuse Selected', icon: 'pi pi-fw pi-times', command: () => { this.refuseAll(); } },
+  ];
 
   loading: boolean = true;
 
@@ -55,6 +40,11 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.selectedUsers = [{email:""}]
     this.getUsers()
+    this.statuses = [
+      {label: 'Approved', value: '1'},
+      {label: 'Waiting', value: '0'},
+      {label: 'Refused', value: 'null'}
+    ]
   }
 
   ngAfterViewInit() {
@@ -94,15 +84,11 @@ export class UsersComponent implements OnInit {
   }
 
   getStatus(status: any) {
-    if(status==null)
+    if(status=='null')
       return "Refused";
-    if(status==1)
+    if(status=='1')
       return "Approved";
     return "Waiting";
-  }
-
-  private update(user:UserInfo) {
-    this.notificationService.success("action updated for user: "+user+" !");
   }
 
   private delete(id: number) {
@@ -120,40 +106,38 @@ export class UsersComponent implements OnInit {
       })
   }
 
-  private approve(user: UserInfo) {
-    user.approved = "approved"
-    user.roles = [this.getRoles(user.roles)]
+  private update(user: UserInfo, field: string){
+    switch (field) {
+      case "null":
+        user.approved = field;
+        user.roles = [this.getRoles(user.roles)];
+        break;
+      case "approved":
+        user.approved = field
+        user.roles = [this.getRoles(user.roles)];
+        break;
+      case "admin":
+        user.approved = "approved"
+        user.roles = [field];
+        break;
+    }
     this.usersService.updateUser(user)
       .subscribe({
         next: (data)=>{
           this.messageService.add({severity:'success', summary:'User Updated', detail:data.message})
-          user.approved = 1;
+          this.getUsers()
         },
         error: (err)=>{
           this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
         }
       })
-  }
 
-  private refuse(user: UserInfo) {
-    user.approved = "null"
-    user.roles = [this.getRoles(user.roles)]
-    this.usersService.updateUser(user)
-      .subscribe({
-        next: (data)=>{
-          this.messageService.add({severity:'success', summary:'User Updated', detail:data.message})
-          user.approved = null;
-        },
-        error: (err)=>{
-          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
-        }
-      })
   }
 
   getItems(User: any) {
     return [
-      {label: 'Update', icon: 'pi pi-refresh', command: () => {
-          this.update(User);
+      {label: 'Make Admin', icon: 'pi pi-user-edit', command: () => {
+          this.update(User,"admin");
         }
       },
       {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
@@ -161,11 +145,11 @@ export class UsersComponent implements OnInit {
         }
       },
       {label: 'Approve', icon: 'pi pi-check', command: () => {
-          this.approve(User);
+          this.update(User,"approved");
         }
       },
       {label: 'Refuse', icon: 'pi pi-times', command: () => {
-          this.refuse(User);
+          this.update(User,"null");
         }
       },
     ];
@@ -217,7 +201,7 @@ export class UsersComponent implements OnInit {
         this.selectedUsers?.forEach((user)=>{
           if((user.approved==0||user.approved==null)&&(user.id!=null))
           {
-            this.approve(user);
+            this.update(user,"approved");
           }
         })
       },
@@ -233,7 +217,7 @@ export class UsersComponent implements OnInit {
         this.selectedUsers?.forEach((user)=>{
           if((user.approved==1||user.approved==0)&&(user.id!=null))
           {
-            this.refuse(user);
+            this.update(user,"null");
           }
         })
       },
@@ -256,17 +240,19 @@ export class UsersComponent implements OnInit {
             newUser.roles = user.roles[0].name;
             switch(user.approved){
               case null:
-                newUser.approved = null;
+                newUser.approved = "null";
                 break;
               case true:
-                newUser.approved = 1;
+                newUser.approved = "1";
                 break;
               case false:
-                newUser.approved = 0;
-            }
+                newUser.approved = "0";
+            };
+            // @ts-ignore
+            newUser.createdAt = new Date(user.createdAt)
           });
           this.loading = false;
-          console.log(data);
+          //console.log(data);
           this.users = data;
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)

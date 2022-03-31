@@ -24,7 +24,7 @@
            [paginator]="true"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [filterDelay]="0"
-           [globalFilterFields]="['email','trigramme','status']">
+           [globalFilterFields]="['email','trigramme','roles']">
 
     <ng-template pTemplate="header">
       <tr>
@@ -35,7 +35,6 @@
           <div class="flex justify-content-between align-items-center">
             Id
             <p-sortIcon field="id"></p-sortIcon>
-            <p-columnFilter type="text" field="id" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pSortableColumn="email">
@@ -59,18 +58,18 @@
             <p-columnFilter type="text" field="roles" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th pSortableColumn="date">
+        <th pSortableColumn="createdAt">
           <div class="flex justify-content-between align-items-center">
             Join Date
-            <p-sortIcon field="date"></p-sortIcon>
-            <p-columnFilter type="date" field="date" display="menu" class="ml-auto"></p-columnFilter>
+            <p-sortIcon field="createdAt"></p-sortIcon>
+            <p-columnFilter type="date" field="createdAt" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th pSortableColumn="status">
+        <th pSortableColumn="approved">
           <div class="flex justify-content-between align-items-center">
             Status
-            <p-sortIcon field="status"></p-sortIcon>
-            <p-columnFilter field="status" matchMode="equals" display="menu" class="ml-auto">
+            <p-sortIcon field="approved"></p-sortIcon>
+            <p-columnFilter field="approved" matchMode="equals" display="menu" class="ml-auto">
               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                 <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
                   <ng-template let-option pTemplate="item">
