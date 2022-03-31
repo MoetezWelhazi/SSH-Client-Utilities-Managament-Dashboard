@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
         this.add();
       }
       },
-    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: (event: Event) => {
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {
         this.deleteAll();
       }
       },
@@ -54,32 +54,8 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedUsers = [{email:""}]
-    this.usersService.getAllUsers(false)
-      .subscribe({
-        next: (data) => {
-          data.forEach((user)=>{
-            let newUser : UserInfo = user;
-            // @ts-ignore
-            newUser.roles = user.roles[0].name;
-            switch(user.approved){
-              case null:
-                newUser.approved = null;
-                break;
-              case true:
-                newUser.approved = 1;
-                break;
-              case false:
-                newUser.approved = 0;
-            }
-          });
-          this.loading = false;
-          console.log(data);
-          this.users = data;
-        },
-        error: (e) => this.notificationService.warn("An error has occured: "+e.error)
-      });
+    this.getUsers()
   }
-
 
   ngAfterViewInit() {
     document.body.classList.add('users-background');
@@ -113,7 +89,7 @@ export class UsersComponent implements OnInit {
     return (event.target as HTMLInputElement).value;
   }
 
-  onRowSelect($event: any) {
+  onRowSelect() {
     console.log(this.selectedUsers)
   }
 
@@ -125,11 +101,11 @@ export class UsersComponent implements OnInit {
     return "Waiting";
   }
 
-  update(user:UserInfo) {
+  private update(user:UserInfo) {
     this.notificationService.success("action updated for user: "+user+" !");
   }
 
-  delete(id: number) {
+  private delete(id: number) {
     this.usersService.deleteUser(id)
       .subscribe({
         next: (data)=>{
@@ -144,7 +120,7 @@ export class UsersComponent implements OnInit {
       })
   }
 
-  approve(user: UserInfo) {
+  private approve(user: UserInfo) {
     user.approved = "approved"
     user.roles = [this.getRoles(user.roles)]
     this.usersService.updateUser(user)
@@ -205,15 +181,14 @@ export class UsersComponent implements OnInit {
         this.usersService.createUser(userInfo)
           .subscribe({
             next: (data)=>{
-              this.messageService.add({severity:'success', summary:'User Updated', detail:data.message + "\n Refresh the page to see it in the table."})
+              this.messageService.add({severity:'success', summary:'User Added', detail:data.message})
+              this.getUsers()
             },
             error: (err)=>{
               this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
             }
           })
-        this.messageService.add({severity:'success', summary: 'User Added', detail:'Email:' + userInfo.email});
       }
-      console.log(JSON.stringify(userInfo))
     });
   }
 
@@ -269,5 +244,32 @@ export class UsersComponent implements OnInit {
     if(role=="ROLE_USER")
       return "user";
     return "admin";
+  }
+
+  private getUsers() {
+    this.usersService.getAllUsers(false)
+      .subscribe({
+        next: (data) => {
+          data.forEach((user)=>{
+            let newUser : UserInfo = user;
+            // @ts-ignore
+            newUser.roles = user.roles[0].name;
+            switch(user.approved){
+              case null:
+                newUser.approved = null;
+                break;
+              case true:
+                newUser.approved = 1;
+                break;
+              case false:
+                newUser.approved = 0;
+            }
+          });
+          this.loading = false;
+          console.log(data);
+          this.users = data;
+        },
+        error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
+      });
   }
 }

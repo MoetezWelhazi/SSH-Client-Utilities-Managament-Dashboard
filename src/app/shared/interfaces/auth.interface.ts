@@ -6,5 +6,5 @@ export interface UserInfo {
     roles?: {};
     accessToken?: string;
     approved?:any;
-    joinDate?: Date;
+    createdAt?: Date;
 }
