@@ -13,6 +13,7 @@ export class AppComponent {
   links = [
     { path: '/home', icon: 'home', title: 'Home' },
     { path: '/users', icon: 'people', title: 'Users' },
+    {path : '/servers' , icon : "dns" , title : 'Servers'}
   ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));

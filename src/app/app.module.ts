@@ -27,6 +27,7 @@ import { PrimengModule } from './primeng.module';
 import { UsersComponent } from './users/users.component';
 import { AdduserformComponent } from './users/adduserform/adduserform.component';
 import { AuthInterceptor } from "./shared/services/interceptors/http-interceptor.service";
+import { ServersComponent } from './servers/servers.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { AuthInterceptor } from "./shared/services/interceptors/http-interceptor
     ForgotpwdComponent,
     LoaderComponent,
     UsersComponent,
+    ServersComponent,
     AdduserformComponent
   ],
   providers: [
