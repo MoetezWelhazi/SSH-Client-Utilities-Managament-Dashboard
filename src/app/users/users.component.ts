@@ -91,7 +91,8 @@ export class UsersComponent implements OnInit {
     return "Waiting";
   }
 
-  private delete(id: number) {
+  private delete(id: number, confirm:boolean) {
+    if (!confirm)
     this.usersService.deleteUser(id)
       .subscribe({
         next: (data)=>{
@@ -104,6 +105,26 @@ export class UsersComponent implements OnInit {
           this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
         }
       })
+    else
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      message: 'User n°'+id+' will be deleted. Are you sure that you want to perform this action?',
+      accept: () => {
+        this.usersService.deleteUser(id)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
+              this.users = this.users.filter((user)=> {
+                return user.id !== id
+              });
+            },
+            error: (err)=> {
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          });
+      },
+    });
   }
 
   private update(user: UserInfo, field: string){
@@ -141,7 +162,7 @@ export class UsersComponent implements OnInit {
         }
       },
       {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
-          this.delete(User.id);
+          this.delete(User.id,true);
         }
       },
       {label: 'Approve', icon: 'pi pi-check', command: () => {
@@ -184,7 +205,7 @@ export class UsersComponent implements OnInit {
         accept: () => {
           this.selectedUsers?.forEach((user)=>{
             if (user.id != null) {
-              this.delete(user.id);
+              this.delete(user.id,false);
             }
           });
         },

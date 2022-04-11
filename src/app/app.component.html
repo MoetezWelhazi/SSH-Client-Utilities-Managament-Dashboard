@@ -49,10 +49,11 @@
 
   <div class="container-mat">
     <router-outlet>
-      <p-toast position="bottom-right" [baseZIndex]="5000"></p-toast>
-      <p-confirmPopup></p-confirmPopup>
-      <p-confirmDialog key="confirmDialog"></p-confirmDialog>
+
       <app-loader></app-loader>
     </router-outlet>
   </div>
 </mat-sidenav-container>
+<p-toast position="top-right" [baseZIndex]="5000"></p-toast>
+<p-confirmPopup></p-confirmPopup>
+<p-confirmDialog key="confirmDialog"></p-confirmDialog>

@@ -28,6 +28,9 @@ import { UsersComponent } from './users/users.component';
 import { AdduserformComponent } from './users/adduserform/adduserform.component';
 import { AuthInterceptor } from "./shared/services/interceptors/http-interceptor.service";
 import { ServersComponent } from './servers/servers.component';
+import { ScriptsComponent } from './scripts/scripts.component';
+import { ScriptsListComponent } from './scripts/scripts-list/scripts-list.component';
+import { ScriptDetailsComponent } from './scripts/script-details/script-details.component';
 
 @NgModule({
   imports: [
@@ -53,7 +56,10 @@ import { ServersComponent } from './servers/servers.component';
     LoaderComponent,
     UsersComponent,
     ServersComponent,
-    AdduserformComponent
+    AdduserformComponent,
+    ScriptsComponent,
+    ScriptsListComponent,
+    ScriptDetailsComponent
   ],
   providers: [
     AuthService,

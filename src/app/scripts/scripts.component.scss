@@ -1,0 +1,12 @@
+.scripts-container {
+  display: flex;
+  justify-content: space-around;
+
+  .scripts-list {
+    width: 49%;
+  }
+
+  .script-details {
+    width: 49%;
+  }
+}

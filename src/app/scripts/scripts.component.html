@@ -1,0 +1,16 @@
+<div class="scripts-container">
+  <div class="scripts-list">
+    <app-scripts-list
+      [scripts]="scripts$ | async"
+      (scriptSelected)="selectScript($event)"
+      (scriptDeleted)="deleteScript($event)"
+    ></app-scripts-list>
+  </div>
+  <div class="script-details">
+    <app-script-details
+      [selectedScript]="selectedScript"
+      (scriptSaved)="saveScript($event)"
+      (scriptCancelled)="resetScript()"
+    ></app-script-details>
+  </div>
+</div>

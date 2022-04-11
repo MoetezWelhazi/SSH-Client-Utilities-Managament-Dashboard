@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-title>
+    <span *ngIf="currentScript.id; else elseBlock">
+      {{ originalTitle | titlecase }}
+    </span>
+    <ng-template #elseBlock> Select Script </ng-template>
+  </mat-card-title>
+  <form #form="ngForm" (submit)="saveScript(currentScript)">
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Title"
+          [(ngModel)]="currentScript.name"
+          type="text"
+          name="title"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <textarea
+          matInput
+          placeholder="Details"
+          [(ngModel)]="currentScript.description"
+          type="text"
+          name="description"
+          required
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <textarea
+          matInput
+          placeholder="Code"
+          [(ngModel)]="currentScript.code"
+          type="text"
+          name="code"
+          style="color:black"
+        >
+
+        </textarea>
+      </mat-form-field>
+      <section>
+        <mat-checkbox [(ngModel)]="currentScript.editable" name="editable">
+          Editable
+        </mat-checkbox>
+      </section>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        [disabled]="form.invalid"
+        type="submit"
+        mat-button
+        color="primary"
+      >
+        Save
+      </button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+      >
+        Execute
+      </button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="accent"
+      >
+        History
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        color="accent"
+        style="color:white"
+        (click)="form.reset()"
+      >
+        Cancel
+      </button>
+      </mat-card-actions>
+  </form>
+</mat-card>

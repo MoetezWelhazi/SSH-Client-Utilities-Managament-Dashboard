@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> Script List </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let script of scripts"
+        (click)="selectScript(script)"
+      >
+        <h3 matLine>{{ script.name | titlecase }}</h3>
+        <p matLine>
+          {{ script.description }}
+        </p>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteScript(script.id); $event.stopImmediatePropagation()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
