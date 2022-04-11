@@ -1,0 +1,53 @@
+<div class="d-flex">
+  <div id="left-container">
+    <form>
+      <mat-form-field class="inputfield" appearance="fill">
+          <mat-label>User</mat-label>
+          <input
+            matInput
+            placeholder="Email"
+            [(ngModel)]="execution.user"
+            type="text"
+            required
+            name="user"
+            #user="ngModel"
+          />
+          <mat-error *ngIf="user.invalid && (user.dirty || user.touched)">
+            <strong>Entrer un utilisateur valide</strong>
+          </mat-error>
+        </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+            matInput
+            placeholder="Password"
+            [(ngModel)]="execution.password"
+            type="password"
+            required
+            minlength="8"
+            name="passwordA"
+            [type]="hide ? 'password' : 'text'"
+            #passwordA = "ngModel"
+          />
+        <button mat-icon-button matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordA.invalid && (passwordA.dirty || passwordA.touched)">
+          <strong>Entrer un mot de passe valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <select>
+          <option *ngFor="let order of orders; let i = index" [value]="orders[i].id">
+            {{orders[i].name}}
+          </option>
+        </select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="vr" style="height:78vh"></div>
+  <div id="right-container">
+    <div id="terminal">
+    </div>
+  </div>
+</div>

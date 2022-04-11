@@ -1,5 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Script} from "../../shared/interfaces/script.interface";
+import {DialogService} from "primeng/dynamicdialog";
+import {NotificationService} from "../../shared/services/notifications/notification.service";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ExecuteScriptComponent} from "../execute-script/execute-script.component";
 
 @Component({
   selector: 'app-script-details',
@@ -22,13 +26,15 @@ export class ScriptDetailsComponent implements OnInit {
     id:undefined,
     name:"",
     description:"",
-    code:"#!/bin/bash\n" +
-      "\n" +
-      "# testLOCAL.sh\n" +
-      "ping 192.168.1.7 -c 5 "
+    code:"",
   };
 
-  constructor() {}
+  constructor(public dialogService: DialogService,
+              private notificationService: NotificationService,
+              public confirmationService: ConfirmationService,
+              public messageService: MessageService,
+
+              ) {}
 
   ngOnInit(): void {}
 
@@ -40,4 +46,10 @@ export class ScriptDetailsComponent implements OnInit {
     this.scriptCancelled.emit();
   }
 
+  toExecute() {
+    const ref = this.dialogService.open(ExecuteScriptComponent, {
+      header: 'Execute Script',
+      width: '70%'
+    })
+  }
 }

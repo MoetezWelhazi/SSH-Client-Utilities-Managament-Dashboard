@@ -31,6 +31,7 @@ import { ServersComponent } from './servers/servers.component';
 import { ScriptsComponent } from './scripts/scripts.component';
 import { ScriptsListComponent } from './scripts/scripts-list/scripts-list.component';
 import { ScriptDetailsComponent } from './scripts/script-details/script-details.component';
+import { ExecuteScriptComponent } from './scripts/execute-script/execute-script.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { ScriptDetailsComponent } from './scripts/script-details/script-details.
     AdduserformComponent,
     ScriptsComponent,
     ScriptsListComponent,
-    ScriptDetailsComponent
+    ScriptDetailsComponent,
+    ExecuteScriptComponent
   ],
   providers: [
     AuthService,

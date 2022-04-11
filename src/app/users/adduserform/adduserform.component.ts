@@ -5,7 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 @Component({
   selector: 'app-adduserform',
   templateUrl: './adduserform.component.html',
-  styleUrls: ['./adduserform.component.css']
+  styleUrls: ['./adduserform.component.scss']
 })
 export class AdduserformComponent implements OnInit {
   isAdmin = false;

@@ -44,7 +44,7 @@ export class ScriptsComponent implements OnInit {
   }
 
   loadScripts(displayNotification: boolean) {
-    this.scripts$ = this.scriptsService.getAllScripts(displayNotification);
+    this.scripts$ = this.scriptsService.getAllScripts(!displayNotification);
   }
 
   saveScript(script: Script) {
