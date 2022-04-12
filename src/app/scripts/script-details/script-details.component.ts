@@ -29,6 +29,13 @@ export class ScriptDetailsComponent implements OnInit {
     code:"",
   };
 
+  orders = [
+    { id: '1', name: 'order 1' },
+    { id: '2', name: 'order 2' },
+    { id: '3', name: 'order 3' },
+    { id: '4', name: 'order 4' }
+  ];
+
   constructor(public dialogService: DialogService,
               private notificationService: NotificationService,
               public confirmationService: ConfirmationService,

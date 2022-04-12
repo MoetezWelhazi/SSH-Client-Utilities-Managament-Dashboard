@@ -32,6 +32,7 @@ import { ScriptsComponent } from './scripts/scripts.component';
 import { ScriptsListComponent } from './scripts/scripts-list/scripts-list.component';
 import { ScriptDetailsComponent } from './scripts/script-details/script-details.component';
 import { ExecuteScriptComponent } from './scripts/execute-script/execute-script.component';
+import { NgTerminalModule } from 'ng-terminal';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { ExecuteScriptComponent } from './scripts/execute-script/execute-script.
     BsDropdownModule,
     MatStepperModule,
     PrimengModule,
+    NgTerminalModule,
   ],
   declarations: [
     AppComponent,
