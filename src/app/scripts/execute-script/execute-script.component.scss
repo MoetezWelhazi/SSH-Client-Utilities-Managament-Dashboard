@@ -21,6 +21,15 @@
 
 .inputfield{
   border-radius: 2px;
-  width: 100%;
+  width: 100% !important;
+  margin-bottom: 5% !important;
+}
+
+.p-dropdown{
+  width:100%;
   margin-bottom: 5%;
+}
+
+.p-dropdown:hover{
+  border-color: #2c2c2c;
 }

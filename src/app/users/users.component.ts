@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { UserInfo } from "../shared/interfaces/auth.interface";
+import { UserInfo } from "../shared/models/auth.interface";
 import { Table } from "primeng/table";
 import { NotificationService } from "../shared/services/notifications/notification.service";
 import { DialogService } from "primeng/dynamicdialog";

@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Script} from "../../shared/interfaces/script.interface";
+import {Script} from "../../shared/models/script.interface";
 import {DialogService} from "primeng/dynamicdialog";
 import {NotificationService} from "../../shared/services/notifications/notification.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ExecuteScriptComponent} from "../execute-script/execute-script.component";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-script-details',
@@ -40,6 +41,7 @@ export class ScriptDetailsComponent implements OnInit {
               private notificationService: NotificationService,
               public confirmationService: ConfirmationService,
               public messageService: MessageService,
+              public dialog: MatDialog
 
               ) {}
 
@@ -54,9 +56,14 @@ export class ScriptDetailsComponent implements OnInit {
   }
 
   toExecute() {
-    const ref = this.dialogService.open(ExecuteScriptComponent, {
+    /*const ref = this.dialogService.open(ExecuteScriptComponent, {
       header: 'Execute Script',
       width: '70%'
-    })
+    })*/
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = { script: this.selectedScript };
+    let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
   }
 }

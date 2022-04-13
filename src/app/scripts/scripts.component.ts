@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Script} from "../shared/interfaces/script.interface";
+import {Script} from "../shared/models/script.interface";
 import {Observable, of} from "rxjs";
 import {ScriptsService} from "../shared/services/scripts/scripts.service";
 import {tap} from "rxjs/operators";

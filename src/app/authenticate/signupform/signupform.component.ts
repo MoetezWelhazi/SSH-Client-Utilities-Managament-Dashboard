@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { UserInfo } from "../../shared/interfaces/auth.interface";
+import { UserInfo } from "../../shared/models/auth.interface";
 
 @Component({
   selector: 'app-signupform',

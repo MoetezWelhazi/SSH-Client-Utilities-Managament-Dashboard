@@ -16,7 +16,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from "@angular/material/tabs";
-import {MatOptionModule} from "@angular/material/core";
+import { MatOptionModule } from "@angular/material/core";
+import { MatDialogModule } from "@angular/material/dialog";
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {MatOptionModule} from "@angular/material/core";
     MatButtonToggleModule,
     MatTabsModule,
     MatOptionModule,
+    MatDialogModule
 
   ],
 })

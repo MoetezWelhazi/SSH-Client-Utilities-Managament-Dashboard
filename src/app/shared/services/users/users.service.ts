@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NotificationService } from '../notifications/notification.service';
 import { HttpClient } from "@angular/common/http";
-import { UserInfo } from "../../interfaces/auth.interface";
+import { UserInfo } from "../../models/auth.interface";
 
 const BASE_URL = 'http://localhost:8081';
 

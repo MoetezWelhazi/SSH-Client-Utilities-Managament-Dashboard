@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Script} from "../../shared/interfaces/script.interface";
+import {Script} from "../../shared/models/script.interface";
 
 @Component({
   selector: 'app-scripts-list',

@@ -1,6 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
-import { Execution } from "../../shared/interfaces/execHistory.interface";
+import { Execution } from "../../shared/models/execHistory.interface";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Script} from "../../shared/models/script.interface";
+import {ExecutionWebsocketService} from "../../shared/services/websocket/execution.websocket.service";
+import { Message } from '@stomp/stompjs';
 
 
 @Component({
@@ -9,7 +13,7 @@ import { Execution } from "../../shared/interfaces/execHistory.interface";
   styleUrls: ['./execute-script.component.scss']
 })
 export class ExecuteScriptComponent implements OnInit {
-
+  public executionProgress: any ={}
   // @ts-ignore
   @ViewChild('term', { static: true }) child: NgTerminal;
   hide=true;
@@ -21,17 +25,25 @@ export class ExecuteScriptComponent implements OnInit {
   }
   selectedServer = '';
 
-  orders = [
-    { id: '1', name: 'order 1' },
-    { id: '2', name: 'order 2' },
-    { id: '3', name: 'order 3' },
-    { id: '4', name: 'order 4' }
+  servers = [
+    { id: '1', name: 'server 1' },
+    { id: '2', name: 'server 2' },
+    { id: '3', name: 'server 3' },
+    { id: '4', name: 'server 4' }
   ];
 
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script},
+              public dialogRef: MatDialogRef<ExecuteScriptComponent>,
+              private executionWebsocketService: ExecutionWebsocketService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.executionWebsocketService.watch('/topic/execution/${id}').subscribe((message:Message)=>{
+      this.child.underlying.clear();
+      this.child.write(message.body);
+      console.log("MESSAGE RECEIVED");
+    })
+  }
   ngAfterViewInit(){
     this.child.keyEventInput.subscribe(e => {
       console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
@@ -50,6 +62,15 @@ export class ExecuteScriptComponent implements OnInit {
       }
     })
     this.child.write("Press Execute to run the script...")
+    this.child.underlying.clear()
 
+  }
+
+  executeScript() {
+
+  }
+
+  clearTerminal() {
+    this.child.underlying.clear()
   }
 }

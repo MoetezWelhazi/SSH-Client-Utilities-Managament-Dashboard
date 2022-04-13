@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UserInfo} from "../../shared/interfaces/auth.interface";
+import {UserInfo} from "../../shared/models/auth.interface";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 
 @Component({

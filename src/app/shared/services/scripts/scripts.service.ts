@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NotificationService} from "../notifications/notification.service";
-import {Script} from "../../interfaces/script.interface";
+import {Script} from "../../models/script.interface";
+import {Execution} from "../../models/execHistory.interface";
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -17,6 +18,10 @@ export class ScriptsService {
     private notificationService: NotificationService
   ) {}
 
+  executeScript(execution: Execution){
+    return this.http.post<Execution>(this.getUrlWithID(execution.executorId),execution)
+  }
+
   getAllScripts(displayNotification: boolean) {
     if (displayNotification) {
       this.notificationService.notify('Get All Scripts HTTP Call');
@@ -25,17 +30,17 @@ export class ScriptsService {
   }
 
   createScript(script: Script) {
-    this.notificationService.notify('Create Script HTTP Call');
+    //.notificationService.notify('Create Script HTTP Call');
     return this.http.post<Script>(this.getUrl(), script);
   }
 
   updateScript(script: Script) {
-    this.notificationService.notify('Update Script HTTP Call');
+    //this.notificationService.notify('Update Script HTTP Call');
     return this.http.put<Script>(this.getUrlWithID(script.id), script);
   }
 
   deleteScript(id: number) {
-    this.notificationService.notify('Delete Script HTTP Call');
+    //this.notificationService.notify('Delete Script HTTP Call');
     return this.http.delete(this.getUrlWithID(id));
   }
 

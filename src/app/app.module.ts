@@ -33,6 +33,7 @@ import { ScriptsListComponent } from './scripts/scripts-list/scripts-list.compon
 import { ScriptDetailsComponent } from './scripts/script-details/script-details.component';
 import { ExecuteScriptComponent } from './scripts/execute-script/execute-script.component';
 import { NgTerminalModule } from 'ng-terminal';
+import { RxStomp } from "@stomp/rx-stomp";
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { NgTerminalModule } from 'ng-terminal';
     MatStepperModule,
     PrimengModule,
     NgTerminalModule,
+
   ],
   declarations: [
     AppComponent,
@@ -67,6 +69,7 @@ import { NgTerminalModule } from 'ng-terminal';
   ],
   providers: [
     AuthService,
+    RxStomp,
     NotificationService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,

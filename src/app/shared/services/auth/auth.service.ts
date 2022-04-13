@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { UserInfo } from '../../interfaces/auth.interface';
+import { UserInfo } from '../../models/auth.interface';
 import { HttpClient } from "@angular/common/http";
 import { NotificationService } from "../notifications/notification.service";
 import { TokenStorageService } from "./token-storage.service";

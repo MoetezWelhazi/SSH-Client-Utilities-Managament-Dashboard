@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { UserInfo } from "../shared/interfaces/auth.interface";
+import { UserInfo } from "../shared/models/auth.interface";
 import {TokenStorageService} from "../shared/services/auth/token-storage.service";
 import {Table} from "primeng/table";
 import {PrimeNGConfig} from "primeng/api";
-import {Execution} from "../shared/interfaces/execHistory.interface";
+import {Execution} from "../shared/models/execHistory.interface";
 
 @Component({
   selector: 'app-home',

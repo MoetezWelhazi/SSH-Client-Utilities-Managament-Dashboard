@@ -36,16 +36,7 @@
           name="code"
           style="color:black"
         >
-
         </textarea>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Favorite food</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let food of orders" [value]="food.id">
-            {{food.name}}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
       <section>
         <mat-checkbox [(ngModel)]="currentScript.editable" name="editable">
