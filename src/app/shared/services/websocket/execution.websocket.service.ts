@@ -15,6 +15,6 @@ export const executionStompConfig: RxStompConfig = {
 export class ExecutionWebsocketService extends WebSocketService {
 
   constructor(stompService: RxStomp) {
-    super(stompService, executionStompConfig, new WebSocketOptions('/topic/execution'));
+    super(stompService, executionStompConfig, new WebSocketOptions('/script/execution'));
   }
 }

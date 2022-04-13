@@ -38,7 +38,7 @@ export class ExecuteScriptComponent implements OnInit {
               private executionWebsocketService: ExecutionWebsocketService) { }
 
   ngOnInit(): void {
-    this.executionWebsocketService.watch('/topic/execution/${id}').subscribe((message:Message)=>{
+    this.executionWebsocketService.watch('/script/execution/${id}').subscribe((message:Message)=>{
       this.child.underlying.clear();
       this.child.write(message.body);
       console.log("MESSAGE RECEIVED");
