@@ -33,12 +33,12 @@ export class ExecuteScriptComponent implements OnInit {
   ];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script},
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:number},
               public dialogRef: MatDialogRef<ExecuteScriptComponent>,
               private executionWebsocketService: ExecutionWebsocketService) { }
 
   ngOnInit(): void {
-    this.executionWebsocketService.watch('/script/execution/${id}').subscribe((message:Message)=>{
+    this.executionWebsocketService.watch('/script/execution/'+this.data.id).subscribe((message:Message)=>{
       this.child.underlying.clear();
       this.child.write(message.body);
       console.log("MESSAGE RECEIVED");

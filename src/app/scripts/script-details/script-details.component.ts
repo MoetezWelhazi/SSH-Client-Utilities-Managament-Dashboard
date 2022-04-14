@@ -5,6 +5,7 @@ import {NotificationService} from "../../shared/services/notifications/notificat
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ExecuteScriptComponent} from "../execute-script/execute-script.component";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {TokenStorageService} from "../../shared/services/auth/token-storage.service";
 
 @Component({
   selector: 'app-script-details',
@@ -41,7 +42,8 @@ export class ScriptDetailsComponent implements OnInit {
               private notificationService: NotificationService,
               public confirmationService: ConfirmationService,
               public messageService: MessageService,
-              public dialog: MatDialog
+              public dialog: MatDialog,
+              private tokenStorageService: TokenStorageService
 
               ) {}
 
@@ -60,10 +62,11 @@ export class ScriptDetailsComponent implements OnInit {
       header: 'Execute Script',
       width: '70%'
     })*/
+    const user = this.tokenStorageService.getUser();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = { script: this.selectedScript };
+    dialogConfig.data = { script: this.selectedScript, id: user.id };
     let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
   }
 }
