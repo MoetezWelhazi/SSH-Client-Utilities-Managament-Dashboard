@@ -3,7 +3,7 @@ export interface Execution {
   date?: Date;
   user?: string;
   port?: number;
-  executorId?:string;
+  executorId?:number;
   server?: string;
   password?: string;
   result?: string ;

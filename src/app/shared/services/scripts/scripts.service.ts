@@ -19,7 +19,7 @@ export class ScriptsService {
   ) {}
 
   executeScript(execution: Execution){
-    return this.http.post<void>(this.getUrlWithID(execution.executorId),execution)
+    return this.http.post<any>(this.getUrlWithID(execution.executorId),execution)
   }
 
   getAllScripts(displayNotification: boolean) {

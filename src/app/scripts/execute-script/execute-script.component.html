@@ -6,8 +6,8 @@
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="outline">
         <mat-label>Server</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let server of servers" [value]="server.id">
+        <mat-select [(ngModel)]="execution.server" name="server" #server="ngModel">
+          <mat-option *ngFor="let server of servers" [value]="server.id" >
             {{server.name}}
           </mat-option>
         </mat-select>
@@ -18,13 +18,12 @@
           matInput
           placeholder="User"
           [(ngModel)]="execution.user"
-          type="email"
+          type="text"
           required
-          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@(neoxam|gmail)\.com)?"
-          name="email"
-          #email="ngModel"
+          name="user"
+          #user="ngModel"
         />
-        <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+        <mat-error *ngIf="user.invalid && (user.dirty || user.touched)">
           <strong>Entrer un e-mail NeoXam valide</strong>
         </mat-error>
       </mat-form-field>
@@ -36,7 +35,7 @@
           [(ngModel)]="execution.password"
           type="password"
           required
-          minlength="8"
+          minlength="5"
           name="passwordA"
           [type]="hide ? 'password' : 'text'"
           #passwordA = "ngModel"
@@ -49,7 +48,7 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field class="inputfield" appearance="outline" style="margin:0">
-        <mat-label>Trigram</mat-label>
+        <mat-label>Port</mat-label>
         <input
           matInput
           placeholder="ex: 22"
@@ -57,24 +56,33 @@
           type="text"
           required
           pattern="(^[0-9]{1,4})"
-          name="trigram"
-          #trigram="ngModel"
+          name="port"
+          #port="ngModel"
         />
-        <mat-error *ngIf="trigram.invalid && (trigram.dirty || trigram.touched)">
+        <mat-error *ngIf="port.invalid && (port.dirty || port.touched)">
           <strong>Entrer une trigramme NeoXam valide</strong>
         </mat-error>
       </mat-form-field>
       <hr>
     </mat-card-content>
     <mat-card-actions class="d-flex justify-content-center">
-      <button type="submit" [disabled]="(passwordA.invalid)||(email.invalid)||(trigram.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">
+      <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">
         Execute</button>
     </mat-card-actions>
   </form>
     </div>
     <div class="vr"></div>
     <div id="right-container">
-      <ng-terminal #term></ng-terminal>
+      <textarea
+        matInput
+        placeholder="Code"
+        [(ngModel)]="console"
+        type="text"
+        name="code"
+        readonly
+        style="height:80%"
+      >
+        </textarea>
     </div>
   </div>
 </mat-dialog-content>

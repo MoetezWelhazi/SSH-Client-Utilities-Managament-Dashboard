@@ -3,8 +3,10 @@ import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
 import { Execution } from "../../shared/models/execHistory.interface";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Script} from "../../shared/models/script.interface";
-import {ExecutionWebsocketService} from "../../shared/services/websocket/execution.websocket.service";
 import { Message } from '@stomp/stompjs';
+import {ScriptsService} from "../../shared/services/scripts/scripts.service";
+import {MessageService} from "primeng/api";
+import {RxStompService} from "../../shared/services/websocket/rxstomp.service";
 
 
 @Component({
@@ -15,62 +17,67 @@ import { Message } from '@stomp/stompjs';
 export class ExecuteScriptComponent implements OnInit {
   public executionProgress: any ={}
   // @ts-ignore
-  @ViewChild('term', { static: true }) child: NgTerminal;
+  //@ViewChild('term', { static: true }) child: NgTerminal;
   hide=true;
+  console: string = "Press Execute to run the script...";
   execution: Execution = {
     user:'',
     port:22,
     server:'',
     password:'',
+    executorId:0,
   }
   selectedServer = '';
 
   servers = [
-    { id: '1', name: 'server 1' },
+    { id: '192.168.56.101', name: 'linux mint VM' },
     { id: '2', name: 'server 2' },
     { id: '3', name: 'server 3' },
     { id: '4', name: 'server 4' }
   ];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:number},
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any},
               public dialogRef: MatDialogRef<ExecuteScriptComponent>,
-              private executionWebsocketService: ExecutionWebsocketService) { }
+              private executionWebsocketService: RxStompService,
+              private scriptsService: ScriptsService,
+              private messageService:MessageService,
+              ) {
+
+  }
 
   ngOnInit(): void {
-    this.executionWebsocketService.watch('/script/execution/'+this.data.id).subscribe((message:Message)=>{
-      this.child.underlying.clear();
-      this.child.write(message.body);
-      console.log("MESSAGE RECEIVED");
+    let destination = '/script/execution/'+this.data.id;
+    console.log("STOMP IS LISTENING TO: "+destination);
+    this.executionWebsocketService.watch(destination).subscribe((data:Message)=>{
+      //console.log(data.body);
+      this.console=data.body;
+      //console.log("MESSAGE RECEIVED");
+    },
+    err=>{
+      console.log("JOE BIDEN, WAKE UP(error message)")
     })
+    console.log("DATA.ID: "+this.data.id)
+    this.execution.executorId = this.data.id;
   }
   ngAfterViewInit(){
-    this.child.keyEventInput.subscribe(e => {
-      console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
-
-      const ev = e.domEvent;
-      const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
-
-      if (ev.keyCode === 13) {
-        this.child.write('\n' + FunctionsUsingCSI.cursorColumn(1) + '$ '); // \r\n
-      } else if (ev.keyCode === 8) {
-        if (this.child.underlying.buffer.active.cursorX > 2) {
-          this.child.write('\b \b');
-        }
-      } else if (printable) {
-        this.child.write(e.key);
-      }
-    })
-    this.child.write("Press Execute to run the script...")
-    this.child.underlying.clear()
 
   }
 
   executeScript() {
-
+    console.log(this.execution)
+    this.scriptsService.executeScript(this.execution)
+      .subscribe({
+        next: (data)=>{
+          this.messageService.add({severity:'success', summary:'Script Executed', detail:data.message})
+        },
+        error: (err)=>{
+          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+        }
+      })
   }
 
   clearTerminal() {
-    this.child.underlying.clear()
+    this.console="";
   }
 }

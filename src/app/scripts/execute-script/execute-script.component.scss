@@ -14,9 +14,12 @@
   display:inline-flex;
 }
 
-#terminal{
-  max-width: 100%;
-  width: 200px;
+textarea {
+  background-color: #000;
+  border: 1px solid #000;
+  color: white;
+  padding: 8px;
+  font-family: courier new;
 }
 
 .inputfield{
