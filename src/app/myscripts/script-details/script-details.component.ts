@@ -8,7 +8,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {TokenStorageService} from "../../shared/services/auth/token-storage.service";
 
 @Component({
-  selector: 'app-script-details',
+  selector: 'app-myscript-details',
   templateUrl: './script-details.component.html',
   styleUrls: ['./script-details.component.css']
 })

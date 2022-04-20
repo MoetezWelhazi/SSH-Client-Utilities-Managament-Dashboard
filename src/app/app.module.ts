@@ -28,13 +28,15 @@ import { UsersComponent } from './users/users.component';
 import { AdduserformComponent } from './users/adduserform/adduserform.component';
 import { AuthInterceptor } from "./shared/services/interceptors/http-interceptor.service";
 import { ServersComponent } from './servers/servers.component';
-import { ScriptsComponent } from './scripts/scripts.component';
-import { ScriptsListComponent } from './scripts/scripts-list/scripts-list.component';
-import { ScriptDetailsComponent } from './scripts/script-details/script-details.component';
-import { ExecuteScriptComponent } from './scripts/execute-script/execute-script.component';
+import { MyScriptsComponent } from './myscripts/my-scripts.component';
+import { ScriptsListComponent } from './myscripts/scripts-list/scripts-list.component';
+import { ScriptDetailsComponent } from './myscripts/script-details/script-details.component';
+import { ExecuteScriptComponent } from './myscripts/execute-script/execute-script.component';
 import { NgTerminalModule } from 'ng-terminal';
 import { RxStompService } from "./shared/services/websocket/rxstomp.service";
 import { rxStompServiceFactory } from "./shared/services/websocket/rxStompServiceFactory";
+import { AllscriptsComponent } from './allscripts/allscripts.component';
+import { AddscriptformComponent } from './allscripts/addscriptform/addscriptform.component';
 
 @NgModule({
   imports: [
@@ -63,10 +65,12 @@ import { rxStompServiceFactory } from "./shared/services/websocket/rxStompServic
     UsersComponent,
     ServersComponent,
     AdduserformComponent,
-    ScriptsComponent,
+    MyScriptsComponent,
     ScriptsListComponent,
     ScriptDetailsComponent,
-    ExecuteScriptComponent
+    ExecuteScriptComponent,
+    AllscriptsComponent,
+    AddscriptformComponent
   ],
   providers: [
     AuthService,

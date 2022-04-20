@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Script} from "../../shared/models/script.interface";
 
 @Component({
-  selector: 'app-scripts-list',
+  selector: 'app-myscripts-list',
   templateUrl: './scripts-list.component.html',
-  styleUrls: ['./scripts-list.component.css']
+  styleUrls: ['./scripts-list.component.scss']
 })
 export class ScriptsListComponent implements OnInit {
 

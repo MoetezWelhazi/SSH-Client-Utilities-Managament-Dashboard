@@ -1,0 +1,45 @@
+<form class="loginform" #form (submit)="addScript()">
+  <mat-card-content>
+    <mat-form-field class="inputfield" appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Text..."
+        [(ngModel)]="script.description"
+        type="text"
+        required
+        name="description"
+        #description="ngModel"
+      ></textarea>
+      <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+        <strong>La description est obligatoire!</strong>
+      </mat-error>
+    </mat-form-field>
+    <section>
+      <input
+        type="file"
+        class="file-input"
+        name="fileUpload"
+        #fileUpload
+        (change)="onFileSelect($event)" required>
+      <div class="file-upload">
+        {{fileName || "No file uploaded yet."}}
+        <button mat-mini-fab color="primary" class="upload-btn"
+                (click)="fileUpload.click()">
+          <mat-icon>attach_file</mat-icon>
+        </button>
+      </div>
+    </section>
+    <mat-checkbox
+      color="primary"
+      name="private"
+      [(ngModel)]="private"
+      #private = "ngModel"
+    >
+      private</mat-checkbox>
+  </mat-card-content>
+  <mat-card-actions class="d-flex justify-content-center">
+    <button type="submit" [disabled]="(description.invalid)||(private.invalid)||(form.reportValidity())" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+  </mat-card-actions>
+</form>
+

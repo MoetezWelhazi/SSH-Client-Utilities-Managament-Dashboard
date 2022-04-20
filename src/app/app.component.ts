@@ -14,7 +14,7 @@ export class AppComponent {
     { path: '/home', icon: 'home', title: 'Home' },
     { path: '/users', icon: 'people', title: 'Users' },
     { path : '/servers' , icon : "dns" , title : 'Servers'},
-    { path : '/scripts' , icon : "terminal" , title : 'Scripts'}
+    { path : '/myscripts' , icon : "terminal" , title : 'Scripts'}
   ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));

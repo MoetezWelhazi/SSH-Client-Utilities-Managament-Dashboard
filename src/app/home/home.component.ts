@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     {
       id: 2,
       title: 'Permission Granted!',
-      description: 'You now have access to all scripts!',
+      description: 'You now have access to all myscripts!',
       status: "new",
     },
     {

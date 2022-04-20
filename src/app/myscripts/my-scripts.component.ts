@@ -3,13 +3,17 @@ import {Script} from "../shared/models/script.interface";
 import {Observable, of} from "rxjs";
 import {ScriptsService} from "../shared/services/scripts/scripts.service";
 import {tap} from "rxjs/operators";
+import {Upload} from "../shared/models/upload.interface";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {NotificationService} from "../shared/services/notifications/notification.service";
+import {DialogService} from "primeng/dynamicdialog";
 
 @Component({
-  selector: 'app-scripts',
-  templateUrl: './scripts.component.html',
-  styleUrls: ['./scripts.component.scss']
+  selector: 'app-myscripts',
+  templateUrl: './my-scripts.component.html',
+  styleUrls: ['./my-scripts.component.scss']
 })
-export class ScriptsComponent implements OnInit {
+export class MyScriptsComponent implements OnInit {
 
   scripts$: Observable<Script[]>
   selectedScript: Script ={
@@ -18,7 +22,13 @@ export class ScriptsComponent implements OnInit {
     description:""
   };
 
-  constructor(private scriptsService: ScriptsService) {
+  constructor(
+    private scriptsService: ScriptsService,
+    private notificationService:NotificationService,
+    public confirmationService:ConfirmationService ,
+    public messageService: MessageService ,
+    public dialogService: DialogService
+              ) {
     this.scripts$ = of([{
       id:undefined,
       name:"",
@@ -51,7 +61,7 @@ export class ScriptsComponent implements OnInit {
     if (script.id) {
       this.updateScript(script);
     } else {
-      this.createScript(script);
+      this.messageService.add({severity:"error",summary:"Select Script",detail:"Select a script to modify"})
     }
     this.resetScript();
   }
@@ -62,7 +72,7 @@ export class ScriptsComponent implements OnInit {
     ).subscribe();
   }
 
-  createScript(script: Script) {
+  createScript(script: Upload) {
     this.scriptsService.createScript(script).pipe(
       tap(() => this.loadScripts(false))
     ).subscribe();
@@ -81,7 +91,7 @@ export class ScriptsComponent implements OnInit {
       command: '',
       name: '',
       description:'',
-      author: '',
+      owner: '',
       //createdAt: new Date()
     };
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpRequest} from "@angular/common/http";
 import {NotificationService} from "../notifications/notification.service";
 import {Script} from "../../models/script.interface";
 import {Execution} from "../../models/execHistory.interface";
+import {Upload} from "../../models/upload.interface";
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -22,6 +23,10 @@ export class ScriptsService {
     return this.http.post<any>(this.getUrlWithID(execution.executorId),execution)
   }
 
+  getScriptsDetails(userId: any){
+    return this.http.get<Script[]>(this.getUrlWithID(userId))
+  }
+
   getAllScripts(displayNotification: boolean) {
     if (displayNotification) {
       this.notificationService.notify('Get All Scripts HTTP Call');
@@ -29,19 +34,35 @@ export class ScriptsService {
     return this.http.get<Script[]>(this.getUrl());
   }
 
-  createScript(script: Script) {
+  createScript(upload: Upload) {
     //.notificationService.notify('Create Script HTTP Call');
-    return this.http.post<Script>(this.getUrl(), script);
+    const formData: FormData = new FormData();
+    //@ts-ignore
+    formData.append('file', upload.file);
+    formData.append('user_id', upload.id);
+    formData.append('description', upload.script.description);
+    formData.append('editable',upload.script.editable ? "true": "false");
+    const req = new HttpRequest('POST', this.getUrl(), formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+    return this.http.request<any>(req);
+    //return this.http.post<Script>(this.getUrl(), script);
   }
 
   updateScript(script: Script) {
     //this.notificationService.notify('Update Script HTTP Call');
-    return this.http.put<Script>(this.getUrlWithID(script.id), script);
+    return this.http.put<any>(this.getUrlWithID(window.sessionStorage.getItem("auth-token")), script);
+  }
+
+  addToUser(sId:any, uId:any){
+
+    return this.http.put<any>(this.getUrlWithID(sId),uId);
   }
 
   deleteScript(id: number) {
     //this.notificationService.notify('Delete Script HTTP Call');
-    return this.http.delete(this.getUrlWithID(id));
+    return this.http.delete<any>(this.getUrlWithID(id));
   }
 
   private getUrl() {
