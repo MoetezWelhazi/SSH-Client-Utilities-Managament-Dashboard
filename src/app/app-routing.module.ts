@@ -7,13 +7,16 @@ import { AuthenticateComponent } from "./authenticate/authenticate.component";
 import { UsersComponent } from "./users/users.component";
 import { ServersComponent } from './servers/servers.component';
 import { MyScriptsComponent } from "./myscripts/my-scripts.component";
+import { AllscriptsComponent } from "./allscripts/allscripts.component";
+import {AdminGuard} from "./shared/guards/admin.guard";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'auth', component: AuthenticateComponent },
-  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-  { path: 'servers' , component : ServersComponent , canActivate : [AuthGuard] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard,AdminGuard] },
+  { path: 'servers' , component : ServersComponent , canActivate : [AuthGuard,AdminGuard] },
   { path: 'myscripts' , component : MyScriptsComponent, canActivate: [AuthGuard] },
+  { path: 'allscripts' , component : AllscriptsComponent, canActivate: [AuthGuard] },
   { path: '**', component: AppComponent, canActivate: [AuthGuard] }
 ];
 

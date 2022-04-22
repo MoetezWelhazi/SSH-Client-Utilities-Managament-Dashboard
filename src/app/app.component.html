@@ -31,10 +31,12 @@
     class="app-sidenav"
   >
     <nav>
+      <div
+        *ngFor="let link of links">
       <a
         mat-button
         class="nav-link"
-        *ngFor="let link of links"
+        *ngIf="(!link.admin)||(isAdmin() && link.admin )"
         [routerLink]="link.path"
         routerLinkActive="active-route"
       >
@@ -43,6 +45,7 @@
         </mat-icon>
         {{ link.title }}
       </a>
+      </div>
     </nav>
 
   </mat-sidenav>

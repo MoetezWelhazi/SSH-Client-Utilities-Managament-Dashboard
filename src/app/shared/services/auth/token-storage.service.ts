@@ -8,6 +8,7 @@ export class TokenStorageService {
   constructor() { }
   signOut(): void {
     window.sessionStorage.clear();
+    window.sessionStorage.setItem("auth-user", JSON.stringify({roles:["ROLE_USER"]}));
   }
   public saveToken(token: string): void {
     window.sessionStorage.removeItem(TOKEN_KEY);

@@ -17,6 +17,9 @@ export class AuthService {
   private isAuthenticated = new BehaviorSubject(this.getIsAuthenticated() || false);
   isAuthenticated$ = this.isAuthenticated.asObservable();
 
+  private isAdmin = new BehaviorSubject(this.getIsAdmin() || false);
+  isAdmin$ = this.isAdmin.asObservable();
+
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
@@ -31,7 +34,9 @@ export class AuthService {
         this.tokenStorage.saveUser(data);
         this.setIsAuthenticated(true);
         this.isAuthenticated.next(true);
-        this.tokenStorage.getUser().roles;
+        if(this.tokenStorage.getUser().roles.includes("ROLE_ADMIN"))
+          this.isAdmin.next(true)
+        else this.isAdmin.next(false)
         this.router.navigateByUrl('/home');},
       err => {
         if(err.error == null)
@@ -44,6 +49,7 @@ export class AuthService {
   logout() {
     this.setIsAuthenticated(false);
     this.isAuthenticated.next(false);
+    this.isAdmin.next(false)
     this.tokenStorage.signOut();
     this.router.navigateByUrl('/auth');
   }
@@ -83,6 +89,12 @@ export class AuthService {
   private setIsAuthenticated(isAuthenticated: boolean) {
     window.sessionStorage.setItem('isLoggedIn','true')
     //localStorage.setItem(AUTHENTICATION_KEY, JSON.stringify(isAuthenticated));
+  }
+
+  private getIsAdmin():boolean {
+    if(!this.getIsAuthenticated())
+      return false
+    return this.tokenStorage.getUser().roles.includes("ROLE_ADMIN");
   }
 
   private getUrl() {
