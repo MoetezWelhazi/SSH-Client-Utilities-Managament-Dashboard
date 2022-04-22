@@ -208,7 +208,7 @@ export class AllscriptsComponent implements OnInit {
   }
 
   private addToUser(sId: any, uId:any) {
-    this.scriptsService.addToUser(sId,uId)
+    this.scriptsService.shareScript(sId,uId)
       .subscribe({
         next:(data)=>{
           this.messageService.add({severity:'success', summary:'Script Shared', detail:"Script shared successfully!"})

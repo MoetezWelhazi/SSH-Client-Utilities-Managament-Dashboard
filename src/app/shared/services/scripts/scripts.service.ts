@@ -55,8 +55,7 @@ export class ScriptsService {
     return this.http.put<any>(this.getUrlWithID(window.sessionStorage.getItem("auth-token")), script);
   }
 
-  addToUser(sId:any, uId:any){
-
+  shareScript(sId:any, uId:any){
     return this.http.put<any>(this.getUrlWithID(sId),uId);
   }
 
