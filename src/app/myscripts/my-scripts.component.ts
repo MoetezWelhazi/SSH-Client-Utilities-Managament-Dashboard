@@ -91,7 +91,7 @@ export class MyScriptsComponent implements OnInit {
       command: '',
       name: '',
       description:'',
-      owner: '',
+      author: '',
       //createdAt: new Date()
     };
 

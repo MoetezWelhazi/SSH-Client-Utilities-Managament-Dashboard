@@ -6,11 +6,11 @@ export interface Script {
   command?: string;
   name: string;
   description: string;
-  owner?: string;
+  author?: string;
   createdAt?: Date;
   editable?: any;
   code?:string;
-  status?:any;
+  type?:any;
   shared?:UserInfo[];
 
 }

@@ -41,7 +41,9 @@ export class ScriptsService {
     formData.append('file', upload.file);
     formData.append('user_id', upload.id);
     formData.append('description', upload.script.description);
+    formData.append('type', upload.script.type);
     formData.append('editable',upload.script.editable ? "true": "false");
+    console.log("UPLOAD: "+JSON.stringify(upload))
     const req = new HttpRequest('POST', this.getUrl(), formData, {
       reportProgress: true,
       responseType: 'json'

@@ -1,5 +1,25 @@
-<form class="loginform" #form (submit)="addScript()">
+<form class="loginform" (submit)="addScript()">
   <mat-card-content>
+    <section>
+      <input
+        type="file"
+        class="file-input"
+        name="fileUpload"
+        required
+        #fileUpload
+        (change)="onFileSelect($event)" required>
+      <div class="file-upload">
+        {{fileName || "No file uploaded yet."}}
+        <button mat-mini-fab
+                type="button"
+                color="primary"
+                style="color:white"
+                class="upload-btn"
+                (click)="fileUpload.click()">
+          <mat-icon>attach_file</mat-icon>
+        </button>
+      </div>
+    </section>
     <mat-form-field class="inputfield" appearance="fill">
       <mat-label>Description</mat-label>
       <textarea
@@ -15,31 +35,22 @@
         <strong>La description est obligatoire!</strong>
       </mat-error>
     </mat-form-field>
-    <section>
-      <input
-        type="file"
-        class="file-input"
-        name="fileUpload"
-        #fileUpload
-        (change)="onFileSelect($event)" required>
-      <div class="file-upload">
-        {{fileName || "No file uploaded yet."}}
-        <button mat-mini-fab color="primary" class="upload-btn"
-                (click)="fileUpload.click()">
-          <mat-icon>attach_file</mat-icon>
-        </button>
-      </div>
-    </section>
     <mat-checkbox
       color="primary"
-      name="scriptType"
-      [(ngModel)]="scriptType"
-
+      name="status"
+      [(ngModel)]="script.type"
     >
-      private</mat-checkbox>
+      Private</mat-checkbox>
+    <mat-checkbox
+      color="primary"
+      name="editable"
+      style="margin-left:2%"
+      [(ngModel)]="script.editable"
+    >
+      Editable by shared users</mat-checkbox>
   </mat-card-content>
   <mat-card-actions class="d-flex justify-content-center">
-    <button type="submit" [disabled]="(description.invalid)||(form.reportValidity())" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+    <button type="submit" [disabled]="(description.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
   </mat-card-actions>
 </form>
 

@@ -14,7 +14,7 @@
            dataKey="name"
            [(selection)]="selectedScripts"
            (onRowSelect)="onRowSelect()"
-           styleClass="p-datatable-scripts"
+           styleClass="p-datatable-users"
            [rowHover]="true"
            [rows]="10"
            [showCurrentPageReport]="true"
@@ -24,7 +24,7 @@
            [paginator]="true"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [filterDelay]="0"
-           [globalFilterFields]="['name','owner','status']">
+           [globalFilterFields]="['name','author','type']">
 
     <ng-template pTemplate="header">
       <tr>
@@ -44,11 +44,11 @@
             <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th pSortableColumn="owner">
+        <th pSortableColumn="author">
           <div class="flex justify-content-between align-items-center">
-            Owner
-            <p-sortIcon field="owner"></p-sortIcon>
-            <p-columnFilter type="text" field="owner" display="menu" class="ml-auto"></p-columnFilter>
+            Author
+            <p-sortIcon field="author"></p-sortIcon>
+            <p-columnFilter type="text" field="author" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pSortableColumn="createdAt">
@@ -65,15 +65,15 @@
             <p-columnFilter type="text" field="editable" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th pSortableColumn="status">
+        <th pSortableColumn="type">
           <div class="flex justify-content-between align-items-center">
-            Status
-            <p-sortIcon field="status"></p-sortIcon>
-            <p-columnFilter field="status" matchMode="equals" display="menu" class="ml-auto">
+            Type
+            <p-sortIcon field="type"></p-sortIcon>
+            <p-columnFilter field="type" matchMode="equals" display="menu" class="ml-auto">
               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                 <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
                   <ng-template let-option pTemplate="item">
-                    <span [class]="'user-badge status-' + option.value">{{option.label}}</span>
+                    <span [class]="'user-badge type-' + option.value">{{option.label}}</span>
                   </ng-template>
                 </p-dropdown>
               </ng-template>
@@ -104,8 +104,8 @@
           {{Script.name}}
         </td>
         <td>
-          <span class="p-column-title">Owner</span>
-          {{Script.owner}}
+          <span class="p-column-title">Author</span>
+          {{getAuthorTrigram(Script.author)}}
         </td>
         <td>
           <span class="p-column-title">Date</span>
@@ -113,11 +113,13 @@
         </td>
         <td>
           <span class="p-column-title">Editable</span>
-          {{Script.editable}}
+          <div class="w-100 my-0 p-text-center">
+            <i class="pi" [ngClass]="{'true-icon pi-check-circle': getEditable(Script.editable), 'false-icon pi-times-circle': !getEditable(Script.editable)}"></i>
+          </div>
         </td>
         <td>
-          <span class="p-column-title">Status</span>
-          {{Script.status}}
+          <span class="p-column-title">Type</span>
+          <span [class]="'user-badge type-' + Script.type">{{Script.type}}</span>
         </td>
         <td style="text-align: center">
           <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"

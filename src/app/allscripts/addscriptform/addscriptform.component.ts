@@ -1,27 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Script} from "../../shared/models/script.interface";
 import {Upload} from "../../shared/models/upload.interface";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-addscriptform',
   templateUrl: './addscriptform.component.html',
-  styleUrls: ['./addscriptform.component.css']
+  styleUrls: ['./addscriptform.component.scss']
 })
 export class AddscriptformComponent implements OnInit {
   fileName : string= ""
   script : Script ={
     name:"",
-    description:""
+    description:"",
+    type:false,
+    editable:false
   }
   upload: Upload = {
     script:this.script,
     id:0,
 
   }
-  scriptType : boolean = false
   fileSelected : boolean = false
 
-  constructor() { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: {id:any},
+    public dialogRef: MatDialogRef<AddscriptformComponent>,
+  ) {
+    this.upload.id=data.id;
+  }
 
   ngOnInit(): void {
   }
@@ -39,7 +46,10 @@ export class AddscriptformComponent implements OnInit {
   }
 
   addScript() {
-    console.log("Script: "+this.script)
-    console.log("Upload: "+this.upload)
+    this.script.type = this.script.type? "Private":"Public"
+    this.dialogRef.close(this.upload)
+    console.log("Script: "+JSON.stringify(this.script))
+    console.log("Upload: "+JSON.stringify(this.upload))
+
   }
 }

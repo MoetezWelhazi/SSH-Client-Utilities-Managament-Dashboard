@@ -4,11 +4,11 @@ import {UserInfo} from "../shared/models/auth.interface";
 import {ScriptsService} from "../shared/services/scripts/scripts.service";
 import {NotificationService} from "../shared/services/notifications/notification.service";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {DialogService} from "primeng/dynamicdialog";
-import {AdduserformComponent} from "../users/adduserform/adduserform.component";
 import {Script} from "../shared/models/script.interface";
 import {Upload} from "../shared/models/upload.interface";
 import {AddscriptformComponent} from "./addscriptform/addscriptform.component";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {TokenStorageService} from "../shared/services/auth/token-storage.service";
 
 @Component({
   selector: 'app-allscripts',
@@ -21,8 +21,8 @@ export class AllscriptsComponent implements OnInit {
 
   tableOptions = [
     {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
-    {label: 'Shared with', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
-    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
+    {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
+    {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
     {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-users', command: () => { this.editableAll(); } },
     {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-times', command: () => { this.uneditableAll(); } },
   ];
@@ -37,16 +37,18 @@ export class AllscriptsComponent implements OnInit {
 
   constructor(private scriptsService: ScriptsService ,
               private notificationService:NotificationService,
+              private tokenStorageService: TokenStorageService,
               public confirmationService:ConfirmationService ,
               public messageService: MessageService ,
-              public dialogService: DialogService) { }
+              public dialog: MatDialog,
+              ) { }
 
   ngOnInit(): void {
     this.selectedScripts = [{name:"",description:""}]
     this.getScripts()
     this.statuses = [
-      {label: 'Public', value: '1'},
-      {label: 'Private', value: '0'},
+      {label: 'Public', value: 'Public'},
+      {label: 'Private', value: 'Private'},
       {label: 'Unassigned', value: 'null'}
     ]
   }
@@ -86,10 +88,10 @@ export class AllscriptsComponent implements OnInit {
 
   getEditable(editable: any) {
     if(editable=='1')
-      return "Editable";
+      return true;
     if(editable=='0')
-      return "Uneditable";
-    return "Unassigned";
+      return false;
+    return false;
   }
 
   private delete(id: number, confirm:boolean) {
@@ -137,10 +139,10 @@ export class AllscriptsComponent implements OnInit {
         script.editable = true
         break;
       case "public":
-        script.status = field;
+        script.type = field;
         break;
       case "private":
-        script.status = field;
+        script.type = field;
         break;
     }
     this.scriptsService.updateScript(script)
@@ -187,15 +189,17 @@ export class AllscriptsComponent implements OnInit {
   }
 
   private add() {
-    const ref = this.dialogService.open(AddscriptformComponent, {
-      header: 'Add Script',
-      width: '50%'
-    });
-    ref.onClose.subscribe((upload : Upload) => {
+    const user = this.tokenStorageService.getUser();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = { id: user.id };
+    let dialogRef = this.dialog.open(AddscriptformComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((upload : Upload) => {
       if (upload) {
         this.scriptsService.createScript(upload)
           .subscribe({
-            next: (data)=>{
+            next: (result)=>{
               this.messageService.add({severity:'success', summary:'Script Added', detail:"Script added successfully!"})
               this.getScripts()
             },
@@ -228,7 +232,7 @@ export class AllscriptsComponent implements OnInit {
       key:'confirmDialog',
       header: 'Delete Confirmation',
       // @ts-ignore
-      message: (this.selectedScripts?.length-1)+' scripts will be deleted. Are you sure that you want to perform this action?',
+      message: (this.selectedScripts?.length)+' scripts will be deleted. Are you sure that you want to perform this action?',
       accept: () => {
         this.selectedScripts?.forEach((script)=>{
           if (script.id != null) {
@@ -289,7 +293,7 @@ export class AllscriptsComponent implements OnInit {
                 newScript.editable = "0";
             };
             // @ts-ignore
-            newScript.createdAt = new Date(user.createdAt)
+            newScript.createdAt = new Date(script.createdAt)
           });
           this.loading = false;
           //console.log(data);
@@ -297,5 +301,18 @@ export class AllscriptsComponent implements OnInit {
         },
         error: (e: { error: string; }) => this.notificationService.warn("An error has occurred: "+e.error)
       });
+  }
+
+  getAuthorTrigram(author: any) {
+    if(author!=undefined) {
+      //console.log(JSON.stringify(author))
+      if(author.trigramme==undefined)
+        return author
+      return author.trigramme
+    }
+    else {
+      //console.log(JSON.stringify(author))
+      return author
+    }
   }
 }

@@ -9,7 +9,7 @@ import {UsersService} from "../shared/services/users/users.service";
 @Component({
   selector: 'app-servers',
   templateUrl: './servers.component.html',
-  styleUrls: ['./servers.component.css']
+  styleUrls: ['./servers.component.scss']
 })
 export class ServersComponent implements OnInit {
 

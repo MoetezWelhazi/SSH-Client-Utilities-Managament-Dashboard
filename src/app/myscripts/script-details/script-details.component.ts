@@ -58,14 +58,10 @@ export class ScriptDetailsComponent implements OnInit {
   }
 
   toExecute() {
-    /*const ref = this.dialogService.open(ExecuteScriptComponent, {
-      header: 'Execute Script',
-      width: '70%'
-    })*/
     const user = this.tokenStorageService.getUser();
     const dialogConfig = new MatDialogConfig();
-    console.log("toExecute/user: "+user);
-    console.log("toExecute/user.id: "+user.id);
+    //console.log("toExecute/user: "+user);
+    //console.log("toExecute/user.id: "+user.id);
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = { script: this.selectedScript, id: user.id };
