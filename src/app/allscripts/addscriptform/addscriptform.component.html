@@ -32,14 +32,14 @@
     </section>
     <mat-checkbox
       color="primary"
-      name="private"
-      [(ngModel)]="private"
-      #private = "ngModel"
+      name="scriptType"
+      [(ngModel)]="scriptType"
+
     >
       private</mat-checkbox>
   </mat-card-content>
   <mat-card-actions class="d-flex justify-content-center">
-    <button type="submit" [disabled]="(description.invalid)||(private.invalid)||(form.reportValidity())" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+    <button type="submit" [disabled]="(description.invalid)||(form.reportValidity())" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
   </mat-card-actions>
 </form>
 

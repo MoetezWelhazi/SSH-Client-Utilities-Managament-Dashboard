@@ -18,7 +18,7 @@ export class AddscriptformComponent implements OnInit {
     id:0,
 
   }
-  private : boolean = false
+  scriptType : boolean = false
   fileSelected : boolean = false
 
   constructor() { }
