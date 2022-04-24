@@ -54,11 +54,11 @@ export class ScriptsService {
 
   updateScript(script: Script) {
     //this.notificationService.notify('Update Script HTTP Call');
-    return this.http.put<any>(this.getUrlWithID(window.sessionStorage.getItem("auth-token")), script);
+    return this.http.put<any>(this.getUrl(), script);
   }
 
   shareScript(sId:any, uId:any){
-    return this.http.put<any>(this.getUrlWithID(sId),uId);
+    return this.http.put<any>(this.getUrl()+"/share/"+sId,uId);
   }
 
   deleteScript(id: number) {

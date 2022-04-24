@@ -11,6 +11,7 @@ export interface Script {
   editable?: any;
   code?:string;
   type?:any;
+  update?:any;
   shared?:UserInfo[];
 
 }

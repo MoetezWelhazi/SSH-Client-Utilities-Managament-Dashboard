@@ -130,22 +130,30 @@ export class AllscriptsComponent implements OnInit {
       });
   }
 
-  private update(script: Script, field: string){
+  private updateMeta(script: Script, field: string){
+    let updatedScript = {...script};
     switch (field) {
       case "uneditable":
-        script.editable = false;
+        updatedScript.editable = false;
+        updatedScript.update = "uneditable";
         break;
       case "editable":
-        script.editable = true
+        updatedScript.editable = true
+        updatedScript.update = "editable";
         break;
       case "public":
-        script.type = field;
+        updatedScript.type = field;
+        updatedScript.editable = this.getEditable(script.editable)
+        updatedScript.update = "public";
         break;
       case "private":
-        script.type = field;
+        updatedScript.type = field;
+        updatedScript.editable = this.getEditable(updatedScript.editable)
+        updatedScript.update = "private";
         break;
     }
-    this.scriptsService.updateScript(script)
+    //console.log("SCRIPT TO UPDATE: "+JSON.stringify(updatedScript))
+    this.scriptsService.updateScript(updatedScript)
       .subscribe({
         next: (data)=>{
           this.messageService.add({severity:'success', summary:'Script Updated', detail:data.message})
@@ -161,11 +169,11 @@ export class AllscriptsComponent implements OnInit {
   getItems(Script: any) {
     return [
       {label: 'Make Public', icon: 'pi pi-user-edit', command: () => {
-          this.update(Script,"public");
+          this.updateMeta(Script,"public");
         }
       },
       {label: 'Make Private', icon: 'pi pi-user-edit', command: () => {
-          this.update(Script,"private");
+          this.updateMeta(Script,"private");
         }
       },
       {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
@@ -173,11 +181,11 @@ export class AllscriptsComponent implements OnInit {
         }
       },
       {label: 'Make Editable', icon: 'pi pi-check', command: () => {
-          this.update(Script,"editable");
+          this.updateMeta(Script,"editable");
         }
       },
       {label: 'Make Uneditable', icon: 'pi pi-times', command: () => {
-          this.update(Script,"uneditable");
+          this.updateMeta(Script,"uneditable");
         }
       },
       {label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
@@ -253,7 +261,7 @@ export class AllscriptsComponent implements OnInit {
         this.selectedScripts?.forEach((script)=>{
           if((script.editable==0||script.editable==null)&&(script.id!=null))
           {
-            this.update(script,"editable");
+            this.updateMeta(script,"editable");
           }
         })
       },
@@ -269,7 +277,7 @@ export class AllscriptsComponent implements OnInit {
         this.selectedScripts?.forEach((script)=>{
           if((script.editable==1||script.editable==0)&&(script.id!=null))
           {
-            this.update(script,"null");
+            this.updateMeta(script,"null");
           }
         })
       },
