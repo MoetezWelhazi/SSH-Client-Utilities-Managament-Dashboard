@@ -38,6 +38,7 @@ import { rxStompServiceFactory } from "./shared/services/websocket/rxStompServic
 import { AllscriptsComponent } from './allscripts/allscripts.component';
 import { AddscriptformComponent } from './allscripts/addscriptform/addscriptform.component';
 import { ShareScriptsComponent } from './allscripts/share-scripts/share-scripts.component';
+import { DragDropFileUploadDirective } from './shared/directives/drag-drop-file-uploads.directive';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { ShareScriptsComponent } from './allscripts/share-scripts/share-scripts.
     ExecuteScriptComponent,
     AllscriptsComponent,
     AddscriptformComponent,
-    ShareScriptsComponent
+    ShareScriptsComponent,
+    DragDropFileUploadDirective
   ],
   providers: [
     AuthService,

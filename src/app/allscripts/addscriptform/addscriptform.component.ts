@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {Script} from "../../shared/models/script.interface";
 import {Upload} from "../../shared/models/upload.interface";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-addscriptform',
@@ -26,6 +27,7 @@ export class AddscriptformComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {id:any},
     public dialogRef: MatDialogRef<AddscriptformComponent>,
+    public messageService: MessageService ,
   ) {
     this.upload.id=data.id;
   }
@@ -33,15 +35,22 @@ export class AddscriptformComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onFileSelect($event: Event) {
+  onFileSelect(files: any) {
+    //console.log(files)
+    let file:File | undefined
+    if(files instanceof FileList)
+      file = files[0]
     // @ts-ignore
-    const file:File = event.target.files[0];
-
+     else file= files.target.files[0];
     if (file) {
-      this.fileName = file.name;
-      this.script.name = this.fileName;
-      this.upload.file=file
-      //formData.append("thumbnail", file);
+      //console.log("FILE TYPE: "+file.type)
+      if(file.type!="text/x-sh")
+        this.messageService.add({severity:'error', summary:'Error',detail:"File is not a Shell script"})
+      else {
+        this.fileName = file.name;
+        this.script.name = this.fileName;
+        this.upload.file = file
+      }
     }
   }
 
