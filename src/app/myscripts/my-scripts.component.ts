@@ -7,6 +7,7 @@ import {Upload} from "../shared/models/upload.interface";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {NotificationService} from "../shared/services/notifications/notification.service";
 import {DialogService} from "primeng/dynamicdialog";
+import {TokenStorageService} from "../shared/services/auth/token-storage.service";
 
 @Component({
   selector: 'app-myscripts',
@@ -25,7 +26,8 @@ export class MyScriptsComponent implements OnInit {
   constructor(
     private scriptsService: ScriptsService,
     private notificationService:NotificationService,
-    public confirmationService:ConfirmationService ,
+    private tokenStorageService:TokenStorageService,
+    public confirmationService:ConfirmationService,
     public messageService: MessageService ,
     public dialogService: DialogService
               ) {
@@ -54,7 +56,12 @@ export class MyScriptsComponent implements OnInit {
   }
 
   loadScripts(displayNotification: boolean) {
-    this.scripts$ = this.scriptsService.getAllScripts(!displayNotification);
+    this.scripts$ = this.scriptsService.getPersonalScripts(this.tokenStorageService.getUser().id);
+    this.scripts$.subscribe({
+      error: (err)=>{
+        this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+      }
+    })
   }
 
   saveScript(script: Script) {

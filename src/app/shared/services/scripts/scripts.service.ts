@@ -23,7 +23,7 @@ export class ScriptsService {
     return this.http.post<any>(this.getUrlWithID(execution.executorId),execution)
   }
 
-  getScriptsDetails(userId: any){
+  getPersonalScripts(userId: any){
     return this.http.get<Script[]>(this.getUrlWithID(userId))
   }
 

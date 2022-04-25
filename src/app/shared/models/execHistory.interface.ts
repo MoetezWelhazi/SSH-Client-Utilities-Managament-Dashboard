@@ -1,5 +1,6 @@
 export interface Execution {
   script?: string;
+  scriptId?:number;
   date?: Date;
   user?: string;
   port?: number;

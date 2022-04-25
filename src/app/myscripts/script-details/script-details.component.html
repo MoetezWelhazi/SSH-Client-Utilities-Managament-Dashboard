@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>
     <span *ngIf="currentScript.id; else elseBlock">
-      {{ originalTitle | titlecase }}
+      {{ originalTitle}}
     </span>
     <ng-template #elseBlock> Select Script </ng-template>
   </mat-card-title>

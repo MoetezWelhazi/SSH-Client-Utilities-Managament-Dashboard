@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>Execute Script</h1>
+<h1 mat-dialog-title>Execute {{this.data.script.name}}</h1>
+<form class="loginform" (submit)="executeScript()" >
 <mat-dialog-content>
   <div id="main-container">
     <div id="left-container">
-      <form class="loginform" (submit)="executeScript()" >
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="outline">
         <mat-label>Server</mat-label>
@@ -63,13 +63,7 @@
           <strong>Entrer une trigramme NeoXam valide</strong>
         </mat-error>
       </mat-form-field>
-      <hr>
     </mat-card-content>
-    <mat-card-actions class="d-flex justify-content-center">
-      <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">
-        Execute</button>
-    </mat-card-actions>
-  </form>
     </div>
     <div class="vr"></div>
     <div id="right-container">
@@ -86,7 +80,11 @@
     </div>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button type="button" mat-raised-button mat-dialog-close>Cancel</button>
-  <button type="button" mat-raised-button (click)="clearTerminal()">Clear</button>
-</mat-dialog-actions>
+  <mat-dialog-actions>
+    <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Execute</button>
+    <div class="vr mx-1"></div>
+    <button type="button" mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+    <button type="button" mat-raised-button color="accent" (click)="clearTerminal()">Clear</button>
+  </mat-dialog-actions>
+</form>
+

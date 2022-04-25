@@ -16,8 +16,7 @@ import {RxStompService} from "../../shared/services/websocket/rxstomp.service";
 })
 export class ExecuteScriptComponent implements OnInit {
   public executionProgress: any ={}
-  // @ts-ignore
-  //@ViewChild('term', { static: true }) child: NgTerminal;
+
   hide=true;
   console: string = "Press Execute to run the script...";
   execution: Execution = {
@@ -57,7 +56,9 @@ export class ExecuteScriptComponent implements OnInit {
     err=>{
       console.log("JOE BIDEN, WAKE UP(error message)")
     })
-    console.log("DATA.ID: "+this.data.id)
+    //console.log("DATA.ID: "+this.data.id)
+    //console.log("DATA.SCRIPT: "+this.data.script.name)
+    this.execution.scriptId = this.data.script.id;
     this.execution.executorId = this.data.id;
   }
   ngAfterViewInit(){

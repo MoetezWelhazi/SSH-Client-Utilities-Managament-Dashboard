@@ -64,7 +64,7 @@ export class ScriptDetailsComponent implements OnInit {
     //console.log("toExecute/user.id: "+user.id);
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = { script: this.selectedScript, id: user.id };
+    dialogConfig.data = { script: this.currentScript, id: user.id };
     let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
   }
 }
