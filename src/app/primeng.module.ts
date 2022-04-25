@@ -10,7 +10,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {DropdownModule} from 'primeng/dropdown';
 import {MenuModule} from "primeng/menu";
-
+import {TooltipModule} from 'primeng/tooltip';
 import {NgModule} from "@angular/core";
 import {ConfirmationService, MessageService, SharedModule} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
@@ -20,6 +20,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   exports: [
+    TooltipModule,
     TableModule,
     CalendarModule,
     SliderModule,

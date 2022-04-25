@@ -9,6 +9,9 @@ import {Upload} from "../shared/models/upload.interface";
 import {AddscriptformComponent} from "./addscriptform/addscriptform.component";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {TokenStorageService} from "../shared/services/auth/token-storage.service";
+import {ShareScriptsComponent} from "../allscripts/share-scripts/share-scripts.component";
+import {finalize} from "rxjs";
+import {DropdownItem} from "primeng/dropdown";
 
 @Component({
   selector: 'app-allscripts',
@@ -22,10 +25,7 @@ export class AllscriptsComponent implements OnInit {
   tableOptions = [
     {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
     {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
-    {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
-    {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-users', command: () => { this.editableAll(); } },
-    {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-times', command: () => { this.uneditableAll(); } },
-  ];
+    ];
 
   loading: boolean = true;
 
@@ -50,6 +50,14 @@ export class AllscriptsComponent implements OnInit {
       {label: 'Public', value: 'Public'},
       {label: 'Private', value: 'Private'},
       {label: 'Unassigned', value: 'null'}
+    ]
+    if(this.isAdmin())
+    this.tableOptions =  [
+      {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+      {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
+      {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
+      {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-users', command: () => { this.editableAll(); } },
+      {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-times', command: () => { this.uneditableAll(); } },
     ]
   }
 
@@ -167,7 +175,8 @@ export class AllscriptsComponent implements OnInit {
   }
 
   getItems(Script: any) {
-    return [
+    if(this.isAdmin())
+      return [
       {label: 'Make Public', icon: 'pi pi-user-edit', command: () => {
           this.updateMeta(Script,"public");
         }
@@ -190,10 +199,15 @@ export class AllscriptsComponent implements OnInit {
       },
       {label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
-          this.addToUser(Script.id,JSON.parse(window.sessionStorage.getItem("auth-user")).id);
+          this.addToUser(Script.id,JSON.parse(window.sessionStorage.getItem("auth-user")).id,true);
         }
       },
     ];
+    else return [{label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
+        //@ts-ignore
+        this.addToUser(Script.id,JSON.parse(window.sessionStorage.getItem("auth-user")).id,true);
+      }
+    }]
   }
 
   private add() {
@@ -219,10 +233,11 @@ export class AllscriptsComponent implements OnInit {
     });
   }
 
-  private addToUser(sId: any, uId:any) {
+  private addToUser(sId: any, uId:any, notify:boolean) {
     this.scriptsService.shareScript(sId,uId)
       .subscribe({
         next:(data)=>{
+          if(notify)
           this.messageService.add({severity:'success', summary:'Script Shared', detail:"Script shared successfully!"})
         },
         error: (err)=>{
@@ -231,8 +246,48 @@ export class AllscriptsComponent implements OnInit {
       })
   }
 
-  private sharedWith() {
+  isAdmin():boolean{
+    // @ts-ignore
+    return JSON.parse(window.sessionStorage.getItem("auth-user")).roles.includes("ROLE_ADMIN")
+  }
 
+  private sharedWith() {
+    if(this.isAdmin()) {
+      // @ts-ignore
+      if (this.selectedScripts.length > 1) {
+        const user = this.tokenStorageService.getUser();
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {scripts: this.selectedScripts};
+        let dialogRef = this.dialog.open(ShareScriptsComponent, dialogConfig);
+        dialogRef.afterClosed().pipe(finalize(()=>{
+              this.messageService.add({severity:'info', summary:'Scripts Shared', detail:"Scripts shared!"})
+          }))
+          .subscribe(result => {
+            result.map((user:UserInfo)=>{
+              if(user.id) {
+                //console.log("USER TO SHARE TO:"+user.id)
+                this.selectedScripts?.map(script => {
+                  if(script.id)
+                  this.addToUser(script.id, user.id, false);
+                })
+              }
+            })
+        })
+      } else this.messageService.add({severity: 'warn', summary: 'Error', detail: "No Scripts selected to share!"})
+    }
+    else{
+      //@ts-ignore
+      if (this.selectedScripts.length > 1) {
+        //@ts-ignore
+        let id = JSON.parse(window.sessionStorage.getItem("auth-user")).id
+        this.selectedScripts?.map(script =>{
+          this.addToUser(script.id,id,false)
+        })
+      } else this.messageService.add({severity: 'warn', summary: 'Error', detail: "No Scripts selected to share!"})
+
+    }
   }
 
   private deleteAll() {

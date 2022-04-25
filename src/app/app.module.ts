@@ -37,6 +37,7 @@ import { RxStompService } from "./shared/services/websocket/rxstomp.service";
 import { rxStompServiceFactory } from "./shared/services/websocket/rxStompServiceFactory";
 import { AllscriptsComponent } from './allscripts/allscripts.component';
 import { AddscriptformComponent } from './allscripts/addscriptform/addscriptform.component';
+import { ShareScriptsComponent } from './allscripts/share-scripts/share-scripts.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { AddscriptformComponent } from './allscripts/addscriptform/addscriptform
     ScriptDetailsComponent,
     ExecuteScriptComponent,
     AllscriptsComponent,
-    AddscriptformComponent
+    AddscriptformComponent,
+    ShareScriptsComponent
   ],
   providers: [
     AuthService,

@@ -1,0 +1,127 @@
+<h1 mat-dialog-title>Sharing {{getScriptNames()}}</h1>
+<mat-dialog-content>
+  <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+            <span>
+              List of Users
+            </span>
+    </mat-card-title>
+    <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+        </span>
+  </mat-card-header>
+  <p-table #dt [value]="users"
+           dataKey="email"
+           [(selection)]="selectedUsers"
+           (onRowSelect)="onRowSelect()"
+           styleClass="p-datatable-users"
+           [rowHover]="true"
+           [rows]="10"
+           [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10,25,50]"
+           [loading]="loading"
+           responsiveLayout="scroll"
+           [paginator]="true"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0"
+           [globalFilterFields]="['email','trigramme','roles']">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">
+          <div class="flex justify-content-between align-items-center">
+            Id
+            <p-sortIcon field="id"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="email">
+          <div class="flex justify-content-between align-items-center">
+            Email
+            <p-sortIcon field="email"></p-sortIcon>
+            <p-columnFilter type="text" field="email" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="trigramme">
+          <div class="flex justify-content-between align-items-center">
+            Trigram
+            <p-sortIcon field="trigramme"></p-sortIcon>
+            <p-columnFilter type="text" field="trigramme" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="roles">
+          <div class="flex justify-content-between align-items-center">
+            Roles
+            <p-sortIcon field="roles"></p-sortIcon>
+            <p-columnFilter type="text" field="roles" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="createdAt">
+          <div class="flex justify-content-between align-items-center">
+            Join Date
+            <p-sortIcon field="createdAt"></p-sortIcon>
+            <p-columnFilter type="date" field="createdAt" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="approved">
+          <div class="flex justify-content-between align-items-center">
+            Status
+            <p-sortIcon field="approved"></p-sortIcon>
+            <p-columnFilter field="approved" matchMode="equals" display="menu" class="ml-auto">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
+                  <ng-template let-option pTemplate="item">
+                    <span [class]="'user-badge status-' + option.value">{{option.label}}</span>
+                  </ng-template>
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-User>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="User" ></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="p-column-title">Id</span>
+          {{User.id}}
+        </td>
+        <td>
+          <span class="p-column-title">Email</span>
+          {{User.email}}
+        </td>
+        <td>
+          <span class="p-column-title">Trigram</span>
+          {{User.trigramme}}
+        </td>
+        <td>
+          <span class="p-column-title">Roles</span>
+          {{getRoles(User.roles) | uppercase}}
+        </td>
+        <td>
+          <span class="p-column-title">Date</span>
+          {{User.createdAt | date: 'short'}}
+        </td>
+        <td>
+          <span class="p-column-title">Status</span>
+          <span [class]="'user-badge status-' + User.approved">{{getStatus(User.approved)}}</span>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No users found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="button" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+  <button type="button" mat-raised-button color="accent" (click)="share()">Share</button>
+</mat-dialog-actions>

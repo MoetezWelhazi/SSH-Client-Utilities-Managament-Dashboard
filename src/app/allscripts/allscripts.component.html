@@ -91,7 +91,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-Script>
-      <tr>
+      <tr [pTooltip]="Script.description" [showDelay]=250  tooltipPosition="bottom">
         <td>
           <p-tableCheckbox [value]="Script" ></p-tableCheckbox>
         </td>

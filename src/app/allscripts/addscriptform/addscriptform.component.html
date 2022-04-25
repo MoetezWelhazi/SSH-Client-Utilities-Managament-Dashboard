@@ -1,3 +1,4 @@
+<mat-dialog-content>
 <form class="loginform" (submit)="addScript()">
   <mat-card-content>
     <section>
@@ -53,4 +54,7 @@
     <button type="submit" [disabled]="(description.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
   </mat-card-actions>
 </form>
-
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="button" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
