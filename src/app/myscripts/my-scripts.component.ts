@@ -76,7 +76,15 @@ export class MyScriptsComponent implements OnInit {
   updateScript(script: Script) {
     this.scriptsService.updateScript(script).pipe(
       tap(() => this.loadScripts(false))
-    ).subscribe();
+    ).subscribe({
+      next: (data)=>{
+        this.messageService.add({severity:'success', summary:'Script Updated', detail:data.message})
+      },
+      error: err => {
+        this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+      }
+      }
+    );
   }
 
   createScript(script: Upload) {
