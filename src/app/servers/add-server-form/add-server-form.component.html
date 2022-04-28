@@ -1,0 +1,81 @@
+<form class="loginform" (submit)="addServer()">
+    <mat-card-content>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Name"
+          [(ngModel)]="serverInfo.name"
+          type="text"
+          required
+          name="name"
+          #name="ngModel"
+        />
+        <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+          <strong>Entrer un Nom valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          [(ngModel)]="serverInfo.password"
+          type="password"
+          required
+          minlength="8"
+          name="password"
+          [type]="hide ? 'password' : 'text'"
+          #password = "ngModel"
+        />
+        <button mat-icon-button matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint>Minimum length is 8</mat-hint>
+        <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
+          <strong>Entrer un mot de passe valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Login</mat-label>
+        <input
+          matInput
+          placeholder="ex: ABA"
+          [(ngModel)]="serverInfo.login"
+          type="text"
+          required
+          name="login"
+          #login="ngModel"
+        />
+        <mat-error *ngIf="login.invalid && (login.dirty || login.touched)">
+          <strong>Entrer une login NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Description*</mat-label>
+        <input
+          matInput
+          placeholder="ex: ABA"
+          [(ngModel)]="serverInfo.description"
+          type="text"
+          name="description"
+          #description="ngModel"
+        />
+        <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+          <strong>Entrer une description NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox
+        color="primary"
+        name="type"
+        [(ngModel)]="private">
+        Private?</mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions class="d-flex justify-content-center">
+          <button type="submit" [disabled]="(password.invalid)||(name.invalid)||(login.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+    </mat-card-actions>
+  </form>
+  
+  
