@@ -3,7 +3,7 @@
     <app-myscripts-list
       [scripts]="scripts$ | async"
       (scriptSelected)="selectScript($event)"
-      (scriptDeleted)="deleteScript($event)"
+      (scriptRemoved)="removeScript($event)"
     ></app-myscripts-list>
   </div>
   <div class="script-details">

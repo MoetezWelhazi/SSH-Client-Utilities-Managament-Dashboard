@@ -125,7 +125,9 @@ export class ShareScriptsComponent implements OnInit {
     return str
   }
 
-  share() {
-    this.dialogRef.close(this.selectedUsers);
+  share(sharing: boolean) {
+    let result = {users : this.selectedUsers, share:sharing}
+    this.dialogRef.close(result);
   }
+
 }

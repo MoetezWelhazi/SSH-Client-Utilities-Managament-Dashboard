@@ -4,6 +4,7 @@ import {NotificationService} from "../notifications/notification.service";
 import {Script} from "../../models/script.interface";
 import {Execution} from "../../models/execHistory.interface";
 import {Upload} from "../../models/upload.interface";
+import {ScriptShare} from "../../models/share.interface";
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -57,13 +58,18 @@ export class ScriptsService {
     return this.http.put<any>(this.getUrl(), script);
   }
 
-  shareScript(sId:any, uId:any){
-    return this.http.put<any>(this.getUrl()+"/share/"+sId,uId);
+  shareScript(sId:any, share:ScriptShare){
+    //console.log("SCRIPT SHARE (ScriptsService): "+JSON.stringify(share))
+    return this.http.put<any>(this.getUrl()+"/share/"+sId,share);
   }
 
   deleteScript(id: number) {
     //this.notificationService.notify('Delete Script HTTP Call');
     return this.http.delete<any>(this.getUrlWithID(id));
+  }
+
+  removeScript(sId: any, uId: any){
+    return this.http.delete<any>(this.getUrlWithID(uId)+"/"+sId)
   }
 
   private getUrl() {

@@ -12,6 +12,7 @@ import {TokenStorageService} from "../shared/services/auth/token-storage.service
 import {ShareScriptsComponent} from "../allscripts/share-scripts/share-scripts.component";
 import {finalize} from "rxjs";
 import {DropdownItem} from "primeng/dropdown";
+import {ScriptShare} from "../shared/models/share.interface";
 
 @Component({
   selector: 'app-allscripts',
@@ -199,13 +200,13 @@ export class AllscriptsComponent implements OnInit {
       },
       {label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
-          this.addToUser(Script.id,JSON.parse(window.sessionStorage.getItem("auth-user")).id,true);
+          this.addToUser(Script.id,{uId:this.tokenStorageService.getUser().id,share:true},true);
         }
       },
     ];
     else return [{label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
-        this.addToUser(Script.id,JSON.parse(window.sessionStorage.getItem("auth-user")).id,true);
+        this.addToUser(Script.id, {uId:this.tokenStorageService.getUser().id,share:true},true);
       }
     }]
   }
@@ -233,8 +234,9 @@ export class AllscriptsComponent implements OnInit {
     });
   }
 
-  private addToUser(sId: any, uId:any, notify:boolean) {
-    this.scriptsService.shareScript(sId,uId)
+  private addToUser(sId: any, share:ScriptShare, notify:boolean) {
+    //console.log("SCRIPT SHARE (addToUser): "+JSON.stringify(share))
+    this.scriptsService.shareScript(sId,share)
       .subscribe({
         next:(data)=>{
           if(notify)
@@ -248,7 +250,7 @@ export class AllscriptsComponent implements OnInit {
 
   isAdmin():boolean{
     // @ts-ignore
-    return JSON.parse(window.sessionStorage.getItem("auth-user")).roles.includes("ROLE_ADMIN")
+    return this.tokenStorageService.getUser().roles.includes("ROLE_ADMIN")
   }
 
   private sharedWith() {
@@ -265,15 +267,28 @@ export class AllscriptsComponent implements OnInit {
               this.messageService.add({severity:'info', summary:'Scripts Shared', detail:"Scripts shared!"})
           }))
           .subscribe(result => {
-            result.map((user:UserInfo)=>{
-              if(user.id) {
-                //console.log("USER TO SHARE TO:"+user.id)
-                this.selectedScripts?.map(script => {
-                  if(script.id)
-                  this.addToUser(script.id, user.id, false);
-                })
-              }
-            })
+            if(result.share){
+              result.users.map((user: UserInfo) => {
+                if (user.id) {
+                  //console.log("USER TO SHARE TO:"+user.id)
+                  this.selectedScripts?.map(script => {
+                    if (script.id)
+                      this.addToUser(script.id, {uId: user.id, share: true}, false);
+                  })
+                }
+              })
+            }
+            else {
+              result.users.map((user: UserInfo) => {
+                if (user.id) {
+                  //console.log("USER TO SHARE TO:"+user.id)
+                  this.selectedScripts?.map(script => {
+                    if (script.id)
+                      this.addToUser(script.id, {uId: user.id, share: false}, false);
+                  })
+                }
+              })
+            }
         })
       } else this.messageService.add({severity: 'warn', summary: 'Error', detail: "No Scripts selected to share!"})
     }
@@ -281,7 +296,7 @@ export class AllscriptsComponent implements OnInit {
       //@ts-ignore
       if (this.selectedScripts.length > 1) {
         //@ts-ignore
-        let id = JSON.parse(window.sessionStorage.getItem("auth-user")).id
+        let id = this.tokenStorageService.getUser().id
         this.selectedScripts?.map(script =>{
           this.addToUser(script.id,id,false)
         })
