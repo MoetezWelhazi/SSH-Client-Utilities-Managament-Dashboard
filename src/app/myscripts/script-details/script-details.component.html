@@ -14,32 +14,56 @@
           [(ngModel)]="currentScript.name"
           type="text"
           name="name"
+          [readonly]="readOnly"
           required
         />
       </mat-form-field>
       <mat-form-field class="full-width">
         <textarea
           matInput
-          placeholder="Details"
+          placeholder="Description"
           [(ngModel)]="currentScript.description"
+          [readonly]="readOnly"
           type="text"
           name="description"
           required
         ></textarea>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <textarea
+        <input
           matInput
-          placeholder="Code"
-          [(ngModel)]="currentScript.code"
+          placeholder="Author"
+          [value]="getAuthor(currentScript.author)"
           type="text"
-          name="code"
-        >
-        </textarea>
+          name="author"
+          readonly
+          required
+        />
       </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Creation Date"
+          value="{{currentScript.createdAt| date: 'short'}}"
+          type="text"
+          name="createdAt"
+          readonly
+          required
+        />
+      </mat-form-field>
+      <section class="full-width">
+        <div
+          class="app-ace-editor"
+          #editor
+          style="width: 100%;height: 250px;"
+        ></div>
+      </section>
       <section>
-        <mat-checkbox [(ngModel)]="currentScript.editable" name="editable">
-          Editable
+        <mat-checkbox style="margin-right: 3%" [(ngModel)]="currentScript.editable" [disabled]="readOnlyC" name="editable">
+          Editable by shared users
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="currentScript.type" name="type" [disabled]="readOnlyC">
+          Private
         </mat-checkbox>
       </section>
     </mat-card-content>

@@ -10,7 +10,7 @@ export class ScriptsListComponent implements OnInit {
 
   @Input() scripts: Script[] | null = [];
   @Output() scriptSelected = new EventEmitter<Script>();
-  @Output() scriptDeleted = new EventEmitter<number>();
+  @Output() scriptRemoved = new EventEmitter<number>();
 
   constructor() {}
 
@@ -20,8 +20,8 @@ export class ScriptsListComponent implements OnInit {
     this.scriptSelected.emit(script);
   }
 
-  deleteScript(id: any) {
-    this.scriptDeleted.emit(id);
+  removeScript(id: any) {
+    this.scriptRemoved.emit(id);
   }
 
 }

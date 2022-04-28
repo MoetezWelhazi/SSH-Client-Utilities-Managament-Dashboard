@@ -76,7 +76,15 @@ export class MyScriptsComponent implements OnInit {
   updateScript(script: Script) {
     this.scriptsService.updateScript(script).pipe(
       tap(() => this.loadScripts(false))
-    ).subscribe();
+    ).subscribe({
+      next: (data)=>{
+        this.messageService.add({severity:'success', summary:'Script Updated', detail:data.message})
+      },
+      error: err => {
+        this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+      }
+      }
+    );
   }
 
   createScript(script: Upload) {
@@ -85,10 +93,20 @@ export class MyScriptsComponent implements OnInit {
     ).subscribe();
   }
 
-  deleteScript(id: number) {
-    this.scriptsService.deleteScript(id).pipe(
+  removeScript(sId: number) {
+
+    this.scriptsService.removeScript(sId,this.tokenStorageService.getUser().id).pipe(
       tap(() => this.loadScripts(false))
-    ).subscribe();
+    ).subscribe(
+      {
+        next: data => {
+          this.messageService.add({severity:'success', summary:'Script Removed', detail:data.message})
+        },
+        error: err => {
+          this.messageService.add({severity:'error', summary:'Error', detail:err.message})
+        }
+    }
+    );
   }
 
   resetScript() {

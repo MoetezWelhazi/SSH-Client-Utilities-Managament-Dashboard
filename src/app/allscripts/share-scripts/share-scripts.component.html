@@ -122,6 +122,7 @@
   </p-table>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button type="button" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
-  <button type="button" mat-raised-button color="accent" (click)="share()">Share</button>
+  <button type="button" mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button type="button" mat-raised-button color="accent" (click)="share(true)">Share</button>
+  <button type="button" mat-raised-button color="accent" (click)="share(false)">Unshare</button>
 </mat-dialog-actions>
