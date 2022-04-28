@@ -200,13 +200,13 @@ export class AllscriptsComponent implements OnInit {
       },
       {label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
-          this.addToUser(Script.id,{uId:this.tokenStorageService.getUser().id,share:true},true);
+          this.addToUser(Script.id,{uid:this.tokenStorageService.getUser().id,share:true},true);
         }
       },
     ];
     else return [{label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
-        this.addToUser(Script.id, {uId:this.tokenStorageService.getUser().id,share:true},true);
+        this.addToUser(Script.id, {uid:this.tokenStorageService.getUser().id,share:true},true);
       }
     }]
   }
@@ -273,7 +273,7 @@ export class AllscriptsComponent implements OnInit {
                   //console.log("USER TO SHARE TO:"+user.id)
                   this.selectedScripts?.map(script => {
                     if (script.id)
-                      this.addToUser(script.id, {uId: user.id, share: true}, false);
+                      this.addToUser(script.id, {uid: user.id, share: true}, false);
                   })
                 }
               })
@@ -284,7 +284,7 @@ export class AllscriptsComponent implements OnInit {
                   //console.log("USER TO SHARE TO:"+user.id)
                   this.selectedScripts?.map(script => {
                     if (script.id)
-                      this.addToUser(script.id, {uId: user.id, share: false}, false);
+                      this.addToUser(script.id, {uid: user.id, share: false}, false);
                   })
                 }
               })
@@ -298,7 +298,9 @@ export class AllscriptsComponent implements OnInit {
         //@ts-ignore
         let id = this.tokenStorageService.getUser().id
         this.selectedScripts?.map(script =>{
-          this.addToUser(script.id,id,false)
+          if(script.id)
+          this.addToUser(script.id,{uid: this.tokenStorageService.getUser().id, share: false},true)
+
         })
       } else this.messageService.add({severity: 'warn', summary: 'Error', detail: "No Scripts selected to share!"})
 
@@ -372,6 +374,8 @@ export class AllscriptsComponent implements OnInit {
             };
             // @ts-ignore
             newScript.createdAt = new Date(script.createdAt)
+            if(newScript.author==null)
+              newScript.author = "Deleted"
           });
           this.loading = false;
           //console.log(data);

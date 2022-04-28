@@ -1,4 +1,4 @@
 export interface ScriptShare{
-  uId?: number;
+  uid?: number;
   share: boolean;
 }

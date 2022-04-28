@@ -28,7 +28,8 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
         if(this.currentScript.author!=this.getTrigram()){
           this.aceEditor.setReadOnly(true)
           this.readOnly = true;
-          console.log("THIS USER IS AUTHORIZED TO EDIT")
+          this.readOnlyC = true
+          console.log("THIS USER IS NOT AUTHORIZED TO EDIT")
         }
       }
     }else if(this.currentScript.editable){
@@ -119,5 +120,11 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = { script: this.currentScript, id: user.id };
     let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
+  }
+
+  getAuthor(author: string |undefined) {
+    if (author)
+      return author
+    else return "Deleted"
   }
 }

@@ -21,13 +21,35 @@
       <mat-form-field class="full-width">
         <textarea
           matInput
-          placeholder="Details"
+          placeholder="Description"
           [(ngModel)]="currentScript.description"
           [readonly]="readOnly"
           type="text"
           name="description"
           required
         ></textarea>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Author"
+          [value]="getAuthor(currentScript.author)"
+          type="text"
+          name="author"
+          readonly
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Creation Date"
+          value="{{currentScript.createdAt| date: 'short'}}"
+          type="text"
+          name="createdAt"
+          readonly
+          required
+        />
       </mat-form-field>
       <section class="full-width">
         <div
