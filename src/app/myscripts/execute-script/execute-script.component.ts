@@ -36,7 +36,7 @@ export class ExecuteScriptComponent implements OnInit {
   ];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any},
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any, args: any},
               public dialogRef: MatDialogRef<ExecuteScriptComponent>,
               private executionWebsocketService: RxStompService,
               private scriptsService: ScriptsService,

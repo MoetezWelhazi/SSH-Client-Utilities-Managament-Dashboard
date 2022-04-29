@@ -19,25 +19,26 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
     if (value?.name) {
       this.originalTitle = value.name;
     }
+    this.selected = true
     this.currentScript = Object.assign({}, value);
     this.aceEditor.session.setValue(this.currentScript.code);
     //console.log(JSON.stringify(this.currentScript))
     if(!this.currentScript.editable){
       if(!this.isAdmin()){
-        console.log("THIS USER IS NOT AN ADMIN!")
+        //console.log("THIS USER IS NOT AN ADMIN!")
         if(this.currentScript.author!=this.getTrigram()){
           this.aceEditor.setReadOnly(true)
           this.readOnly = true;
           this.readOnlyC = true
-          console.log("THIS USER IS NOT AUTHORIZED TO EDIT")
+          //console.log("THIS USER IS NOT AUTHORIZED TO EDIT")
         }
       }
     }else if(this.currentScript.editable){
       if(!this.isAdmin()){
-        console.log("THIS USER IS NOT AN ADMIN!")
+        //console.log("THIS USER IS NOT AN ADMIN!")
         if(this.currentScript.author!=this.getTrigram()){
           this.readOnlyC = true;
-          console.log("THIS USER IS NOT AUTHORIZED TO EDIT")
+          //console.log("THIS USER IS NOT AUTHORIZED TO EDIT")
         }
       }
     }
@@ -48,6 +49,7 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
 
   readOnly: boolean = false;
   readOnlyC: boolean = false;
+  selected: boolean = false;
 
   originalTitle: string = "";
   currentScript: Script ={
@@ -60,7 +62,7 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
   //@ts-ignore
   @ViewChild("editor") private editor: ElementRef<HTMLElement>;
 
-  private aceEditor: any ;
+  aceEditor: any ;
 
   orders = [
     { id: '1', name: 'order 1' },
@@ -114,12 +116,15 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
   }
 
   toExecute() {
-    const user = this.tokenStorageService.getUser();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = { script: this.currentScript, id: user.id };
-    let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
+    if(this.selected){
+      const user = this.tokenStorageService.getUser();
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {script: this.currentScript, id: user.id, args: this.currentScript.args};
+      let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
+    }
+    else this.messageService.add({severity:"warn",summary:"Select Script", detail:"No selected Script to execute!"})
   }
 
   getAuthor(author: string |undefined) {

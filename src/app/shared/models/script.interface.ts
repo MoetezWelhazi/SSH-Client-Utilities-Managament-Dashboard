@@ -2,7 +2,7 @@ import {UserInfo} from "./auth.interface";
 
 export interface Script {
   id?:number;
-  flags?: [{}];
+  args?: number;
   command?: string;
   name: string;
   description: string;

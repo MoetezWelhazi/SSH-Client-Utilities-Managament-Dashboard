@@ -32,6 +32,18 @@
       <mat-form-field class="full-width">
         <input
           matInput
+          placeholder="Arguments"
+          [(ngModel)]="currentScript.args"
+          [readonly]="readOnly"
+          type="number"
+          min="0" max="9"
+          name="args"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
           placeholder="Author"
           [value]="getAuthor(currentScript.author)"
           type="text"
@@ -96,7 +108,7 @@
         mat-raised-button
         color="accent"
         style="color:white"
-        (click)="form.reset()"
+        (click)="form.reset(); this.aceEditor.setValue(''); this.selected=false"
       >
         Cancel
       </button>

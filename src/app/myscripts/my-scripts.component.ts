@@ -112,7 +112,7 @@ export class MyScriptsComponent implements OnInit {
   resetScript() {
     const emptyScript: Script = {
       id: undefined,
-      flags: [{'-c':9}],
+      args:0,
       command: '',
       name: '',
       description:'',

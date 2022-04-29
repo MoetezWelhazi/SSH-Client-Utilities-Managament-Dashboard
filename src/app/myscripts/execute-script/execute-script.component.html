@@ -63,6 +63,20 @@
           <strong>Entrer une trigramme NeoXam valide</strong>
         </mat-error>
       </mat-form-field>
+      <hr>
+      <mat-form-field>
+        <mat-label>Arguments</mat-label>
+        <input
+          matInput
+          placeholder="ex: 5, date, etc..."
+          [(ngModel)]="this.data.args"
+          type="number"
+          min="0" max="9"
+          name="args"
+          readonly
+          #args="ngModel"
+        />
+      </mat-form-field>
     </mat-card-content>
     </div>
     <div class="vr"></div>
