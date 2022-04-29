@@ -64,23 +64,45 @@
         </mat-error>
       </mat-form-field>
       <hr>
-      <mat-form-field>
-        <mat-label>Arguments</mat-label>
-        <input
-          matInput
-          placeholder="ex: 5, date, etc..."
-          [(ngModel)]="this.data.args"
-          type="number"
-          min="0" max="9"
-          name="args"
-          readonly
-          #args="ngModel"
-        />
-      </mat-form-field>
+      <div class="row">
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>N°Args</mat-label>
+            <input
+              matInput
+              placeholder="ex: 5, date, etc..."
+              [value]="this.data.args"
+              type="number"
+              min="0" max="9"
+              name="args"
+              readonly
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Add arg</mat-label>
+            <input
+              matInput
+              placeholder="ex: 5, date, etc..."
+              type="text"
+              name="arg"
+              #argInput
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-2">
+          <button mat-icon-button type="button" (click)="addArg(argInput.value)"><mat-icon>add_circle</mat-icon></button>
+          <button mat-icon-button type="button" (click)="removeArg()"><mat-icon>do_not_disturb_on</mat-icon></button>
+        </div>
+      </div>
     </mat-card-content>
     </div>
     <div class="vr"></div>
     <div id="right-container">
+      <code>
+        <pre class="language-bash">Bash {{this.data.script.name + " " + command}}</pre>
+      </code>
       <textarea
         matInput
         placeholder="Code"

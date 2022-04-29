@@ -1,12 +1,11 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import { FunctionsUsingCSI, NgTerminal } from 'ng-terminal';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Execution } from "../../shared/models/execHistory.interface";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Script} from "../../shared/models/script.interface";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Script } from "../../shared/models/script.interface";
 import { Message } from '@stomp/stompjs';
-import {ScriptsService} from "../../shared/services/scripts/scripts.service";
-import {MessageService} from "primeng/api";
-import {RxStompService} from "../../shared/services/websocket/rxstomp.service";
+import { ScriptsService } from "../../shared/services/scripts/scripts.service";
+import { MessageService } from "primeng/api";
+import { RxStompService } from "../../shared/services/websocket/rxstomp.service";
 
 
 @Component({
@@ -34,6 +33,9 @@ export class ExecuteScriptComponent implements OnInit {
     { id: '3', name: 'server 3' },
     { id: '4', name: 'server 4' }
   ];
+  command: string = "";
+  args = [""];
+  nArgs = 0
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any, args: any},
@@ -54,7 +56,7 @@ export class ExecuteScriptComponent implements OnInit {
       //console.log("MESSAGE RECEIVED");
     },
     err=>{
-      console.log("JOE BIDEN, WAKE UP(error message)")
+      console.log("JOE BIDEN, WAKE UP(error message): ",err.message)
     })
     //console.log("DATA.ID: "+this.data.id)
     //console.log("DATA.SCRIPT: "+this.data.script.name)
@@ -66,6 +68,7 @@ export class ExecuteScriptComponent implements OnInit {
   }
 
   executeScript() {
+    this.execution.args= this.args.join(" ")
     console.log(this.execution)
     this.scriptsService.executeScript(this.execution)
       .subscribe({
@@ -80,5 +83,33 @@ export class ExecuteScriptComponent implements OnInit {
 
   clearTerminal() {
     this.console="";
+  }
+
+  addArg(arg: any) {
+    if(!(this.data.args<=this.nArgs)){
+      if (arg == "")
+        this.messageService.add({severity: 'error', summary: 'Error', detail: "No argument in input!"})
+      else { // @ts-ignore
+        this.args.push(arg)
+        this.nArgs = this.nArgs + 1
+        //console.log("NARGS: "+this.nArgs+ " ARGS: "+this.data.args)
+        this.command = this.args.join(" ")
+      }
+    }
+    else this.messageService.add({severity: 'error', summary: 'Error', detail: "You have reached the argument limit!"})
+
+  }
+
+  removeArg() {
+    if(this.nArgs>0){
+      this.args.pop()
+      this.nArgs = this.nArgs - 1
+      this.command = this.args.join(" ")
+    }
+    else this.messageService.add({severity: 'error', summary: 'Error', detail: "No arguments to remove!"})
+  }
+
+  setCommand() {
+    return
   }
 }
