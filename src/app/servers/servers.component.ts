@@ -5,6 +5,9 @@ import { NotificationService } from "../shared/services/notifications/notificati
 import { DialogService } from "primeng/dynamicdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {UsersService} from "../shared/services/users/users.service";
+import { AddServerFormComponent } from './add-server-form/add-server-form.component';
+import { ServerInfo } from '../shared/models/server.interface';
+import { ServersService } from '../shared/services/servers/servers.service';
 
 @Component({
   selector: 'app-servers',
@@ -16,7 +19,8 @@ export class ServersComponent implements OnInit {
   statuses: any[] = [];
 
   tableOptions = [
-    {label: 'Add Server', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+    {label: 'Add Server', icon: 'pi pi-align-justify', command: () => { this.add(); } },
+    {label: 'Import Servers', icon: 'pi pi-upload', command: () => { this.import(); } },
     {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
   ];
 
@@ -25,15 +29,8 @@ export class ServersComponent implements OnInit {
   @ViewChild('dt') table: Table | undefined;
 
 
-  servers_test = [
-    {
-      id : 0 , server : "Server 1" , login : "Admin"
-    },
-    {
-      id : 1 , server : "Server 2" , login : "Root"
-    }
-  ]
-  servers: UserInfo[] =[{email:""}];
+
+  servers: any; 
 
   selectedServers? : UserInfo[];
 
@@ -41,6 +38,7 @@ export class ServersComponent implements OnInit {
               private notificationService:NotificationService,
               public confirmationService:ConfirmationService ,
               public messageService: MessageService ,
+              private serversService : ServersService,
               public dialogService: DialogService) { }
 
   ngOnInit(): void {
@@ -52,9 +50,44 @@ export class ServersComponent implements OnInit {
       {label: 'Refused', value: 'null'}
     ]
   }
+  parseFile(event:any){
+  
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+    let data = fileReader.result as string;
+    data.replace("\t" , "");
+    let lines = data.split("\n")
+    lines.forEach(line =>{
+      let info = line.split(':');
+      let newServer = new ServerInfo();
+      newServer.login = info[0]
+      newServer.name = info[1]
+      newServer.password = info[2]
+      newServer.description = info[3]
+      newServer.type =  Number(info[4])
+      this.serversService.createServer(newServer)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Server Added', detail:data.message})
+              this.getUsers()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+      
+    });
+    }
+    fileReader.readAsText(event.target.files[0]);
+  }
 
   ngAfterViewInit() {
     document.body.classList.add('users-background');
+  }
+
+  private import(){
+(<HTMLInputElement>document.getElementById("file")).click()
+
   }
 
   ngOnDestroy() {
@@ -98,11 +131,11 @@ export class ServersComponent implements OnInit {
   }
 
   private delete(id: number) {
-    this.usersService.deleteUser(id)
+    this.serversService.deleteServer(id)
       .subscribe({
         next: (data)=>{
-          this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
-          this.servers = this.servers.filter((user)=> {
+          this.messageService.add({severity:'success', summary:'Server Deleted', detail:data.message})
+          this.servers = this.servers!.filter((user: { id: number; })=> {
             return user.id !== id
           });
         },
@@ -162,7 +195,24 @@ export class ServersComponent implements OnInit {
   }
 
   private add() {
-  //TODO:
+    const ref = this.dialogService.open(AddServerFormComponent, {
+      header: 'Add Server',
+      width: '50%'
+    });
+    ref.onClose.subscribe((serverInfo : ServerInfo) => {
+      if (serverInfo) {
+        this.serversService.createServer(serverInfo)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Server Added', detail:data.message})
+              this.getUsers()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+      }
+    });
   }
 
   private deleteAll() {
@@ -220,25 +270,15 @@ export class ServersComponent implements OnInit {
   }
 
   private getUsers() {
-    this.usersService.getAllUsers(false)
+    this.serversService.getAllServers(false)
       .subscribe({
         next: (data) => {
-          data.forEach((user)=>{
-            let newUser : UserInfo = user;
+          data.forEach((server)=>{
+            let newServer : ServerInfo = server;
             // @ts-ignore
-            newUser.roles = user.roles[0].name;
-            switch(user.approved){
-              case null:
-                newUser.approved = "null";
-                break;
-              case true:
-                newUser.approved = "1";
-                break;
-              case false:
-                newUser.approved = "0";
-            };
+            
             // @ts-ignore
-            newUser.createdAt = new Date(user.createdAt)
+            
           });
           this.loading = false;
           //console.log(data);

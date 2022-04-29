@@ -29,8 +29,11 @@ export class AppComponent{
   }
 
   isAdmin():boolean{
+
+
+
     // @ts-ignore
-    return JSON.parse(window.sessionStorage.getItem("auth-user")).roles.includes("ROLE_ADMIN")
+    return JSON.parse(window.sessionStorage.getItem("auth-user"))?.roles.includes("ROLE_ADMIN") ?? false;
   }
 
 

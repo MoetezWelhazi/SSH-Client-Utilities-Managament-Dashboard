@@ -10,7 +10,7 @@
                 <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
           </span>
     </mat-card-header>
-    <p-table #dt [value]="servers_test"
+    <p-table #dt [value]="servers"
              dataKey="server"
              [(selection)]="selectedServers"
              (onRowSelect)="onRowSelect()"
@@ -37,11 +37,11 @@
               <p-sortIcon field="id"></p-sortIcon>
             </div>
           </th>
-          <th pSortableColumn="server">
+          <th pSortableColumn="name">
             <div class="flex justify-content-between align-items-center">
-              Server
-              <p-sortIcon field="server"></p-sortIcon>
-              <p-columnFilter type="text" field="server" display="menu" class="ml-auto"></p-columnFilter>
+              name
+              <p-sortIcon field="name"></p-sortIcon>
+              <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
             </div>
           </th>
           <th pSortableColumn="login">
@@ -49,6 +49,13 @@
               Login
               <p-sortIcon field="login"></p-sortIcon>
               <p-columnFilter type="text" field="login" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="description">
+            <div class="flex justify-content-between align-items-center">
+              Description
+              <p-sortIcon field="description"></p-sortIcon>
+              <p-columnFilter type="text" field="description" display="menu" class="ml-auto"></p-columnFilter>
             </div>
           </th>
           <th style="width: 8rem">
@@ -63,7 +70,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-Server>
         
-        <tr>
+        <tr *ngIf = "Server.type == 'Public' ">
           <td>
             <p-tableCheckbox [value]="Server" ></p-tableCheckbox>
           </td>
@@ -72,12 +79,17 @@
             {{Server.id}}
           </td>
           <td>
-            <span class="p-column-title">Server</span>
-            {{Server.server}}
+            <span class="p-column-title">Name</span>
+            {{Server.name}}
           </td>
           <td>
             <span class="p-column-title">Login</span>
             {{Server.login}}
+          </td>
+
+          <td>
+            <span class="p-column-title">Description</span>
+            {{Server.description}}
           </td>
           
         </tr>
@@ -91,4 +103,6 @@
       </ng-template>
     </p-table>
   </mat-card>
+
+  <input hidden type="file" (change)="parseFile($event)" id="file">
   
