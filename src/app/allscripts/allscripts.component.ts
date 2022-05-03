@@ -11,7 +11,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {TokenStorageService} from "../shared/services/auth/token-storage.service";
 import {ShareScriptsComponent} from "../allscripts/share-scripts/share-scripts.component";
 import {finalize} from "rxjs";
-import {DropdownItem} from "primeng/dropdown";
 import {ScriptShare} from "../shared/models/share.interface";
 
 @Component({

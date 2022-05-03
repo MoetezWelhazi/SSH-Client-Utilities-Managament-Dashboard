@@ -1,9 +1,13 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header style="justify-content:space-between">
     <mat-card-title> Script List </mat-card-title>
+    <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+        </span>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
+    <!--<mat-list>
       <mat-list-item
         *ngFor="let script of scripts"
         (click)="selectScript(script)"
@@ -21,5 +25,58 @@
         </button>
       </mat-list-item>
     </mat-list>
+    -->
+    <p-table #dt [value]="scripts"
+             dataKey="id"
+             selectionMode="single"
+             [(selection)]="selectedScript"
+             [columns]="['id','name']"
+             (onRowSelect)="selectScript(selectedScript)"
+             styleClass="p-datatable-users"
+             [rowHover]="true"
+             [rows]="10"
+             [showCurrentPageReport]="true"
+             [rowsPerPageOptions]="[10,25,50]"
+             responsiveLayout="scroll"
+             [paginator]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0"
+             [globalFilterFields]="['id','name','description']">
+      <ng-template pTemplate="header">
+        <tr >
+          <th pSortableColumn="id">
+            <div class="flex justify-content-between align-items-center">
+              Id
+              <p-sortIcon field="id"></p-sortIcon>
+            </div>
+          </th>
+          <th pSortableColumn="name">
+            <div class="flex justify-content-between align-items-center">
+              Name
+              <p-sortIcon field="name"></p-sortIcon>
+              <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-Script>
+        <tr [pSelectableRow]="Script" [pTooltip]="Script.description" [showDelay]=250  tooltipPosition="bottom">
+          <td>
+            <span class="p-column-title">Id</span>
+            {{Script.id}}
+          </td>
+          <td>
+            <span class="p-column-title">Name</span>
+            {{Script.name}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8">No scripts found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
   </mat-card-content>
 </mat-card>

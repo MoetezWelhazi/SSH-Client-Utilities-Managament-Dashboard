@@ -91,10 +91,12 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
     this.aceEditor.session.setValue("Select a script...");
     //ace-builds@1.4.14
     this.aceEditor.setTheme('ace/theme/eclipse');
+    this.aceEditor.session.setNewLineMode("unix");
     this.aceEditor.session.setMode('ace/mode/sh');
   }
 
   saveScript(script: Script) {
+    console.log("NewLineMode: "+this.aceEditor.session.getDocument().getNewLineMode()+" NewLineCharacter: "+this.aceEditor.session.getDocument().getNewLineCharacter())
     this.currentScript.type = this.currentScript.type ? "Private" : "Public"
     this.currentScript.code = this.aceEditor.session.getValue()
     this.currentScript.update = "content"

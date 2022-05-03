@@ -51,9 +51,7 @@ export class ExecuteScriptComponent implements OnInit {
     let destination = '/script/execution/'+this.data.id;
     console.log("STOMP IS LISTENING TO: "+destination);
     this.executionWebsocketService.watch(destination).subscribe((data:Message)=>{
-      //console.log(data.body);
       this.console=data.body;
-      //console.log("MESSAGE RECEIVED");
     },
     err=>{
       console.log("JOE BIDEN, WAKE UP(error message): ",err.message)
@@ -68,7 +66,7 @@ export class ExecuteScriptComponent implements OnInit {
   }
 
   executeScript() {
-    this.execution.args= this.args.join(" ")
+    this.execution.args= this.args.slice(1)
     console.log(this.execution)
     this.scriptsService.executeScript(this.execution)
       .subscribe({
