@@ -2,8 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { UserInfo } from "../shared/models/auth.interface";
 import {TokenStorageService} from "../shared/services/auth/token-storage.service";
 import {Table} from "primeng/table";
-import {PrimeNGConfig} from "primeng/api";
-import {Execution} from "../shared/models/execHistory.interface";
+import {HistoryService} from "../shared/services/history/history.service";
+import {Execution} from "../shared/models/execution";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,9 @@ import {Execution} from "../shared/models/execHistory.interface";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private tokenStorage : TokenStorageService, private primengConfig: PrimeNGConfig) {
+  constructor(private tokenStorage : TokenStorageService,
+              private historyService: HistoryService,
+              private messageService: MessageService) {
   }
 
   hide = true;
@@ -30,23 +33,7 @@ export class HomeComponent implements OnInit {
     {label: 'Success', value: 'Success'},
   ]
 
-  Executions: Execution[] = [{
-    script:'ping.sh',
-    date: new Date('2022-03-28 17:22:36'),
-    serverIp:'127.0. 0.1',
-    result:'Success'
-  },
-    {
-    script:'trigger.sql',
-    date: new Date('2022-03-28 14:49:36'),
-    serverIp:'127.0. 0.1',
-    result:'Failure'
-  },{
-    script:'random.sh',
-    date:new Date('2022-03-28 10:05:36'),
-    serverIp:'127.0. 0.1',
-    result:'Success'
-  }]
+  Executions?: any
 
   notifications = [
     {
@@ -160,6 +147,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getExecutions()
   }
   ngAfterViewInit() {
     document.body.classList.add('home-background');
@@ -199,5 +187,26 @@ export class HomeComponent implements OnInit {
 
   onRowSelect($event: any) {
     console.log(this.selectedExecution)
+  }
+
+  private getExecutions() {
+    this.historyService.getAll().subscribe({
+      next:data =>
+      {
+        data.forEach((execution)=>{
+          if(execution.executor.trigramme)
+            execution.executor = execution.executor.trigramme
+        })
+        this.Executions = data;
+        console.log(this.Executions);
+      },
+      error: err =>{
+        this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+      }
+    })
+  }
+
+  reExecute(Execution: any) {
+    console.log(Execution)
   }
 }

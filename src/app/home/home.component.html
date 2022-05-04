@@ -103,24 +103,6 @@
   </div>
   <div class="home-right">
     <mat-card>
-      <mat-card-content>
-        <mat-tab-group >
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
-            <p-chart type="line" [data]="data" [options]="basicOptions"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
-            <p-chart type="line" [data]="data1" [options]="basicOptions"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
-            <p-chart height="60vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
-            Content 3
-          </mat-tab>
-        </mat-tab-group>
-      </mat-card-content>
-    </mat-card>
-    <mat-card>
       <mat-card-header style="justify-content:space-between">
         <mat-card-title>
             <span>
@@ -173,7 +155,7 @@
                 <p-sortIcon field="date"></p-sortIcon>
                 <p-columnFilter type="date" field="date" display="menu" class="ml-auto"></p-columnFilter>
               </div>
-              </th>
+            </th>
             <th pSortableColumn="result">
               <div class="flex justify-content-between align-items-center">
                 Result
@@ -199,22 +181,22 @@
             </td>
             <td>
               <span class="p-column-title">Script</span>
-              {{Execution.script}}
+              {{Execution.script.name}}
             </td>
             <td>
               <span class="p-column-title">Server</span>
-              {{Execution.server}}
+              {{Execution.server.name}}
             </td>
             <td>
               <span class="p-column-title">Date</span>
-              {{Execution.date | date: 'short'}}
+              {{Execution.createdAt | date: 'short'}}
             </td>
             <td>
               <span class="p-column-title">Result</span>
-              <span [class]="'execution-badge type-' + Execution.result">{{Execution.result}}</span>
+              <span [class]="'execution-badge status-' + Execution.result">{{Execution.result}}</span>
             </td>
             <td style="text-align: center">
-              <button pButton type="button" class="p-button-secondary" icon="pi pi-cog"></button>
+              <button pButton type="button" class="p-button-secondary" (click)="reExecute(Execution)" icon="pi pi-cog"></button>
             </td>
           </tr>
         </ng-template>
@@ -224,6 +206,24 @@
           </tr>
         </ng-template>
       </p-table>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-tab-group >
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
+            <p-chart type="line" [data]="data" [options]="basicOptions"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
+            <p-chart type="line" [data]="data1" [options]="basicOptions"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
+            <p-chart height="60vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
+          </mat-tab>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
+            Content 3
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>
