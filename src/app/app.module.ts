@@ -41,6 +41,7 @@ import { ShareScriptsComponent } from './allscripts/share-scripts/share-scripts.
 import { DragDropFileUploadDirective } from './shared/directives/drag-drop-file-uploads.directive';
 import { AddServerFormComponent } from './servers/add-server-form/add-server-form.component';
 import { HistoryComponent } from './history/history.component';
+import { ExecutionDetailsComponent } from './history/execution-details/execution-details.component';
 
 @NgModule({
   imports: [
@@ -78,7 +79,8 @@ import { HistoryComponent } from './history/history.component';
     AddscriptformComponent,
     ShareScriptsComponent,
     DragDropFileUploadDirective,
-    HistoryComponent
+    HistoryComponent,
+    ExecutionDetailsComponent
   ],
   providers: [
     AuthService,
