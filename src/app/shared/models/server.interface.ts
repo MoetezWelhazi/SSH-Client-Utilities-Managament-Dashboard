@@ -4,5 +4,5 @@ export class ServerInfo {
     name:string |undefined;
     password:string | undefined;
     type:  number | string | undefined;
-    description : string | undefined;
+    description : string | undefined;  
 }

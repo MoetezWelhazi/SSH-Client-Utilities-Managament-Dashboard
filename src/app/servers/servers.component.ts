@@ -45,9 +45,9 @@ export class ServersComponent implements OnInit {
     this.selectedServers = [{email:""}]
     this.getUsers()
     this.statuses = [
-      {label: 'Approved', value: '1'},
-      {label: 'Waiting', value: '0'},
-      {label: 'Refused', value: 'null'}
+      {label: 'public', value: '0'},
+      {label: 'private', value: '1'},
+      
     ]
   }
   parseFile(event:any){
@@ -122,13 +122,7 @@ export class ServersComponent implements OnInit {
     console.log(this.selectedServers)
   }
 
-  getStatus(status: any) {
-    if(status=='null')
-      return "Refused";
-    if(status=='1')
-      return "Approved";
-    return "Waiting";
-  }
+ 
 
   private delete(id: number) {
     this.serversService.deleteServer(id)
@@ -173,22 +167,16 @@ export class ServersComponent implements OnInit {
 
   }
 
-  getItems(User: any) {
+  getItems(Server: any) {
     return [
-      {label: 'Make Admin', icon: 'pi pi-user-edit', command: () => {
-          this.update(User,"admin");
+      {label: 'Make private', icon: 'pi pi-user-edit', command: () => {
+          this.update(Server,"private");
         }
       },
-      {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
-          this.delete(User.id);
-        }
-      },
+     
+    
       {label: 'Approve', icon: 'pi pi-check', command: () => {
-          this.update(User,"approved");
-        }
-      },
-      {label: 'Refuse', icon: 'pi pi-times', command: () => {
-          this.update(User,"null");
+          this.update(Server,"public");
         }
       },
     ];
@@ -219,7 +207,7 @@ export class ServersComponent implements OnInit {
       this.confirmationService.confirm({
         key:'confirmDialog',
         header: 'Delete Confirmation',
-        message: this.selectedServers?.length+' users will be deleted. Are you sure that you want to perform this action?',
+        message: this.selectedServers?.length+' servers will be deleted. Are you sure that you want to perform this action?',
         accept: () => {
           this.selectedServers?.forEach((user)=>{
             if (user.id != null) {
@@ -230,38 +218,7 @@ export class ServersComponent implements OnInit {
       });
   }
 
-  private approveAll() {
-    this.confirmationService.confirm({
-      key:'confirmDialog',
-      header: 'Delete Confirmation',
-      // @ts-ignore
-      message: (this.selectedServers?.length -1 )+' users will be granted access to the app. Are you sure that you want to perform this action?',
-      accept: () => {
-        this.selectedServers?.forEach((user)=>{
-          if((user.approved==0||user.approved==null)&&(user.id!=null))
-          {
-            this.update(user,"approved");
-          }
-        })
-      },
-    });
-  }
-  private refuseAll() {
-    this.confirmationService.confirm({
-      key:'confirmDialog',
-      header: 'Delete Confirmation',
-      // @ts-ignore
-      message: (this.selectedServers?.length -1 )+' users will be refused access to the app. Are you sure that you want to perform this action?',
-      accept: () => {
-        this.selectedServers?.forEach((user)=>{
-          if((user.approved==1||user.approved==0)&&(user.id!=null))
-          {
-            this.update(user,"null");
-          }
-        })
-      },
-    })
-  }
+  
 
   getRoles(role: any) {
     if(role=="ROLE_USER")
@@ -289,3 +246,6 @@ export class ServersComponent implements OnInit {
   }
 
 }
+
+ 
+
