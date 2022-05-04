@@ -1,24 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Execution } from '../../models/execution';
-const BASE_URL = 'http://localhost:8081/api/history';
+import {TokenStorageService} from "../auth/token-storage.service";
+const BASE_URL = 'http://localhost:8081';
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
 
+  model = 'api/history';
 
-  constructor(   private http: HttpClient) { }
+  constructor(   private http: HttpClient,
+                 private tokenStorageService: TokenStorageService
+  ) { }
+
+  getUserHistory(){
+    return this.http.get<Execution[]>(this.getUrl()+"/user/"+this.tokenStorageService.getUser().id)
+  }
 
   getAll()
   {
-    return this.http.get<Execution[]>(BASE_URL);
+    return this.http.get<Execution[]>(this.getUrl());
   }
 
   getById(id: number)
   {
-    return this.http.get<Execution>(BASE_URL+"/"+id);
+    return this.http.get<Execution>(this.getUrlWithID(id));
   }
 
-  
+  private getUrl() {
+    return `${BASE_URL}/${this.model}`;
+  }
+
+  private getUrlWithID(id:any) {
+    return `${this.getUrl()}/${id}`;
+  }
+
+
 }

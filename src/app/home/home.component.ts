@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getExecutions() {
-    this.historyService.getAll().subscribe({
+    this.historyService.getUserHistory().subscribe({
       next:data =>
       {
         data.forEach((execution)=>{
