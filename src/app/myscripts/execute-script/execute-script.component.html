@@ -6,7 +6,7 @@
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="outline">
         <mat-label>Server</mat-label>
-        <mat-select [(ngModel)]="execution.server" name="server" #server="ngModel">
+        <mat-select [(ngModel)]="execution.serverId" name="server" #server="ngModel">
           <mat-option *ngFor="let server of servers" [value]="server.id" >
             {{server.name}}
           </mat-option>
@@ -40,7 +40,7 @@
           [type]="hide ? 'password' : 'text'"
           #passwordA = "ngModel"
         />
-        <button mat-icon-button matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <button mat-icon-button type="button" matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-error *ngIf="passwordA.invalid && (passwordA.dirty || passwordA.touched)">

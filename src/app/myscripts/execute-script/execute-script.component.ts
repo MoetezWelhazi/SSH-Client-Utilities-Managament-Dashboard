@@ -6,6 +6,8 @@ import { Message } from '@stomp/stompjs';
 import { ScriptsService } from "../../shared/services/scripts/scripts.service";
 import { MessageService } from "primeng/api";
 import { RxStompService } from "../../shared/services/websocket/rxstomp.service";
+import {ServersService} from "../../shared/services/servers/servers.service";
+import {ServerInfo} from "../../shared/models/server.interface";
 
 
 @Component({
@@ -21,18 +23,13 @@ export class ExecuteScriptComponent implements OnInit {
   execution: Execution = {
     user:'',
     port:22,
-    server:'',
+    serverId:0,
     password:'',
     executorId:0,
   }
   selectedServer = '';
 
-  servers = [
-    { id: '192.168.56.101', name: 'linux mint VM' },
-    { id: '2', name: 'server 2' },
-    { id: '3', name: 'server 3' },
-    { id: '4', name: 'server 4' }
-  ];
+  servers?: ServerInfo[]
   command: string = "";
   args = [""];
   nArgs = 0
@@ -42,6 +39,7 @@ export class ExecuteScriptComponent implements OnInit {
               public dialogRef: MatDialogRef<ExecuteScriptComponent>,
               private executionWebsocketService: RxStompService,
               private scriptsService: ScriptsService,
+              private serversService: ServersService,
               private messageService:MessageService,
               ) {
 
@@ -60,6 +58,16 @@ export class ExecuteScriptComponent implements OnInit {
     //console.log("DATA.SCRIPT: "+this.data.script.name)
     this.execution.scriptId = this.data.script.id;
     this.execution.executorId = this.data.id;
+    this.serversService.getAllServers(false).subscribe(
+      {
+        next:(data)=>{
+          this.servers = data;
+        },
+        error:err=>{
+          this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+        }
+      }
+    )
   }
   ngAfterViewInit(){
 

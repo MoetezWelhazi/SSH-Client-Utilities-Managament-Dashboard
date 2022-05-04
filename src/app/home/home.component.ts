@@ -33,18 +33,18 @@ export class HomeComponent implements OnInit {
   Executions: Execution[] = [{
     script:'ping.sh',
     date: new Date('2022-03-28 17:22:36'),
-    server:'127.0. 0.1',
+    serverIp:'127.0. 0.1',
     result:'Success'
   },
     {
     script:'trigger.sql',
     date: new Date('2022-03-28 14:49:36'),
-    server:'127.0. 0.1',
+    serverIp:'127.0. 0.1',
     result:'Failure'
   },{
     script:'random.sh',
     date:new Date('2022-03-28 10:05:36'),
-    server:'127.0. 0.1',
+    serverIp:'127.0. 0.1',
     result:'Success'
   }]
 

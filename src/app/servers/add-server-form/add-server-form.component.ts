@@ -9,14 +9,14 @@ import { ServerInfo } from 'src/app/shared/models/server.interface';
 })
 export class AddServerFormComponent implements OnInit {
   hide = false;
-  private = 0;
+  private :boolean = false;
   serverInfo : ServerInfo  = {
 
     name : '',
     login :  '',
     password : '',
     description : '',
-    type : 0,
+    type : "Public",
 
   }
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
@@ -26,12 +26,7 @@ export class AddServerFormComponent implements OnInit {
 
 
   addServer() {
-    if (this.private){
-      this.serverInfo.type = 1;
-    }
-    else{
-      this.serverInfo.type = 0;
-    }
+    this.serverInfo.type = this.private ? "Private" : "Public"
     this.ref.close(this.serverInfo);
   }
 

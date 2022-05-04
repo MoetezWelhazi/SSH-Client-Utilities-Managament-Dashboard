@@ -30,7 +30,7 @@ export class ServersComponent implements OnInit {
 
 
 
-  servers: any; 
+  servers: any;
 
   selectedServers? : UserInfo[];
 
@@ -47,11 +47,11 @@ export class ServersComponent implements OnInit {
     this.statuses = [
       {label: 'public', value: '0'},
       {label: 'private', value: '1'},
-      
+
     ]
   }
   parseFile(event:any){
-  
+
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
     let data = fileReader.result as string;
@@ -64,7 +64,7 @@ export class ServersComponent implements OnInit {
       newServer.name = info[1]
       newServer.password = info[2]
       newServer.description = info[3]
-      newServer.type =  Number(info[4])
+      newServer.type =  info[4]
       this.serversService.createServer(newServer)
           .subscribe({
             next: (data)=>{
@@ -75,7 +75,7 @@ export class ServersComponent implements OnInit {
               this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
             }
           })
-      
+
     });
     }
     fileReader.readAsText(event.target.files[0]);
@@ -122,7 +122,7 @@ export class ServersComponent implements OnInit {
     console.log(this.selectedServers)
   }
 
- 
+
 
   private delete(id: number) {
     this.serversService.deleteServer(id)
@@ -173,8 +173,8 @@ export class ServersComponent implements OnInit {
           this.update(Server,"private");
         }
       },
-     
-    
+
+
       {label: 'Approve', icon: 'pi pi-check', command: () => {
           this.update(Server,"public");
         }
@@ -218,7 +218,7 @@ export class ServersComponent implements OnInit {
       });
   }
 
-  
+
 
   getRoles(role: any) {
     if(role=="ROLE_USER")
@@ -233,9 +233,9 @@ export class ServersComponent implements OnInit {
           data.forEach((server)=>{
             let newServer : ServerInfo = server;
             // @ts-ignore
-            
+
             // @ts-ignore
-            
+
           });
           this.loading = false;
           //console.log(data);
@@ -247,5 +247,5 @@ export class ServersComponent implements OnInit {
 
 }
 
- 
+
 

@@ -5,7 +5,8 @@ export interface Execution {
   user?: string;
   port?: number;
   executorId?:number;
-  server?: string;
+  serverId?:number;
+  serverIp?: string;
   password?: string;
   result?: string ;
   description?: string;
