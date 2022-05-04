@@ -4,7 +4,8 @@ import { Script } from "./script.interface";
 export interface Execution {
     id :number;
     createdAt : Date;
-    executor: UserInfo;
-    script: Script;
+    executor: any;
+    script: any;
+    server: any;
     result: String
 }

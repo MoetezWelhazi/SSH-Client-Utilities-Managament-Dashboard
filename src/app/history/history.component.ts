@@ -5,6 +5,7 @@ import { ExecuteScriptComponent } from '../myscripts/execute-script/execute-scri
 import { Execution } from '../shared/models/execution';
 import { TokenStorageService } from '../shared/services/auth/token-storage.service';
 import { HistoryService } from '../shared/services/history/history.service';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-history',
@@ -13,8 +14,9 @@ import { HistoryService } from '../shared/services/history/history.service';
 })
 export class HistoryComponent implements OnInit {
 
-  constructor(public historyService:HistoryService,
+  constructor(private historyService:HistoryService,
     private tokenStorageService: TokenStorageService,
+    public messageService:MessageService,
     public dialog: MatDialog,) { }
 
   statuses = [
@@ -31,11 +33,8 @@ export class HistoryComponent implements OnInit {
   @ViewChild('dt') table: Table | undefined;
 
   ngOnInit(): void {
+    this.getExecutions()
 
-    this.historyService.getAll().subscribe(data => {
-      this.Executions = data;
-      console.log(this.Executions);
-    })
   }
 
   ngAfterViewInit() {
@@ -63,4 +62,20 @@ export class HistoryComponent implements OnInit {
     let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
   }
 
+  private getExecutions() {
+    this.historyService.getAll().subscribe({
+      next:data =>
+    {
+      data.forEach((execution)=>{
+        if(execution.executor.trigramme)
+        execution.executor = execution.executor.trigramme
+      })
+      this.Executions = data;
+      console.log(this.Executions);
+    },
+      error: err =>{
+        this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+      }
+  })
+  }
 }
