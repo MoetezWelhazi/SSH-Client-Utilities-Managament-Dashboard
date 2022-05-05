@@ -191,6 +191,28 @@ mat-card:not(.dashboard-card) {
   }
 }
 
+.cdk-overlay-pane.material-popup {
+  position: relative!important;
+}
+.close.mat-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  min-width: auto;
+}
+
+.close.mat-button:hover{
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
+.close.cdk-focused {
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
 .home-container {
   display: flex;
   justify-content: space-around;

@@ -215,6 +215,7 @@ export class AllscriptsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = "material-popup"
     dialogConfig.data = { id: user.id };
     let dialogRef = this.dialog.open(AddscriptformComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((upload : Upload) => {
@@ -259,6 +260,7 @@ export class AllscriptsComponent implements OnInit {
         const user = this.tokenStorageService.getUser();
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
+        dialogConfig.panelClass = "material-popup"
         dialogConfig.autoFocus = true;
         dialogConfig.data = {scripts: this.selectedScripts};
         let dialogRef = this.dialog.open(ShareScriptsComponent, dialogConfig);
