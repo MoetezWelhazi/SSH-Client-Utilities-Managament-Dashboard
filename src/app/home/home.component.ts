@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
   statuses = [
     {label: 'Failure', value: 'Failure'},
     {label: 'Success', value: 'Success'},
+    {label: 'Critical-Failure', value: 'Critical-Failure'}
   ]
 
   Executions?: any

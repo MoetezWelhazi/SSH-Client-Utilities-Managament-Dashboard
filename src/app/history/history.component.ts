@@ -22,13 +22,14 @@ export class HistoryComponent implements OnInit {
   statuses = [
     {label: 'Failure', value: 'Failure'},
     {label: 'Success', value: 'Success'},
+    {label: 'Critical-Failure', value: 'Critical-Failure'}
   ]
 
   Executions: Execution[] = []
 
   selectedExecution? : Execution;
 
-  loading: boolean = false;
+  loading: boolean = true;
 
   @ViewChild('dt') table: Table | undefined;
 
@@ -71,6 +72,7 @@ export class HistoryComponent implements OnInit {
         execution.executor = execution.executor.trigramme
       })
       this.Executions = data;
+      this.loading = false
       console.log(this.Executions);
     },
       error: err =>{
