@@ -213,6 +213,11 @@ mat-card:not(.dashboard-card) {
   color: #c63737;
 }
 
+.cancel:hover{
+  background-color: red;
+  color: white;
+}
+
 .home-container {
   display: flex;
   justify-content: space-around;
