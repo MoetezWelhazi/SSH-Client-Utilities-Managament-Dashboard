@@ -71,8 +71,10 @@
       <button
         [disabled]="form.invalid"
         type="submit"
+        mat-raised-button
         mat-button
         color="primary"
+        style="color:white"
       >
         Save
       </button>
@@ -80,7 +82,7 @@
         type="button"
         mat-raised-button
         (click)="toExecute()"
-        color="primary"
+        color="accent"
       >
         Execute
       </button>

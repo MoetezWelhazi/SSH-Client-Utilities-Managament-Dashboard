@@ -7,7 +7,7 @@
       </mat-card-title>
       <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+                <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
           </span>
     </mat-card-header>
     <p-table #dt [value]="servers"
@@ -25,7 +25,7 @@
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [filterDelay]="0"
              [globalFilterFields]="['server','login']">
-  
+
       <ng-template pTemplate="header">
         <tr>
           <th>
@@ -84,7 +84,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-Server>
-        
+
         <tr *ngIf = "Server.type == 'Public' ">
           <td>
             <p-tableCheckbox [value]="Server" ></p-tableCheckbox>
@@ -110,7 +110,7 @@
             <span class="p-column-title">Type</span>
             <span [class]="'user-badge type-' + Server.type">{{Server.type}}</span>
           </td>
-          
+
         </tr>
 
 
@@ -124,4 +124,3 @@
   </mat-card>
 
   <input hidden type="file" (change)="parseFile($event)" id="file">
-  

@@ -1,3 +1,4 @@
+<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
 <form class="loginform" (submit)="addUser()">
   <mat-card-content>
     <mat-form-field class="inputfield" appearance="fill">
@@ -59,8 +60,10 @@
       [(ngModel)]="isAdmin">
       Admin?</mat-checkbox>
   </mat-card-content>
-  <mat-card-actions class="d-flex justify-content-center">
-        <button type="submit" [disabled]="(passwordA.invalid)||(email.invalid)||(trigram.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+  <mat-card-actions align="end">
+    <button type="submit" [disabled]="(passwordA.invalid)||(email.invalid)||(trigram.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+    <div class="vr mx-1"></div>
+    <button type="button" mat-raised-button class="cancel" color="accent" mat-dialog-close>Cancel</button>
   </mat-card-actions>
 </form>
 

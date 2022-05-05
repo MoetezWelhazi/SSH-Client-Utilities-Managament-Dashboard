@@ -48,11 +48,9 @@ export class UsersComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    document.body.classList.add('users-background');
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('users-background');
   }
 
   onDateSelect(value : any) {

@@ -42,7 +42,7 @@ body .p-component{
 }
 
 .users-background{
-  background-image: url("assets/images/2018-NewStyle_1920x1080-Green.png");
+  background-image: url("assets/images/2018-NewStyle_3800x1200.png");
   background-attachment: scroll;
   background-repeat: no-repeat;
   background-size: cover;
@@ -146,7 +146,7 @@ mat-toolbar {
 
 mat-sidenav {
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
-  width: 200px;
+  max-width: 200px;
   padding-top: 10px;
 }
 

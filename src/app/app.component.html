@@ -3,8 +3,10 @@
     <button
       *ngIf="isAuthenticated$ | async"
       mat-mini-fab
-      (click)="sidenav?.toggle()"
+      (click)="isExpanded = !isExpanded"
     >
+      <!--(click)="sidenav?.toggle()"-->
+
       <mat-icon>menu</mat-icon>
     </button>
     <span class="logo">
@@ -23,10 +25,13 @@
   </button>
 </mat-toolbar>
 
-<mat-sidenav-container >
+<mat-sidenav-container
+  autosize="true"
+>
   <mat-sidenav
     #sidenav
     mode="side"
+    disableClose="true"
     [opened]="isAuthenticated$ | async"
     class="app-sidenav"
   >
@@ -43,7 +48,7 @@
         <mat-icon>
           {{ link.icon }}
         </mat-icon>
-        {{ link.title }}
+        {{ getTitle(link.title) }}
       </a>
       </div>
     </nav>
@@ -52,10 +57,10 @@
 
   <div class="container-mat">
     <router-outlet>
+      <app-loader></app-loader>
     </router-outlet>
   </div>
 </mat-sidenav-container>
 <p-toast position="top-right" [baseZIndex]="5000"></p-toast>
 <p-confirmPopup></p-confirmPopup>
 <p-confirmDialog key="confirmDialog"></p-confirmDialog>
-<app-loader></app-loader>

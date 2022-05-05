@@ -39,11 +39,9 @@ export class HistoryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    document.body.classList.add('home-background');
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('home-background');
   }
 
   getValue(event: Event): string {

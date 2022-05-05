@@ -3,29 +3,10 @@
     <mat-card-title> Script List </mat-card-title>
     <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
         </span>
   </mat-card-header>
   <mat-card-content>
-    <!--<mat-list>
-      <mat-list-item
-        *ngFor="let script of scripts"
-        (click)="selectScript(script)"
-      >
-        <h3 matLine>{{ script.name | titlecase }}</h3>
-        <p matLine>
-          {{ script.description }}
-        </p>
-        <button
-          mat-icon-button
-          color="warn"
-          (click)="removeScript(script.id); $event.stopImmediatePropagation()"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-    -->
     <p-table #dt [value]="scripts"
              dataKey="id"
              selectionMode="single"
@@ -57,6 +38,7 @@
               <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
             </div>
           </th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-Script>
@@ -68,6 +50,11 @@
           <td>
             <span class="p-column-title">Name</span>
             {{Script.name}}
+          </td>
+          <td style="text-align: center">
+            <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-trash"
+                    (click)="this.removeScript(Script.id)">
+            </button>
           </td>
         </tr>
       </ng-template>

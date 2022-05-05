@@ -150,13 +150,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getExecutions()
   }
-  ngAfterViewInit() {
-    document.body.classList.add('home-background');
-  }
-
-  ngOnDestroy() {
-    document.body.classList.remove('home-background');
-  }
 
   deleteNotification(id: number) {
     console.log("Notification N°"+id+" has been deleted");

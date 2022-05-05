@@ -82,7 +82,6 @@ export class ServersComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    document.body.classList.add('users-background');
   }
 
   private import(){
@@ -91,7 +90,6 @@ export class ServersComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('users-background');
   }
 
   onDateSelect(value : any) {

@@ -53,20 +53,18 @@ export class AllscriptsComponent implements OnInit {
     ]
     if(this.isAdmin())
     this.tableOptions =  [
-      {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+      {label: 'Add script', icon: 'pi pi-fw pi-plus', command: () => { this.add(); } },
       {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
       {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
-      {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-users', command: () => { this.editableAll(); } },
-      {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-times', command: () => { this.uneditableAll(); } },
+      {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-unlock', command: () => { this.editableAll(); } },
+      {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-lock', command: () => { this.uneditableAll(); } },
     ]
   }
 
   ngAfterViewInit() {
-    document.body.classList.add('users-background');
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('users-background');
   }
 
   onDateSelect(value : any) {
@@ -177,23 +175,23 @@ export class AllscriptsComponent implements OnInit {
   getItems(Script: any) {
     if(this.isAdmin())
       return [
-      {label: 'Make Public', icon: 'pi pi-user-edit', command: () => {
+      {label: 'Make Public', icon: 'pi pi-eye', command: () => {
           this.updateMeta(Script,"public");
         }
       },
-      {label: 'Make Private', icon: 'pi pi-user-edit', command: () => {
+      {label: 'Make Private', icon: 'pi pi-eye-slash', command: () => {
           this.updateMeta(Script,"private");
         }
       },
-      {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
+      {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => {
           this.delete(Script.id,true);
         }
       },
-      {label: 'Make Editable', icon: 'pi pi-check', command: () => {
+      {label: 'Make Editable', icon: 'pi pi-unlock', command: () => {
           this.updateMeta(Script,"editable");
         }
       },
-      {label: 'Make Uneditable', icon: 'pi pi-times', command: () => {
+      {label: 'Make Uneditable', icon: 'pi pi-lock', command: () => {
           this.updateMeta(Script,"uneditable");
         }
       },
