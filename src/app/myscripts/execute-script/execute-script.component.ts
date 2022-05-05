@@ -74,7 +74,7 @@ export class ExecuteScriptComponent implements OnInit {
   }
 
   executeScript() {
-    this.execution.args= this.args.slice(1)
+    this.execution.args= this.command
     console.log(this.execution)
     this.scriptsService.executeScript(this.execution)
       .subscribe({

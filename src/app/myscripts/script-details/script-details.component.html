@@ -32,18 +32,6 @@
       <mat-form-field class="full-width">
         <input
           matInput
-          placeholder="Arguments"
-          [(ngModel)]="currentScript.args"
-          [readonly]="readOnly"
-          type="number"
-          min="0" max="9"
-          name="args"
-          required
-        />
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input
-          matInput
           placeholder="Author"
           [value]="getAuthor(currentScript.author)"
           type="text"
