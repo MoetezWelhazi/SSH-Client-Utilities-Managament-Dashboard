@@ -1,0 +1,23 @@
+<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Previewing {{this.data.currentScript.name}}</h1>
+<mat-card-content>
+  <mat-form-field class="full-width">
+    <textarea
+      matInput
+      placeholder="Description"
+      [(ngModel)]="this.data.currentScript.description"
+      readonly
+      type="text"
+      name="description"
+      required
+    ></textarea>
+  </mat-form-field>
+  <section class="full-width">
+    <div
+      class="app-ace-editor"
+      #editor
+      style="width: 100%;height: 275px;"
+    ></div>
+  </section>
+</mat-card-content>
+

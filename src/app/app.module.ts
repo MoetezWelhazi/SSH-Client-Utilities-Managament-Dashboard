@@ -42,6 +42,7 @@ import { DragDropFileUploadDirective } from './shared/directives/drag-drop-file-
 import { AddServerFormComponent } from './servers/add-server-form/add-server-form.component';
 import { HistoryComponent } from './history/history.component';
 import { ExecutionDetailsComponent } from './history/execution-details/execution-details.component';
+import { PreviewScriptComponent } from './allscripts/preview-script/preview-script.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { ExecutionDetailsComponent } from './history/execution-details/execution
     ShareScriptsComponent,
     DragDropFileUploadDirective,
     HistoryComponent,
-    ExecutionDetailsComponent
+    ExecutionDetailsComponent,
+    PreviewScriptComponent
   ],
   providers: [
     AuthService,
