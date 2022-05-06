@@ -32,6 +32,25 @@ export class ServersService {
     return this.http.put<any>(this.getUrl(), user);
   }
 
+  makePrivate(id: number) {
+    return this.http.get<any>(this.getUrl()+"/"+id+"/makePrivate");
+  }
+
+  makePublic(id: number) {
+    return this.http.get<any>(this.getUrl()+"/"+id+"/makePublic");
+  }
+
+  addOwner(idServer:number,idUser:number) {
+    console.log(this.getUrl()+"/"+idServer+"/addowner/"+idUser);
+    return this.http.get<any>(this.getUrl()+"/"+idServer+"/addowner/"+idUser);
+  }
+
+  removeOwner(idServer:number,idUser:number) {
+    console.log(this.getUrl()+"/"+idServer+"/deleteowner/"+idUser);
+    return this.http.get<any>(this.getUrl()+"/"+idServer+"/deleteowner/"+idUser);
+  }
+
+
   deleteServer(id: number) {
     return this.http.delete<any>(this.getUrlWithID(id));
   }

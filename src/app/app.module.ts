@@ -42,6 +42,11 @@ import { DragDropFileUploadDirective } from './shared/directives/drag-drop-file-
 import { AddServerFormComponent } from './servers/add-server-form/add-server-form.component';
 import { HistoryComponent } from './history/history.component';
 import { ExecutionDetailsComponent } from './history/execution-details/execution-details.component';
+import { PreviewScriptComponent } from './allscripts/preview-script/preview-script.component';
+import { MatCardModule } from '@angular/material/card';
+import { AddOwnerComponent } from './servers/add-owner/add-owner.component';
+import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.component';
+
 
 @NgModule({
   imports: [
@@ -56,6 +61,8 @@ import { ExecutionDetailsComponent } from './history/execution-details/execution
     MatStepperModule,
     PrimengModule,
     NgTerminalModule,
+    MatCardModule
+
 
   ],
   declarations: [
@@ -71,6 +78,8 @@ import { ExecutionDetailsComponent } from './history/execution-details/execution
     ServersComponent,
     AddServerFormComponent,
     AdduserformComponent,
+    AddOwnerComponent,
+    RemoveOwnerComponent,
     MyScriptsComponent,
     ScriptsListComponent,
     ScriptDetailsComponent,
@@ -80,7 +89,8 @@ import { ExecutionDetailsComponent } from './history/execution-details/execution
     ShareScriptsComponent,
     DragDropFileUploadDirective,
     HistoryComponent,
-    ExecutionDetailsComponent
+    ExecutionDetailsComponent,
+    PreviewScriptComponent,
   ],
   providers: [
     AuthService,

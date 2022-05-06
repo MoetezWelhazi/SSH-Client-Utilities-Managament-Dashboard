@@ -10,5 +10,5 @@ export interface Execution {
   password?: string;
   result?: string ;
   description?: string;
-  args?: string[];
+  args?: string;
 }

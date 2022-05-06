@@ -43,5 +43,11 @@ export class UsersService {
   private getUrlWithID(id: any) {
     return `${this.getUrl()}/${id}`;
   }
+  getOwnersOfServer(id:number) {
+    return this.http.get<UserInfo[]>(this.getUrl()+"/ownersOfServer/"+id);
+  }
 
+  getNotOwnersOfServer(id:number) {
+    return this.http.get<UserInfo[]>(this.getUrl()+"/notOwnersOfServer/"+id);
+  }
 }

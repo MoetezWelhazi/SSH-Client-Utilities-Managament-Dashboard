@@ -16,6 +16,11 @@
   color: #256029;
 }
 
+.execution-badge.status-Critical-Failure {
+  background-color: #4d0010 ;
+  color: #e6c8c8;
+}
+
 :host ::ng-deep {
   .p-paginator {
     .p-paginator-current {

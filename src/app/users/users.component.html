@@ -7,7 +7,7 @@
     </mat-card-title>
     <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
         </span>
   </mat-card-header>
   <p-table #dt [value]="users"

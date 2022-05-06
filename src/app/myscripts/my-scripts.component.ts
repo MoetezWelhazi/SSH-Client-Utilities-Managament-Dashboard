@@ -43,14 +43,6 @@ export class MyScriptsComponent implements OnInit {
     this.resetScript();
   }
 
-  ngAfterViewInit() {
-    document.body.classList.add('scripts-background');
-  }
-
-  ngOnDestroy() {
-    document.body.classList.remove('scripts-background');
-  }
-
   selectScript(script: Script) {
     this.selectedScript = script;
   }

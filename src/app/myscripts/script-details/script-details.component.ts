@@ -123,6 +123,7 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = "material-popup"
       dialogConfig.data = {script: this.currentScript, id: user.id, args: this.currentScript.args};
       let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
     }

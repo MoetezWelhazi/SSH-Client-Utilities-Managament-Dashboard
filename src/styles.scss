@@ -42,7 +42,7 @@ body .p-component{
 }
 
 .users-background{
-  background-image: url("assets/images/2018-NewStyle_1920x1080-Green.png");
+  background-image: url("assets/images/2018-NewStyle_3800x1200.png");
   background-attachment: scroll;
   background-repeat: no-repeat;
   background-size: cover;
@@ -146,7 +146,7 @@ mat-toolbar {
 
 mat-sidenav {
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
-  width: 200px;
+  max-width: 200px;
   padding-top: 10px;
 }
 
@@ -189,6 +189,33 @@ mat-card:not(.dashboard-card) {
   .details {
     width: 49%;
   }
+}
+
+.cdk-overlay-pane.material-popup {
+  position: relative!important;
+}
+.close.mat-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  min-width: auto;
+}
+
+.close.mat-button:hover{
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
+.close.cdk-focused {
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
+.cancel:hover{
+  background-color: red;
+  color: white;
 }
 
 .home-container {
@@ -536,3 +563,6 @@ body {
   margin: 0;
   font-family: MarkPro, sans-serif, "Helvetica Neue", sans-serif;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

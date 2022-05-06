@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
   statuses = [
     {label: 'Failure', value: 'Failure'},
     {label: 'Success', value: 'Success'},
+    {label: 'Critical-Failure', value: 'Critical-Failure'}
   ]
 
   Executions?: any
@@ -149,13 +150,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getExecutions()
   }
-  ngAfterViewInit() {
-    document.body.classList.add('home-background');
-  }
-
-  ngOnDestroy() {
-    document.body.classList.remove('home-background');
-  }
 
   deleteNotification(id: number) {
     console.log("Notification N°"+id+" has been deleted");
@@ -190,7 +184,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getExecutions() {
-    this.historyService.getAll().subscribe({
+    this.historyService.getUserHistory().subscribe({
       next:data =>
       {
         data.forEach((execution)=>{

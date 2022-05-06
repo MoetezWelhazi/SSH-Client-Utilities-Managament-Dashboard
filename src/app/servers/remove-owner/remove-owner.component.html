@@ -1,0 +1,13 @@
+<mat-card-content>
+
+
+    <div *ngFor="let user of userlist">
+      <p>
+        {{user.email}}
+        <button mat-raised-button color="warn" (click)="removeOwner(user)">
+          +</button>
+      </p>
+    </div>
+  
+  </mat-card-content>
+  

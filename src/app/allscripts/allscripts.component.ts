@@ -12,6 +12,7 @@ import {TokenStorageService} from "../shared/services/auth/token-storage.service
 import {ShareScriptsComponent} from "../allscripts/share-scripts/share-scripts.component";
 import {finalize} from "rxjs";
 import {ScriptShare} from "../shared/models/share.interface";
+import {PreviewScriptComponent} from "./preview-script/preview-script.component";
 
 @Component({
   selector: 'app-allscripts',
@@ -53,20 +54,18 @@ export class AllscriptsComponent implements OnInit {
     ]
     if(this.isAdmin())
     this.tableOptions =  [
-      {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+      {label: 'Add script', icon: 'pi pi-fw pi-plus', command: () => { this.add(); } },
       {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
       {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
-      {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-users', command: () => { this.editableAll(); } },
-      {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-times', command: () => { this.uneditableAll(); } },
+      {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-lock-open', command: () => { this.editableAll(); } },
+      {label: 'Make Scripts Uneditable', icon: 'pi pi-fw pi-lock', command: () => { this.uneditableAll(); } },
     ]
   }
 
   ngAfterViewInit() {
-    document.body.classList.add('users-background');
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('users-background');
   }
 
   onDateSelect(value : any) {
@@ -177,25 +176,28 @@ export class AllscriptsComponent implements OnInit {
   getItems(Script: any) {
     if(this.isAdmin())
       return [
-      {label: 'Make Public', icon: 'pi pi-user-edit', command: () => {
+      {label: 'Make Public', icon: 'pi pi-eye', command: () => {
           this.updateMeta(Script,"public");
         }
       },
-      {label: 'Make Private', icon: 'pi pi-user-edit', command: () => {
+      {label: 'Make Private', icon: 'pi pi-eye-slash', command: () => {
           this.updateMeta(Script,"private");
         }
       },
-      {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
+      {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => {
           this.delete(Script.id,true);
         }
       },
-      {label: 'Make Editable', icon: 'pi pi-check', command: () => {
+      {label: 'Make Editable', icon: 'pi pi-lock-open', command: () => {
           this.updateMeta(Script,"editable");
         }
       },
-      {label: 'Make Uneditable', icon: 'pi pi-times', command: () => {
+      {label: 'Make Uneditable', icon: 'pi pi-lock', command: () => {
           this.updateMeta(Script,"uneditable");
         }
+      },
+      {label: 'Preview Script', icon: 'pi pi-search', command: () => {
+          this.previewScript(Script);}
       },
       {label: 'Add to my scripts', icon: 'pi pi-fw pi-user-plus', command: () => {
         //@ts-ignore
@@ -215,6 +217,7 @@ export class AllscriptsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = "material-popup"
     dialogConfig.data = { id: user.id };
     let dialogRef = this.dialog.open(AddscriptformComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((upload : Upload) => {
@@ -256,9 +259,9 @@ export class AllscriptsComponent implements OnInit {
     if(this.isAdmin()) {
       // @ts-ignore
       if (this.selectedScripts.length > 1) {
-        const user = this.tokenStorageService.getUser();
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
+        dialogConfig.panelClass = "material-popup"
         dialogConfig.autoFocus = true;
         dialogConfig.data = {scripts: this.selectedScripts};
         let dialogRef = this.dialog.open(ShareScriptsComponent, dialogConfig);
@@ -377,7 +380,7 @@ export class AllscriptsComponent implements OnInit {
               newScript.author = "Deleted"
           });
           this.loading = false;
-          //console.log(data);
+          console.log(data);
           this.scripts = data;
         },
         error: (e: { error: string; }) => this.notificationService.warn("An error has occurred: "+e.error)
@@ -395,5 +398,14 @@ export class AllscriptsComponent implements OnInit {
       //console.log(JSON.stringify(author))
       return author
     }
+  }
+
+  private previewScript(Script: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = "material-popup"
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {currentScript: Script}
+    let dialogRef = this.dialog.open(PreviewScriptComponent, dialogConfig);
   }
 }

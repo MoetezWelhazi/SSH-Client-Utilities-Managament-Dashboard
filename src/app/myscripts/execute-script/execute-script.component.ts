@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Execution } from "../../shared/models/execHistory.interface";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Script } from "../../shared/models/script.interface";
@@ -40,6 +41,7 @@ export class ExecuteScriptComponent implements OnInit {
               private executionWebsocketService: RxStompService,
               private scriptsService: ScriptsService,
               private serversService: ServersService,
+              private clipboard: Clipboard,
               private messageService:MessageService,
               ) {
 
@@ -74,7 +76,7 @@ export class ExecuteScriptComponent implements OnInit {
   }
 
   executeScript() {
-    this.execution.args= this.args.slice(1)
+    this.execution.args= this.command
     console.log(this.execution)
     this.scriptsService.executeScript(this.execution)
       .subscribe({
@@ -91,31 +93,8 @@ export class ExecuteScriptComponent implements OnInit {
     this.console="";
   }
 
-  addArg(arg: any) {
-    if(!(this.data.args<=this.nArgs)){
-      if (arg == "")
-        this.messageService.add({severity: 'error', summary: 'Error', detail: "No argument in input!"})
-      else { // @ts-ignore
-        this.args.push(arg)
-        this.nArgs = this.nArgs + 1
-        //console.log("NARGS: "+this.nArgs+ " ARGS: "+this.data.args)
-        this.command = this.args.join(" ")
-      }
-    }
-    else this.messageService.add({severity: 'error', summary: 'Error', detail: "You have reached the argument limit!"})
-
-  }
-
-  removeArg() {
-    if(this.nArgs>0){
-      this.args.pop()
-      this.nArgs = this.nArgs - 1
-      this.command = this.args.join(" ")
-    }
-    else this.messageService.add({severity: 'error', summary: 'Error', detail: "No arguments to remove!"})
-  }
-
-  setCommand() {
-    return
+  copyTerminal(text:string) {
+    this.clipboard.copy(text);
+    this.messageService.add({severity:"info", summary:"Console Copied", detail:"Contents copied"})
   }
 }
