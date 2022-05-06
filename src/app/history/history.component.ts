@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Table } from 'primeng/table';
 import { ExecuteScriptComponent } from '../myscripts/execute-script/execute-script.component';
-import { Execution } from '../shared/models/execution';
 import { TokenStorageService } from '../shared/services/auth/token-storage.service';
 import { HistoryService } from '../shared/services/history/history.service';
-import {MessageService} from "primeng/api";
+import { MessageService } from "primeng/api";
+import { Execution } from "../shared/models/execHistory.interface";
+import {ExecutionDetailsComponent} from "./execution-details/execution-details.component";
 
 @Component({
   selector: 'app-history',
@@ -52,20 +53,20 @@ export class HistoryComponent implements OnInit {
     console.log(this.selectedExecution)
   }
 
-  reExecute (Execution : Execution) {
-    const user = this.tokenStorageService.getUser();
+  details (Execution : Execution) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = { script: Execution.script, id: user.id };
-    let dialogRef = this.dialog.open(ExecuteScriptComponent, dialogConfig);
+    dialogConfig.panelClass = "material-popup"
+    dialogConfig.data = { execution: Execution};
+    let dialogRef = this.dialog.open(ExecutionDetailsComponent, dialogConfig);
   }
 
   private getExecutions() {
     this.historyService.getAll().subscribe({
       next:data =>
     {
-      data.forEach((execution)=>{
+      data.forEach((execution:Execution)=>{
         if(execution.executor.trigramme)
         execution.executor = execution.executor.trigramme
       })
@@ -78,4 +79,5 @@ export class HistoryComponent implements OnInit {
       }
   })
   }
+
 }

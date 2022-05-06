@@ -1,14 +1,18 @@
 export interface Execution {
-  script?: string;
+  script?: any;
   scriptId?:number;
-  date?: Date;
+  createdAt?: Date;
   user?: string;
+  username?:string;
   port?: number;
   executorId?:number;
+  executor?:any;
+  server?:any;
   serverId?:number;
   serverIp?: string;
   password?: string;
-  result?: string ;
-  description?: string;
+  result?: string;
+  existStatus?: string;
   args?: string;
+  details?:string;
 }

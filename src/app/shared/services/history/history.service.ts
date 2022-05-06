@@ -20,7 +20,7 @@ export class HistoryService {
 
   getAll()
   {
-    return this.http.get<Execution[]>(this.getUrl());
+    return this.http.get<any>(this.getUrl());
   }
 
   getById(id: number)

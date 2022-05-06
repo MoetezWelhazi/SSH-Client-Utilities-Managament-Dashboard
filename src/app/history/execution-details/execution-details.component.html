@@ -1,1 +1,117 @@
-<p>execution-details works!</p>
+<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Execution Details</h1>
+<h2> {{execution.script.name}} | {{execution.createdAt | date: 'short'}} | {{execution.result}}  | Exit Status: {{execution.existStatus | json}}</h2>
+<form class="loginform" (submit)="reExecuteScript()" >
+  <mat-dialog-content>
+    <div id="main-container">
+      <div id="left-container">
+        <mat-card-content>
+          <mat-form-field class="inputfield" appearance="outline">
+            <mat-label>Server</mat-label>
+            <input
+              matInput
+              placeholder="Server"
+              [(ngModel)]="execution.server.name"
+              type="text"
+              readonly
+              required
+              name="server"
+              #server="ngModel"
+            />
+          </mat-form-field>
+          <mat-form-field class="inputfield" appearance="outline">
+            <mat-label>User</mat-label>
+            <input
+              matInput
+              placeholder="User"
+              [(ngModel)]="execution.username"
+              type="text"
+              readonly
+              required
+              name="user"
+              #user="ngModel"
+            />
+            <mat-error *ngIf="user.invalid && (user.dirty || user.touched)">
+              <strong>Entrer un e-mail NeoXam valide</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="inputfield" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              placeholder="Password"
+              [(ngModel)]="execution.password"
+              type="password"
+              required
+              readonly
+              minlength="5"
+              name="passwordA"
+              [type]="hide ? 'password' : 'text'"
+              #passwordA = "ngModel"
+            />
+            <button mat-icon-button type="button" matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordA.invalid && (passwordA.dirty || passwordA.touched)">
+              <strong>Entrer un mot de passe valide</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="inputfield" appearance="outline" style="margin:0">
+            <mat-label>Port</mat-label>
+            <input
+              matInput
+              placeholder="ex: 22"
+              [(ngModel)]="execution.port"
+              type="text"
+              required
+              readonly
+              pattern="(^[0-9]{1,4})"
+              name="port"
+              #port="ngModel"
+            />
+            <mat-error *ngIf="port.invalid && (port.dirty || port.touched)">
+              <strong>Entrer une trigramme NeoXam valide</strong>
+            </mat-error>
+          </mat-form-field>
+          <hr>
+          <mat-form-field appearance="outline">
+            <mat-label>Argument(s)</mat-label>
+            <input
+              matInput
+              placeholder="ex: 5, date, etc..."
+              type="text"
+              readonly
+              name="arg"
+              #argInput
+              [(ngModel)]="execution.args"
+            />
+          </mat-form-field>
+        </mat-card-content>
+      </div>
+      <div class="vr"></div>
+      <div id="right-container">
+        <!--<code>
+          <pre class="language-bash">Bash {{this.data.script.name + " " + command}}</pre>
+        </code>-->
+        <textarea readOnly class="language-bash">Bash {{this.execution.script.name + " " + this.execution.args}}</textarea>
+        <textarea
+          matInput
+          placeholder="Code"
+          [(ngModel)]="execution.details"
+          type="text"
+          name="code"
+          readonly
+          style="height:80%; width:100% !important;"
+        >
+        </textarea>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="primary" style="color: white">Re-execute</button>
+    <button type="button" mat-raised-button color="accent" (click)="copyTerminal(this.execution.details)">Copy</button>
+    <div class="vr mx-1"></div>
+    <button type="button" mat-raised-button class="cancel" color="accent" mat-dialog-close>Exit</button>
+  </mat-dialog-actions>
+</form>
+
