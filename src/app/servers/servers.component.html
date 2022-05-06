@@ -1,127 +1,106 @@
 <mat-card>
-    <mat-card-header style="justify-content:space-between">
-      <mat-card-title>
-              <span>
-                List of Servers
-              </span>
-      </mat-card-title>
-      <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
-          </span>
-    </mat-card-header>
-    <p-table #dt [value]="servers"
-             dataKey="server"
-             [(selection)]="selectedServers"
-             (onRowSelect)="onRowSelect()"
-             styleClass="p-datatable-users"
-             [rowHover]="true"
-             [rows]="10"
-             [showCurrentPageReport]="true"
-             [rowsPerPageOptions]="[10,25,50]"
-             [loading]="loading"
-             responsiveLayout="scroll"
-             [paginator]="true"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [filterDelay]="0"
-             [globalFilterFields]="['server','login']">
-  
-      <ng-template pTemplate="header">
-        <tr>
-          <th>
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th pSortableColumn="id">
-            <div class="flex justify-content-between align-items-center">
-              Id
-              <p-sortIcon field="id"></p-sortIcon>
-            </div>
-          </th>
-          <th pSortableColumn="name">
-            <div class="flex justify-content-between align-items-center">
-              name
-              <p-sortIcon field="name"></p-sortIcon>
-              <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
-            </div>
-          </th>
-          <th pSortableColumn="login">
-            <div class="flex justify-content-between align-items-center">
-              Login
-              <p-sortIcon field="login"></p-sortIcon>
-              <p-columnFilter type="text" field="login" display="menu" class="ml-auto"></p-columnFilter>
-            </div>
-          </th>
-          <th pSortableColumn="description">
-            <div class="flex justify-content-between align-items-center">
-              Description
-              <p-sortIcon field="description"></p-sortIcon>
-              <p-columnFilter type="text" field="description" display="menu" class="ml-auto"></p-columnFilter>
-            </div>
-          </th>
-          <th pSortableColumn="type">
-            <div class="flex justify-content-between align-items-center">
-              Type
-              <p-sortIcon field="type"></p-sortIcon>
-              <p-columnFilter field="type" matchMode="equals" display="menu" class="ml-auto">
-                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                  <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
-                    <ng-template let-option pTemplate="item">
-                      <span [class]="'user-badge type-' + option.value">{{option.label}}</span>
-                    </ng-template>
-                  </p-dropdown>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-          <th style="width: 8rem">
-          <div style="text-align: center">
-            <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
-                    (click)="menu.toggle($event)">
-            </button>
-            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
+  <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+      <span>
+        Server List
+      </span>
+    </mat-card-title>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
+    </span>
+  </mat-card-header>
+  <p-table #dt [value]="servers" dataKey="id" styleClass="p-datatable-server" [(selection)]="selectedServers"
+    (onRowSelect)="onRowSelect($event)" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10,25,50]" [loading]="loading" responsiveLayout="scroll" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['id','login','name','type']">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">
+          <div class="flex justify-content-between align-items-center">
+            id
+            <p-sortIcon field="id"></p-sortIcon>
+            <p-columnFilter type="text" field="id" display="menu" class="ml-auto"></p-columnFilter>
           </div>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-Server>
-        
-        <tr *ngIf = "Server.type == 'Public' ">
-          <td>
-            <p-tableCheckbox [value]="Server" ></p-tableCheckbox>
-          </td>
-          <td>
-            <span class="p-column-title">Id</span>
-            {{Server.id}}
-          </td>
-          <td>
-            <span class="p-column-title">Name</span>
-            {{Server.name}}
-          </td>
-          <td>
-            <span class="p-column-title">Login</span>
-            {{Server.login}}
-          </td>
+        </th>
+        <th pSortableColumn="login">
+          <div class="flex justify-content-between align-items-center">
+            login
+            <p-sortIcon field="login"></p-sortIcon>
+            <p-columnFilter type="text" field="login" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
 
-          <td>
-            <span class="p-column-title">Description</span>
-            {{Server.description}}
-          </td>
-          <td>
-            <span class="p-column-title">Type</span>
-            <span [class]="'user-badge type-' + Server.type">{{Server.type}}</span>
-          </td>
-          
-        </tr>
+        <th pSortableColumn="name">
+          <div class="flex justify-content-between align-items-center">
+            name
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+
+        <th pSortableColumn="type">
+          <div class="flex justify-content-between align-items-center">
+            type
+            <p-sortIcon field="type"></p-sortIcon>
+            <p-columnFilter type="type" field="type" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
 
 
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="8">No Servers found.</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </mat-card>
+        <th style="width: 8rem">
+          <div style="text-align: center">
+            <button pButton type="button" class="p-button-secondary" icon="pi pi-bars" (click)="menu.toggle($event)">
+            </button>
+            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'"
+              [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-Server >
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="Server" ></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="p-column-title">id</span>
+          {{Server.id}}
+        </td>
+        <td>
+          <span class="p-column-title">login</span>
+          {{Server.login}}
+        </td>
+        <td>
+          <span class="p-column-title">name</span>
+          {{Server.name}}
+        </td>
+        <td>
+          <span class="p-column-title">type</span>
+          {{Server.type}}
+        </td>
+        <td style="text-align: center">
+          <button *ngIf="Server.type == 'Public' "  pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+          (click)=" menu1.toggle($event)">
+  </button>
+  <button *ngIf="Server.type == 'Private' "  pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+  (click)=" menu2.toggle($event)">
+</button>
+  <p-menu   #menu1   [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getMenuPublic(Server)"></p-menu>
+  <p-menu  #menu2  [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getMenuPrivate(Server)"></p-menu>
+</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No Servers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-  <input hidden type="file" (change)="parseFile($event)" id="file">
-  
+</mat-card>

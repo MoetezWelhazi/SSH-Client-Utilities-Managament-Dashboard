@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import { UserInfo } from "../shared/models/auth.interface";
 import { Table } from "primeng/table";
 import { NotificationService } from "../shared/services/notifications/notification.service";
@@ -8,6 +8,8 @@ import {UsersService} from "../shared/services/users/users.service";
 import { AddServerFormComponent } from './add-server-form/add-server-form.component';
 import { ServerInfo } from '../shared/models/server.interface';
 import { ServersService } from '../shared/services/servers/servers.service';
+import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { RemoveOwnerComponent } from './remove-owner/remove-owner.component';
 
 @Component({
   selector: 'app-servers',
@@ -21,8 +23,10 @@ export class ServersComponent implements OnInit {
   tableOptions = [
     {label: 'Add Server', icon: 'pi pi-align-justify', command: () => { this.add(); } },
     {label: 'Import Servers', icon: 'pi pi-upload', command: () => { this.import(); } },
-    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.deleteAll();  } },
   ];
+
+
 
   loading: boolean = true;
 
@@ -30,157 +34,33 @@ export class ServersComponent implements OnInit {
 
 
 
-  servers: any;
+  servers: any =[];
 
-  selectedServers? : UserInfo[];
+  selectedServers? : ServerInfo[];
 
   constructor(private usersService: UsersService ,
               private notificationService:NotificationService,
               public confirmationService:ConfirmationService ,
               public messageService: MessageService ,
               private serversService : ServersService,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService,
+              ) { }
 
   ngOnInit(): void {
-    this.selectedServers = [{email:""}]
-    this.getUsers()
-    this.statuses = [
-      {label: 'public', value: '0'},
-      {label: 'private', value: '1'},
-
-    ]
-  }
-  parseFile(event:any){
-
-    let fileReader = new FileReader();
-    fileReader.onload = (e) => {
-    let data = fileReader.result as string;
-    data.replace("\t" , "");
-    let lines = data.split("\n")
-    lines.forEach(line =>{
-      let info = line.split(':');
-      let newServer = new ServerInfo();
-      newServer.login = info[0]
-      newServer.name = info[1]
-      newServer.password = info[2]
-      newServer.description = info[3]
-      newServer.type =  info[4]
-      this.serversService.createServer(newServer)
-          .subscribe({
-            next: (data)=>{
-              this.messageService.add({severity:'success', summary:'Server Added', detail:data.message})
-              this.getUsers()
-            },
-            error: (err)=>{
-              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
-            }
-          })
-
-    });
-    }
-    fileReader.readAsText(event.target.files[0]);
-  }
-
-  ngAfterViewInit() {
-    document.body.classList.add('users-background');
-  }
-
-  private import(){
-(<HTMLInputElement>document.getElementById("file")).click()
+    this.selectedServers = []
+    this.getServers()
 
   }
 
-  ngOnDestroy() {
-    document.body.classList.remove('users-background');
-  }
-
-  onDateSelect(value : any) {
-    // @ts-ignore
-    this.table.filter(this.formatDate(value), 'date', 'equals')
-  }
-
-  formatDate(date : any) {
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-
-    if (month < 10) {
-      month = '0' + month;
-    }
-
-    if (day < 10) {
-      day = '0' + day;
-    }
-
-    return date.getFullYear() + '-' + month + '-' + day;
-  }
 
   getValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
 
-  onRowSelect() {
+  onRowSelect($event: any) {
     console.log(this.selectedServers)
   }
 
-
-
-  private delete(id: number) {
-    this.serversService.deleteServer(id)
-      .subscribe({
-        next: (data)=>{
-          this.messageService.add({severity:'success', summary:'Server Deleted', detail:data.message})
-          this.servers = this.servers!.filter((user: { id: number; })=> {
-            return user.id !== id
-          });
-        },
-        error: (err)=> {
-          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
-        }
-      })
-  }
-
-  private update(user: UserInfo, field: string){
-    switch (field) {
-      case "null":
-        user.approved = field;
-        user.roles = [this.getRoles(user.roles)];
-        break;
-      case "approved":
-        user.approved = field
-        user.roles = [this.getRoles(user.roles)];
-        break;
-      case "admin":
-        user.approved = "approved"
-        user.roles = [field];
-        break;
-    }
-    this.usersService.updateUser(user)
-      .subscribe({
-        next: (data)=>{
-          this.messageService.add({severity:'success', summary:'User Updated', detail:data.message})
-          this.getUsers()
-        },
-        error: (err)=>{
-          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
-        }
-      })
-
-  }
-
-  getItems(Server: any) {
-    return [
-      {label: 'Make private', icon: 'pi pi-user-edit', command: () => {
-          this.update(Server,"private");
-        }
-      },
-
-
-      {label: 'Approve', icon: 'pi pi-check', command: () => {
-          this.update(Server,"public");
-        }
-      },
-    ];
-  }
 
   private add() {
     const ref = this.dialogService.open(AddServerFormComponent, {
@@ -193,7 +73,7 @@ export class ServersComponent implements OnInit {
           .subscribe({
             next: (data)=>{
               this.messageService.add({severity:'success', summary:'Server Added', detail:data.message})
-              this.getUsers()
+              this.getServers()
             },
             error: (err)=>{
               this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
@@ -203,46 +83,150 @@ export class ServersComponent implements OnInit {
     });
   }
 
+  private import(){
+    (<HTMLInputElement>document.getElementById("file")).click()
+    
+      }
   private deleteAll() {
       this.confirmationService.confirm({
         key:'confirmDialog',
         header: 'Delete Confirmation',
         message: this.selectedServers?.length+' servers will be deleted. Are you sure that you want to perform this action?',
         accept: () => {
-          this.selectedServers?.forEach((user)=>{
-            if (user.id != null) {
-              this.delete(user.id);
+          this.selectedServers?.forEach((server)=>{
+            if (server.id != null) {
+              this.serversService.deleteServer(server.id);
             }
           });
         },
       });
   }
+  
 
-
-
-  getRoles(role: any) {
-    if(role=="ROLE_USER")
-      return "user";
-    return "admin";
+  getMenuPublic(server : ServerInfo) 
+  {
+   return [
+      {label: 'Make Private', icon: 'pi pi-align-justify', command: () => { this.makePrivate(server); } },
+  
+      {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.delete(server.id!);  } },
+    ];
   }
 
-  private getUsers() {
-    this.serversService.getAllServers(false)
-      .subscribe({
-        next: (data) => {
-          data.forEach((server)=>{
-            let newServer : ServerInfo = server;
-            // @ts-ignore
+  getMenuPrivate(server : ServerInfo) 
+  {
+   return [
+    {label: 'Make Public', icon: 'pi pi-align-justify', command: () => { this.makePublic(server); } },
+    {label: 'Add Owner', icon: 'pi pi-align-justify', command: () => { this.addOwner(server); } },
+    {label: 'Remove Owner', icon: 'pi pi-align-justify', command: () => { this.removeOwner(server); } },
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.delete(server.id!);  } },
+  ];
+  }
 
-            // @ts-ignore
+  getServers() {
+    this.serversService.getAllServers(false).subscribe({
+      next:data =>
+    {
+      this.servers = data;
+      this.loading = false
+      console.log(this.servers);
+    },
+      error: err =>{
+        this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+      }
+  })
+  }
 
+  delete(id: number) {
+
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      message: 'Server will be deleted. Are you sure that you want to perform this action?',
+      accept: () => {
+        this.serversService.deleteServer(id)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
+       
+            },
+            error: (err)=> {
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
           });
-          this.loading = false;
-          //console.log(data);
-          this.servers = data;
-        },
-        error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
-      });
+      },
+    });
+  }
+
+
+
+  makePrivate(server: ServerInfo) {
+
+    this.serversService.makePrivate(server.id!).subscribe({
+      next:data =>
+    {
+
+      this.getServers();
+    },
+      error: err =>{
+        this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+      }
+  })
+  }
+
+  makePublic(server: ServerInfo) {
+    this.serversService.makePublic(server.id!).subscribe({
+      next:data =>
+    {
+      this.getServers();
+    },
+      error: err =>{
+        this.messageService.add({severity:"error",summary:"Error",detail:err.message})
+      }
+  })
+  }
+
+  private addOwner(server: ServerInfo) {
+    localStorage.setItem("ServerId",server.id!+"");
+    const ref2 = this.dialogService.open(AddOwnerComponent, {
+      header: 'Add Owner',
+      width: '50%'
+    });
+    ref2.onClose.subscribe((user : UserInfo) => {
+      if (user) {
+        this.serversService.addOwner(server.id!,user.id!)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Owner Added', detail:data.message})
+              this.getServers()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+      }
+    });
+  }
+
+  private removeOwner(server: ServerInfo) {
+    localStorage.setItem("ServerId",server.id!+"");
+    const ref3 = this.dialogService.open(RemoveOwnerComponent, {
+      header: 'Remove Owner',
+      width: '50%'
+    });
+    ref3.onClose.subscribe((user : UserInfo) => {
+      if (user) {
+        this.serversService.removeOwner(server.id!,user.id!)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Owner removed', detail:data.message})
+              this.getServers()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+      }
+    });
   }
 
 }
