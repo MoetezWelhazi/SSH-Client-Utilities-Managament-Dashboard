@@ -12,6 +12,8 @@ export interface Script {
   code?:string;
   type?:any;
   update?:any;
+  modifier?:string;
+  lastModifiedAt?: Date;
   shared?:UserInfo[];
 
 }
