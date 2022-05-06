@@ -51,6 +51,28 @@
           required
         />
       </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Last Modified By"
+          [value]="getAuthor(currentScript.modifier)"
+          type="text"
+          name="modifier"
+          readonly
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Last Modified On"
+          value="{{currentScript.lastModifiedAt| date: 'short'}}"
+          type="text"
+          name="createdAt"
+          readonly
+          required
+        />
+      </mat-form-field>
       <section class="full-width">
         <div
           class="app-ace-editor"
