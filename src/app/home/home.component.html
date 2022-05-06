@@ -111,7 +111,7 @@
         </mat-card-title>
         <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
         </span>
       </mat-card-header>
       <p-table #dt [value]="Executions"
@@ -120,9 +120,9 @@
                (onRowSelect)="onRowSelect($event)"
                styleClass="p-datatable-executions"
                [rowHover]="true"
-               [rows]="10"
+               [rows]="5"
                [showCurrentPageReport]="true"
-               [rowsPerPageOptions]="[10,25,50]"
+               [rowsPerPageOptions]="[5,10,25,50]"
                [loading]="loading"
                responsiveLayout="scroll"
                [paginator]="true"
