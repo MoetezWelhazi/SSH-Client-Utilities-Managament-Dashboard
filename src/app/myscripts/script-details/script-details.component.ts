@@ -19,7 +19,9 @@ export class ScriptDetailsComponent implements OnInit,AfterViewInit {
     if (value?.name) {
       this.originalTitle = value.name;
     }
+    if(!(value.name==""))
     this.selected = true
+    //console.log("SELECTED: "+this.selected + " SCRIPT: "+JSON.stringify(value))
     this.currentScript = Object.assign({}, value);
     this.aceEditor.session.setValue(this.currentScript.code);
     //console.log(JSON.stringify(this.currentScript))
