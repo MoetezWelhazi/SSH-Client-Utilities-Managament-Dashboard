@@ -10,6 +10,7 @@ import { MyScriptsComponent } from "./myscripts/my-scripts.component";
 import { AllscriptsComponent } from "./allscripts/allscripts.component";
 import {AdminGuard} from "./shared/guards/admin.guard";
 import { HistoryComponent } from './history/history.component';
+import {GroupsComponent} from "./groups/groups.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'myscripts' , component : MyScriptsComponent, canActivate: [AuthGuard] },
   { path: 'allscripts' , component : AllscriptsComponent, canActivate: [AuthGuard] },
   { path: 'history' , component : HistoryComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'groups', component : GroupsComponent, canActivate: [AuthGuard, AdminGuard]},
   { path: '**', component: AppComponent, canActivate: [AuthGuard] }
 ];
 

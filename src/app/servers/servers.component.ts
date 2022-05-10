@@ -85,7 +85,7 @@ export class ServersComponent implements OnInit {
 
   private import(){
     (<HTMLInputElement>document.getElementById("file")).click()
-    
+
       }
   private deleteAll() {
       this.confirmationService.confirm({
@@ -101,18 +101,21 @@ export class ServersComponent implements OnInit {
         },
       });
   }
-  
 
-  getMenuPublic(server : ServerInfo) 
+  dialogTrip: any;
+
+
+
+  getMenuPublic(server : ServerInfo)
   {
    return [
       {label: 'Make Private', icon: 'pi pi-align-justify', command: () => { this.makePrivate(server); } },
-  
+
       {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.delete(server.id!);  } },
     ];
   }
 
-  getMenuPrivate(server : ServerInfo) 
+  getMenuPrivate(server : ServerInfo)
   {
    return [
     {label: 'Make Public', icon: 'pi pi-align-justify', command: () => { this.makePublic(server); } },
@@ -147,7 +150,7 @@ export class ServersComponent implements OnInit {
           .subscribe({
             next: (data)=>{
               this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
-       
+
             },
             error: (err)=> {
               this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})

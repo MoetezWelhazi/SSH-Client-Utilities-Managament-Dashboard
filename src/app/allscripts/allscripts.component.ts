@@ -24,8 +24,8 @@ export class AllscriptsComponent implements OnInit {
   statuses: any[] = [];
 
   tableOptions = [
-    {label: 'Add script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
-    {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
+    {label: 'Upload Script', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
+    {label: 'Add Scripts to my list', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
     ];
 
   loading: boolean = true;
@@ -54,7 +54,7 @@ export class AllscriptsComponent implements OnInit {
     ]
     if(this.isAdmin())
     this.tableOptions =  [
-      {label: 'Add script', icon: 'pi pi-fw pi-plus', command: () => { this.add(); } },
+      {label: 'Upload Script', icon: 'pi pi-fw pi-plus', command: () => { this.add(); } },
       {label: 'Share Scripts', icon: 'pi pi-fw pi-user-plus', command: () => { this.sharedWith(); } },
       {label: 'Delete Scripts', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
       {label: 'Make Scripts Editable', icon: 'pi pi-fw pi-lock-open', command: () => { this.editableAll(); } },

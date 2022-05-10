@@ -1,0 +1,105 @@
+<mat-card>
+  <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+            <span>
+              List of Groups
+            </span>
+    </mat-card-title>
+    <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
+        </span>
+  </mat-card-header>
+  <p-table #dt [value]="groups"
+           dataKey="email"
+           [(selection)]="selectedGroups"
+           (onRowSelect)="onRowSelect()"
+           styleClass="p-datatable-users"
+           [rowHover]="true"
+           [rows]="10"
+           [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[5,10,25,50]"
+           [loading]="loading"
+           responsiveLayout="scroll"
+           [paginator]="true"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0"
+           [globalFilterFields]="['name','description','roles']">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">
+          <div class="flex justify-content-between align-items-center">
+            Id
+            <p-sortIcon field="id"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="name">
+          <div class="flex justify-content-between align-items-center">
+            Name
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="description">
+          <div class="flex justify-content-between align-items-center">
+            Description
+            <p-sortIcon field="description"></p-sortIcon>
+            <p-columnFilter type="text" field="description" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="size">
+          <div class="flex justify-content-between align-items-center">
+            Size
+            <p-sortIcon field="size"></p-sortIcon>
+          </div>
+        </th>
+        <th style="width: 8rem">
+          <div style="text-align: center">
+            <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
+                    (click)="menu.toggle($event)">
+            </button>
+            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-Group>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="Group" ></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="p-column-title">Id</span>
+          {{Group.id}}
+        </td>
+        <td>
+          <span class="p-column-title">Name</span>
+          {{Group.name}}
+        </td>
+        <td>
+          <span class="p-column-title">Description</span>
+          {{Group.description}}
+        </td>
+        <td>
+          <span class="p-column-title">Size</span>
+          {{getSize(Group)}}
+        </td>
+        <td style="text-align: center">
+          <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+                  (click)="menu.toggle($event)">
+          </button>
+          <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItems(Group)"></p-menu>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No groups found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</mat-card>
