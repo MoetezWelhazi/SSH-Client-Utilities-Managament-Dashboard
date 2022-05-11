@@ -19,7 +19,6 @@ export class AppComponent implements OnInit{
     { path: '/history' , icon : "history" , title : 'History', admin:true},
     { path: '/servers' , icon : "dns" , title : 'Servers', admin:true},
     { path: '/users', icon: 'person', title: 'Users' , admin:true},
-    { path: '/groups', icon: 'group', title: 'Groups', admin:true}
     ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));

@@ -6,6 +6,10 @@ import { DialogService } from "primeng/dynamicdialog";
 import { AdduserformComponent } from "./adduserform/adduserform.component";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {UsersService} from "../shared/services/users/users.service";
+import {MatTabChangeEvent} from "@angular/material/tabs";
+import {GroupsService} from "../shared/services/groups/groups.service";
+import {GroupInterface} from "../shared/models/group.interface";
+import {AddgroupformComponent} from "./addgroupform/addgroupform.component";
 
 @Component({
   selector: 'app-users',
@@ -23,23 +27,39 @@ export class UsersComponent implements OnInit {
     {label: 'Refuse Selected', icon: 'pi pi-fw pi-times', command: () => { this.refuseAll(); } },
   ];
 
+  groupOptions = [
+    {label: 'Add group', icon: 'pi pi-fw pi-users', command: () => { this.addG(); } },
+    {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAllG(); } },
+  ]
+
   loading: boolean = true;
 
   @ViewChild('dt') table: Table | undefined;
 
+  @ViewChild('gt') gTable: Table | undefined;
+
   users: UserInfo[] =[{email:""}];
 
+  groups: GroupInterface[] =[{id:0,name:"",members:[]}];
+
   selectedUsers? : UserInfo[];
+
+  selectedGroups? : GroupInterface[];
+
+  selectedTabIndex: any = 0;
 
   constructor(private usersService: UsersService ,
               private notificationService:NotificationService,
               public confirmationService:ConfirmationService ,
               public messageService: MessageService ,
+              public groupsService: GroupsService,
               public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.selectedUsers = [{email:""}]
+    this.selectedGroups = [{id:0,name:""}]
     this.getUsers()
+    this.getGroups()
     this.statuses = [
       {label: 'Approved', value: '1'},
       {label: 'Waiting', value: '0'},
@@ -79,6 +99,26 @@ export class UsersComponent implements OnInit {
 
   onRowSelect() {
     console.log(this.selectedUsers)
+  }
+
+  search(eventValue:any){
+    //console.log("CURRENT TAB: "+this.selectedTabIndex)
+    if(this.selectedTabIndex==0)
+    {
+      //console.log("CURRENT TAB: "+this.selectedTabIndex)
+      // @ts-ignore
+      this.table.filterGlobal(this.getValue(eventValue), 'contains')
+    }
+  }
+
+  tabChanged(tabChangeEvent: MatTabChangeEvent) {
+    //console.log('tabChangeEvent => ', tabChangeEvent);
+    //console.log('index => ', tabChangeEvent.index);
+    this.selectedTabIndex = tabChangeEvent.index;
+  }
+
+  getSize(group: any) {
+    return group.members.length
   }
 
   getStatus(status: any) {
@@ -249,6 +289,19 @@ export class UsersComponent implements OnInit {
     return "admin";
   }
 
+  private getGroups() {
+    this.groupsService.getAllGroups(false)
+      .subscribe({
+        next: (data) => {
+          this.loading = false;
+
+          console.log(data);
+          this.groups = data;
+        },
+        error: (e) => this.notificationService.warn("Error: "+e.error)
+      });
+  }
+
   private getUsers() {
     this.usersService.getAllUsers(false)
       .subscribe({
@@ -276,5 +329,114 @@ export class UsersComponent implements OnInit {
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
       });
+  }
+
+  //GROUPS
+  private deleteG(id: number, confirm:boolean) {
+    if (!confirm)
+      this.groupsService.deleteGroup(id)
+        .subscribe({
+          next: (data)=>{
+            this.messageService.add({severity:'success', summary:'Group Deleted', detail:data.message})
+            this.groups = this.groups.filter((group)=> {
+              return group.id !== id
+            });
+          },
+          error: (err)=> {
+            this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+          }
+        })
+    else
+      this.confirmationService.confirm({
+        key:'confirmDialog',
+        header: 'Delete Confirmation',
+        message: 'Group n°'+id+' will be deleted. Are you sure that you want to perform this action?',
+        accept: () => {
+          this.groupsService.deleteGroup(id)
+            .subscribe({
+              next: (data)=>{
+                this.messageService.add({severity:'success', summary:'Group Deleted', detail:data.message})
+                this.groups = this.groups.filter((group)=> {
+                  return group.id !== id
+                });
+              },
+              error: (err)=> {
+                this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+              }
+            });
+        },
+      });
+  }
+
+  private updateG(group: GroupInterface, field: string){
+    this.groupsService.updateGroup(group)
+      .subscribe({
+        next: (data)=>{
+          this.messageService.add({severity:'success', summary:'Group Updated', detail:data.message})
+          this.getGroups()
+        },
+        error: (err)=>{
+          this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+        }
+      })
+
+  }
+
+  getItemsG(Group: any) {
+    return [
+      {label: 'Rename', icon: 'pi pi-user-edit', command: () => {
+          this.updateG(Group,"admin");
+        }
+      },
+      {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
+          this.deleteG(Group.id,true);
+        }
+      },
+      {label: 'View Members', icon: 'pi pi-users', command: () => {
+          this.groupMembers();
+        }
+      },
+    ];
+  }
+
+  private addG() {
+    const ref = this.dialogService.open(AddgroupformComponent, {
+      header: 'Add Group',
+      width: '50%'
+    });
+    ref.onClose.subscribe((groupInfo : GroupInterface) => {
+      if (groupInfo) {
+        this.groupsService.createGroup(groupInfo)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Group Added', detail:data.message})
+              this.getGroups()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+      }
+    });
+  }
+
+  private deleteAllG() {
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      message: this.selectedGroups?.length+' groups will be deleted. Are you sure that you want to perform this action?',
+      accept: () => {
+        this.selectedGroups?.forEach((group)=>{
+          if (group.id != null) {
+            this.delete(group.id,false);
+          }
+        });
+      },
+    });
+  }
+
+
+  private groupMembers() {
+
   }
 }

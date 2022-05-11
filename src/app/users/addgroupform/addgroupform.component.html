@@ -1,0 +1,40 @@
+<form class="loginform" (submit)="addGroup()">
+  <mat-card-content>
+    <mat-form-field class="inputfield" appearance="fill">
+      <mat-label>Group Name</mat-label>
+      <input
+        matInput
+        placeholder="Group Name"
+        [(ngModel)]="group.name"
+        type="text"
+        required
+        name="name"
+        #name="ngModel"
+      />
+      <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+        <strong>Entrer un e-mail NeoXam valide</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="inputfield" appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Group Description..."
+        [(ngModel)]="group.description"
+        type="text"
+        required
+        name="description"
+        #description="ngModel"
+      ></textarea>
+      <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+        <strong>La description est obligatoire!</strong>
+      </mat-error>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button type="submit" [disabled]="((name.invalid)||(description.invalid))" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
+    <div class="vr mx-1"></div>
+    <button type="button" mat-raised-button class="cancel" color="accent" mat-dialog-close>Cancel</button>
+  </mat-card-actions>
+</form>
+

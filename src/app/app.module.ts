@@ -46,8 +46,7 @@ import { PreviewScriptComponent } from './allscripts/preview-script/preview-scri
 import { MatCardModule } from '@angular/material/card';
 import { AddOwnerComponent } from './servers/add-owner/add-owner.component';
 import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.component';
-import { GroupsComponent } from './groups/groups.component';
-import { AddgroupformComponent } from './groups/addgroupform/addgroupform.component';
+import { AddgroupformComponent } from './users/addgroupform/addgroupform.component';
 
 
 @NgModule({
@@ -93,7 +92,6 @@ import { AddgroupformComponent } from './groups/addgroupform/addgroupform.compon
     HistoryComponent,
     ExecutionDetailsComponent,
     PreviewScriptComponent,
-    GroupsComponent,
     AddgroupformComponent,
   ],
   providers: [
