@@ -17,8 +17,13 @@ export class AppComponent implements OnInit{
     { path: '/myscripts' , icon : "terminal" , title : 'My Scripts', admin:false},
     { path: '/allscripts' , icon : "terminal" , title : 'All Scripts', admin:false},
     { path: '/history' , icon : "history" , title : 'History', admin:true},
+<<<<<<< HEAD
     { path: '/servers' , icon : "dns" , title : 'Servers', admin:false},
     { path: '/users', icon: 'people', title: 'Users' , admin:true},
+=======
+    { path: '/servers' , icon : "dns" , title : 'Servers', admin:true},
+    { path: '/users', icon: 'person', title: 'Users' , admin:true},
+>>>>>>> d90327acb4e7b44b774cb30f1c7ea0c0cd1f778b
     ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));

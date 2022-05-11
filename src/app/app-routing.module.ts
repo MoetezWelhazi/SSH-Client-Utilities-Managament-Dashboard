@@ -8,7 +8,7 @@ import { UsersComponent } from "./users/users.component";
 import { ServersComponent } from './servers/servers.component';
 import { MyScriptsComponent } from "./myscripts/my-scripts.component";
 import { AllscriptsComponent } from "./allscripts/allscripts.component";
-import {AdminGuard} from "./shared/guards/admin.guard";
+import { AdminGuard } from "./shared/guards/admin.guard";
 import { HistoryComponent } from './history/history.component';
 
 const routes: Routes = [

@@ -1,5 +1,3 @@
-<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
-<h1 mat-dialog-title>Add User</h1>
 <form class="loginform" (submit)="addUser()">
   <mat-card-content>
     <mat-form-field class="inputfield" appearance="fill">
@@ -8,10 +6,10 @@
         matInput
         placeholder="Email"
         [(ngModel)]="userInfo.email"
-        type="email"
+        type="name"
         required
         pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@(neoxam|gmail)\.com)?"
-        name="email"
+        name="name"
         #email="ngModel"
       />
       <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
@@ -31,7 +29,7 @@
         [type]="hide ? 'password' : 'text'"
         #passwordA = "ngModel"
       />
-      <button mat-icon-button matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <button mat-icon-button type="button" matSuffix (click)="hide = !hide;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
         <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
       <mat-hint>Minimum length is 8</mat-hint>

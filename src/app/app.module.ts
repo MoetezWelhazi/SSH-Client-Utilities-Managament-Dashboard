@@ -46,6 +46,7 @@ import { PreviewScriptComponent } from './allscripts/preview-script/preview-scri
 import { MatCardModule } from '@angular/material/card';
 import { AddOwnerComponent } from './servers/add-owner/add-owner.component';
 import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.component';
+import { AddgroupformComponent } from './users/addgroupform/addgroupform.component';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.compon
     HistoryComponent,
     ExecutionDetailsComponent,
     PreviewScriptComponent,
+    AddgroupformComponent,
   ],
   providers: [
     AuthService,

@@ -7,130 +7,228 @@
     </mat-card-title>
     <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Search..." />
-        </span>
+              <input pInputText type="text" (input)="search($event)" placeholder="Search..." />
+    </span>
   </mat-card-header>
-  <p-table #dt [value]="users"
-           dataKey="email"
-           [(selection)]="selectedUsers"
-           (onRowSelect)="onRowSelect()"
-           styleClass="p-datatable-users"
-           [rowHover]="true"
-           [rows]="10"
-           [showCurrentPageReport]="true"
-           [rowsPerPageOptions]="[5,10,25,50]"
-           [loading]="loading"
-           responsiveLayout="scroll"
-           [paginator]="true"
-           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-           [filterDelay]="0"
-           [globalFilterFields]="['email','trigramme','roles']">
+  <mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
+      <p-table #dt [value]="users"
+             dataKey="id"
+             [(selection)]="selectedUsers"
+             (onRowSelect)="onRowSelect()"
+             styleClass="p-datatable-users"
+             [rowHover]="true"
+             [rows]="10"
+             [showCurrentPageReport]="true"
+             [rowsPerPageOptions]="[5,10,25,50]"
+             [loading]="loading"
+             responsiveLayout="scroll"
+             [paginator]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0"
+             [globalFilterFields]="['email','trigramme','roles']">
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th>
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th pSortableColumn="id">
-          <div class="flex justify-content-between align-items-center">
-            Id
-            <p-sortIcon field="id"></p-sortIcon>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="id">
+            <div class="flex justify-content-between align-items-center">
+              Id
+              <p-sortIcon field="id"></p-sortIcon>
+            </div>
+          </th>
+          <th pSortableColumn="email">
+            <div class="flex justify-content-between align-items-center">
+              Email
+              <p-sortIcon field="email"></p-sortIcon>
+              <p-columnFilter type="text" field="email" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="trigramme">
+            <div class="flex justify-content-between align-items-center">
+              Trigram
+              <p-sortIcon field="trigramme"></p-sortIcon>
+              <p-columnFilter type="text" field="trigramme" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="roles">
+            <div class="flex justify-content-between align-items-center">
+              Roles
+              <p-sortIcon field="roles"></p-sortIcon>
+              <p-columnFilter type="text" field="roles" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="createdAt">
+            <div class="flex justify-content-between align-items-center">
+              Join Date
+              <p-sortIcon field="createdAt"></p-sortIcon>
+              <p-columnFilter type="date" field="createdAt" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="approved">
+            <div class="flex justify-content-between align-items-center">
+              Status
+              <p-sortIcon field="approved"></p-sortIcon>
+              <p-columnFilter field="approved" matchMode="equals" display="menu" class="ml-auto">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
+                    <ng-template let-option pTemplate="item">
+                      <span [class]="'user-badge status-' + option.value">{{option.label}}</span>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+          <th style="width: 8rem">
+          <div style="text-align: center">
+            <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
+                    (click)="menu.toggle($event)">
+            </button>
+            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
           </div>
-        </th>
-        <th pSortableColumn="email">
-          <div class="flex justify-content-between align-items-center">
-            Email
-            <p-sortIcon field="email"></p-sortIcon>
-            <p-columnFilter type="text" field="email" display="menu" class="ml-auto"></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="trigramme">
-          <div class="flex justify-content-between align-items-center">
-            Trigram
-            <p-sortIcon field="trigramme"></p-sortIcon>
-            <p-columnFilter type="text" field="trigramme" display="menu" class="ml-auto"></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="roles">
-          <div class="flex justify-content-between align-items-center">
-            Roles
-            <p-sortIcon field="roles"></p-sortIcon>
-            <p-columnFilter type="text" field="roles" display="menu" class="ml-auto"></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="createdAt">
-          <div class="flex justify-content-between align-items-center">
-            Join Date
-            <p-sortIcon field="createdAt"></p-sortIcon>
-            <p-columnFilter type="date" field="createdAt" display="menu" class="ml-auto"></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="approved">
-          <div class="flex justify-content-between align-items-center">
-            Status
-            <p-sortIcon field="approved"></p-sortIcon>
-            <p-columnFilter field="approved" matchMode="equals" display="menu" class="ml-auto">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
-                  <ng-template let-option pTemplate="item">
-                    <span [class]="'user-badge status-' + option.value">{{option.label}}</span>
-                  </ng-template>
-                </p-dropdown>
-              </ng-template>
-            </p-columnFilter>
-          </div>
-        </th>
-        <th style="width: 8rem">
-        <div style="text-align: center">
-          <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
-                  (click)="menu.toggle($event)">
-          </button>
-          <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
-        </div>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-User>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="User" ></p-tableCheckbox>
-        </td>
-        <td>
-          <span class="p-column-title">Id</span>
-          {{User.id}}
-        </td>
-        <td>
-          <span class="p-column-title">Email</span>
-          {{User.email}}
-        </td>
-        <td>
-          <span class="p-column-title">Trigram</span>
-          {{User.trigramme}}
-        </td>
-        <td>
-          <span class="p-column-title">Roles</span>
-          {{getRoles(User.roles) | uppercase}}
-        </td>
-        <td>
-          <span class="p-column-title">Date</span>
-          {{User.createdAt | date: 'short'}}
-        </td>
-        <td>
-          <span class="p-column-title">Status</span>
-          <span [class]="'user-badge status-' + User.approved">{{getStatus(User.approved)}}</span>
-        </td>
-        <td style="text-align: center">
-          <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
-                  (click)="menu.toggle($event)">
-          </button>
-          <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItems(User)"></p-menu>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="8">No users found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-User>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="User" ></p-tableCheckbox>
+          </td>
+          <td>
+            <span class="p-column-title">Id</span>
+            {{User.id}}
+          </td>
+          <td>
+            <span class="p-column-title">Email</span>
+            {{User.email}}
+          </td>
+          <td>
+            <span class="p-column-title">Trigram</span>
+            {{User.trigramme}}
+          </td>
+          <td>
+            <span class="p-column-title">Roles</span>
+            {{getRoles(User.roles) | uppercase}}
+          </td>
+          <td>
+            <span class="p-column-title">Date</span>
+            {{User.createdAt | date: 'short'}}
+          </td>
+          <td>
+            <span class="p-column-title">Status</span>
+            <span [class]="'user-badge status-' + User.approved">{{getStatus(User.approved)}}</span>
+          </td>
+          <td style="text-align: center">
+            <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+                    (click)="menu.toggle($event)">
+            </button>
+            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItems(User)"></p-menu>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8">No users found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </mat-tab>
+    <mat-tab><ng-template mat-tab-label><div class="display-6">Groups</div></ng-template>
+      <p-table #gt [value]="groups"
+               dataKey="name"
+               [(selection)]="selectedGroups"
+               (onRowSelect)="onRowSelect()"
+               styleClass="p-datatable-users"
+               [rowHover]="true"
+               [rows]="10"
+               [showCurrentPageReport]="true"
+               [rowsPerPageOptions]="[5,10,25,50]"
+               [loading]="loading"
+               responsiveLayout="scroll"
+               [paginator]="true"
+               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [filterDelay]="0"
+               [globalFilterFields]="['name','description']">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="id">
+              <div class="flex justify-content-between align-items-center">
+                Id
+                <p-sortIcon field="id"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="name">
+              <div class="flex justify-content-between align-items-center">
+                Name
+                <p-sortIcon field="name"></p-sortIcon>
+                <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="description">
+              <div class="flex justify-content-between align-items-center">
+                Description
+                <p-sortIcon field="description"></p-sortIcon>
+                <p-columnFilter type="text" field="description" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="size">
+              <div class="flex justify-content-between align-items-center">
+                Size
+                <p-sortIcon field="size"></p-sortIcon>
+              </div>
+            </th>
+            <th style="width: 8rem">
+              <div style="text-align: center">
+                <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
+                        (click)="menu.toggle($event)">
+                </button>
+                <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="groupOptions"></p-menu>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-Group>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="Group" ></p-tableCheckbox>
+            </td>
+            <td>
+              <span class="p-column-title">Id</span>
+              {{Group.id}}
+            </td>
+            <td>
+              <span class="p-column-title">Name</span>
+              {{Group.name}}
+            </td>
+            <td>
+              <span class="p-column-title">Description</span>
+              {{Group.description}}
+            </td>
+            <td>
+              <span class="p-column-title">Size</span>
+              {{getSize(Group) }}
+            </td>
+            <td style="text-align: center">
+              <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+                      (click)="menu.toggle($event)">
+              </button>
+              <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItemsG(Group)"></p-menu>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">No groups found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>

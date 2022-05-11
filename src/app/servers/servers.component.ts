@@ -124,7 +124,7 @@ export class ServersComponent implements OnInit {
 
   private import(){
     (<HTMLInputElement>document.getElementById("file")).click()
-    
+
       }
   private deleteAll() {
     if(this.selectedServers){
@@ -149,6 +149,7 @@ export class ServersComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
       
  
   
@@ -156,20 +157,31 @@ export class ServersComponent implements OnInit {
 this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xlsx"))
   }
   getMenuPublic(server : ServerInfo) 
+=======
+  dialogTrip: any;
+
+
+
+  getMenuPublic(server : ServerInfo)
+>>>>>>> d90327acb4e7b44b774cb30f1c7ea0c0cd1f778b
   {
    return [
       {label: 'Make Private', icon: 'pi pi-align-justify', command: () => { this.makePrivate(server); } },
-  
+
       {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.delete(server.id!);  } },
     ];
   }
 
+<<<<<<< HEAD
   isAdmin():boolean{
     // @ts-ignore
     return this.tokenStorageService.getUser().roles.includes("ROLE_ADMIN")
   }
 
   getMenuPrivate(server : ServerInfo) 
+=======
+  getMenuPrivate(server : ServerInfo)
+>>>>>>> d90327acb4e7b44b774cb30f1c7ea0c0cd1f778b
   {
    return [
     {label: 'Make Public', icon: 'pi pi-align-justify', command: () => { this.makePublic(server); } },
@@ -204,7 +216,7 @@ this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xls
           .subscribe({
             next: (data)=>{
               this.messageService.add({severity:'success', summary:'User Deleted', detail:data.message})
-       
+
             },
             error: (err)=> {
               this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
