@@ -55,10 +55,14 @@
 
         <th style="width: 8rem">
           <div style="text-align: center">
-            <button pButton type="button" class="p-button-secondary" icon="pi pi-bars" (click)="menu.toggle($event)">
+            <button *ngIf="isAdmin()" pButton type="button" class="p-button-secondary" icon="pi pi-bars" (click)="menu1.toggle($event)">
             </button>
-            <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'"
-              [hideTransitionOptions]="'125ms'" [model]="tableOptions"></p-menu>
+            <button *ngIf="!isAdmin()" pButton type="button" class="p-button-secondary" icon="pi pi-bars" (click)="menu2.toggle($event)">
+            </button>
+            <p-menu #menu1 [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'"
+              [hideTransitionOptions]="'125ms'" [model]="tableOptionsAdmin"></p-menu>
+              <p-menu #menu2 [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'"
+              [hideTransitionOptions]="'125ms'" [model]="tableOptionsUser"></p-menu>
           </div>
         </th>
       </tr>
@@ -84,7 +88,7 @@
           <span class="p-column-title">type</span>
           {{Server.type}}
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="isAdmin()">
           <button *ngIf="Server.type == 'Public' "  pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
           (click)=" menu1.toggle($event)">
   </button>
@@ -104,3 +108,5 @@
   </p-table>
 
 </mat-card>
+
+<input hidden type="file" (change)="parseFile($event)" id="file">

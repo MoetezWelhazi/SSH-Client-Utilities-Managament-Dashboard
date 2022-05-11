@@ -12,17 +12,24 @@ import { UsersService } from 'src/app/shared/services/users/users.service';
 })
 export class RemoveOwnerComponent implements OnInit {
   userlist :UserInfo[] = []
+  selectedUsers? : UserInfo[];
+  loading: boolean = true;
   constructor(private usersService: UsersService,private notificationService:NotificationService,public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
   ngOnInit(): void {
     this.getUsers();
   }
 
-  removeOwner(user: UserInfo) {
-    this.ref.close(user);
+  removeOwner() {
+    this.ref.close(this.selectedUsers);
   }
-
+  getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
  
+  onRowSelect() {
+    //console.log(this.selectedUsers)
+  }
   
 
   private getUsers() {
@@ -33,6 +40,7 @@ export class RemoveOwnerComponent implements OnInit {
           this.userlist = data;
           console.log("list of owners");
           console.log(data);
+          this.loading = false;
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
       });

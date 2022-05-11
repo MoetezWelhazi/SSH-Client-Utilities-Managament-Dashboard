@@ -15,6 +15,9 @@ export class AddOwnerComponent implements OnInit {
   selectedValue:any;
   userlist :UserInfo[] = []
   message:any
+  selectedUsers? : UserInfo[];
+
+  loading: boolean = true;
 
   constructor(private usersService: UsersService,private notificationService:NotificationService,public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
@@ -22,11 +25,17 @@ export class AddOwnerComponent implements OnInit {
     this.getUsers();
   }
 
-  addOwner(user: UserInfo) {
-    this.ref.close(user);
+  addOwner() {
+    this.ref.close(this.selectedUsers);
   }
 
- 
+  onRowSelect() {
+    //console.log(this.selectedUsers)
+  }
+
+  getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
   
 
   private getUsers() {
@@ -36,6 +45,7 @@ export class AddOwnerComponent implements OnInit {
         next: (data) => {
           this.userlist = data;
           console.log(data);
+          this.loading = false;
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
       });

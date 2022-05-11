@@ -24,6 +24,14 @@ export class ServersService {
     return this.http.get<ServerInfo[]>(this.getUrl());
   }
 
+  getServerPerUser() {
+    return this.http.get<ServerInfo[]>(this.getUrl()+"/PerUser");
+  }
+
+  exportExcel() {
+    return this.http.get(this.getUrl()+"/Export", {responseType: 'blob'});
+  }
+
   createServer(user: ServerInfo) {
     return this.http.post<any>(this.getUrl(), user);
   }
@@ -52,6 +60,7 @@ export class ServersService {
 
 
   deleteServer(id: number) {
+    console.log("delete " ,this.getUrlWithID(id) );
     return this.http.delete<any>(this.getUrlWithID(id));
   }
 
