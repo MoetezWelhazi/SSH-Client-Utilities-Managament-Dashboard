@@ -149,21 +149,13 @@ export class ServersComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-      
- 
-  
-  export() {
-this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xlsx"))
-  }
-  getMenuPublic(server : ServerInfo) 
-=======
   dialogTrip: any;
 
-
+  export() {
+    this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xlsx"))
+      }
 
   getMenuPublic(server : ServerInfo)
->>>>>>> d90327acb4e7b44b774cb30f1c7ea0c0cd1f778b
   {
    return [
       {label: 'Make Private', icon: 'pi pi-align-justify', command: () => { this.makePrivate(server); } },
@@ -172,16 +164,13 @@ this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xls
     ];
   }
 
-<<<<<<< HEAD
   isAdmin():boolean{
     // @ts-ignore
     return this.tokenStorageService.getUser().roles.includes("ROLE_ADMIN")
   }
 
-  getMenuPrivate(server : ServerInfo) 
-=======
+
   getMenuPrivate(server : ServerInfo)
->>>>>>> d90327acb4e7b44b774cb30f1c7ea0c0cd1f778b
   {
    return [
     {label: 'Make Public', icon: 'pi pi-align-justify', command: () => { this.makePublic(server); } },
