@@ -23,7 +23,7 @@
           [(ngModel)]="serverInfo.password"
           type="password"
           required
-          minlength="8"
+          minlength="5"
           name="password"
           [type]="hide ? 'password' : 'text'"
           #password = "ngModel"
@@ -77,5 +77,4 @@
           <button type="submit" [disabled]="(password.invalid)||(name.invalid)||(login.invalid)" class="px-c" mat-raised-button color="accent" style="color: white">Add</button>
     </mat-card-actions>
   </form>
-  
-  
+
