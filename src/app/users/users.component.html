@@ -1,10 +1,5 @@
 <mat-card>
   <mat-card-header style="justify-content:space-between">
-    <mat-card-title>
-            <span>
-              List of Users
-            </span>
-    </mat-card-title>
     <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="search($event)" placeholder="Search..." />
@@ -15,7 +10,7 @@
       <p-table #dt [value]="users"
              dataKey="id"
              [(selection)]="selectedUsers"
-             (onRowSelect)="onRowSelect()"
+             (onRowSelect)="onRowSelect('users')"
              styleClass="p-datatable-users"
              [rowHover]="true"
              [rows]="10"
@@ -140,9 +135,8 @@
       <p-table #gt [value]="groups"
                dataKey="name"
                [(selection)]="selectedGroups"
-               (onRowSelect)="onRowSelect()"
+               (onRowSelect)="onRowSelect('groups')"
                styleClass="p-datatable-users"
-               [rowHover]="true"
                [rows]="10"
                [showCurrentPageReport]="true"
                [rowsPerPageOptions]="[5,10,25,50]"
@@ -155,6 +149,7 @@
 
         <ng-template pTemplate="header">
           <tr>
+            <th style="width: 3rem"></th>
             <th>
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
@@ -194,8 +189,11 @@
             </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-Group>
+        <ng-template pTemplate="body" let-Group let-expanded="expanded">
           <tr>
+            <td>
+              <button type="button" pButton pRipple [pRowToggler]="Group" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            </td>
             <td>
               <p-tableCheckbox [value]="Group" ></p-tableCheckbox>
             </td>
@@ -220,6 +218,61 @@
                       (click)="menu.toggle($event)">
               </button>
               <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItemsG(Group)"></p-menu>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-Group>
+          <tr>
+            <td colspan="8">
+              <div>
+                <p-table [value]="Group.members"
+                         dataKey="dk"
+                         (onRowSelect)="onRowSelect('members')"
+                         [(selection)]="selectedMembers"
+                         [rowHover]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width:3rem"></th>
+                      <th pSortableColumn="dk">DataKey <p-sortIcon field="dk"></p-sortIcon></th>
+                      <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                      <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                      <th pSortableColumn="trigram">Trigram <p-sortIcon field="trigram"></p-sortIcon></th>
+                      <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+                      <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+                      <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                      <th style="width: 4rem"></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-member>
+                    <tr>
+                      <td><p-tableCheckbox [value]="member"></p-tableCheckbox></td>
+                      <td>{{member.dk}}</td>
+                      <td>{{member.id}}</td>
+                      <td>{{member.email}}</td>
+                      <td>{{member.trigramme}}</td>
+                      <td><span class="p-column-title">Roles</span>
+                        {{getRoles(member.roles) | uppercase}}
+                      </td>
+                      <td>{{member.createdAt | date: 'short' }}</td>
+                      <td>
+                        <span class="p-column-title">Status</span>
+                        <span [class]="'user-badge status-' + (member.approved ?'1':'0')">{{getStatus(member.approved)}}</span>
+                      </td>
+                      <td><button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
+                                  (click)="menu.toggle($event)">
+                      </button>
+                        <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItemsM(member)"></p-menu>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="6">This group is empty.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
             </td>
           </tr>
         </ng-template>

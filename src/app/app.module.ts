@@ -47,6 +47,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AddOwnerComponent } from './servers/add-owner/add-owner.component';
 import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.component';
 import { AddgroupformComponent } from './users/addgroupform/addgroupform.component';
+import { AddtogroupformComponent } from './users/addtogroupform/addtogroupform.component';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { AddgroupformComponent } from './users/addgroupform/addgroupform.compone
     ExecutionDetailsComponent,
     PreviewScriptComponent,
     AddgroupformComponent,
+    AddtogroupformComponent,
   ],
   providers: [
     AuthService,

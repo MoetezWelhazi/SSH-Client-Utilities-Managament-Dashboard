@@ -36,6 +36,14 @@ export class GroupsService {
     return this.http.delete<any>(this.getUrlWithID(id));
   }
 
+  addToGroup(gid:any,uid:any){
+    return this.http.put<any>(this.getUrlWithID(gid), {ids:[uid]})
+  }
+
+  removeFromGroup(gid:number,uid:any){
+    return this.http.put<any>(this.getUrlWithID(gid)+"/delete", {ids:[uid]})
+  }
+
   private getUrl() {
     return `${BASE_URL}/${this.model}`;
   }

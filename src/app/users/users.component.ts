@@ -10,6 +10,10 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 import {GroupsService} from "../shared/services/groups/groups.service";
 import {GroupInterface} from "../shared/models/group.interface";
 import {AddgroupformComponent} from "./addgroupform/addgroupform.component";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ShareScriptsComponent} from "../allscripts/share-scripts/share-scripts.component";
+import {finalize} from "rxjs";
+import {AddtogroupformComponent} from "./addtogroupform/addtogroupform.component";
 
 @Component({
   selector: 'app-users',
@@ -23,8 +27,9 @@ export class UsersComponent implements OnInit {
   tableOptions = [
     {label: 'Add user', icon: 'pi pi-fw pi-user-plus', command: () => { this.add(); } },
     {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => { this.deleteAll(); } },
-    {label: 'Approve Selected', icon: 'pi pi-fw pi-users', command: () => { this.approveAll(); } },
+    {label: 'Approve Selected', icon: 'pi pi-fw pi-check', command: () => { this.approveAll(); } },
     {label: 'Refuse Selected', icon: 'pi pi-fw pi-times', command: () => { this.refuseAll(); } },
+    {label: 'Add to group', icon: 'pi pi-fw pi-users', command: () => { this.addToGroup(); } },
   ];
 
   groupOptions = [
@@ -44,6 +49,8 @@ export class UsersComponent implements OnInit {
 
   selectedUsers? : UserInfo[];
 
+  selectedMembers? : UserInfo[];
+
   selectedGroups? : GroupInterface[];
 
   selectedTabIndex: any = 0;
@@ -53,11 +60,13 @@ export class UsersComponent implements OnInit {
               public confirmationService:ConfirmationService ,
               public messageService: MessageService ,
               public groupsService: GroupsService,
+              public dialog: MatDialog,
               public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.selectedUsers = [{email:""}]
-    this.selectedGroups = [{id:0,name:""}]
+    this.selectedMembers = [{email:""}]
+    this.selectedGroups = [{name:""}]
     this.getUsers()
     this.getGroups()
     this.statuses = [
@@ -97,8 +106,15 @@ export class UsersComponent implements OnInit {
     return (event.target as HTMLInputElement).value;
   }
 
-  onRowSelect() {
-    console.log(this.selectedUsers)
+  onRowSelect(type:string) {
+    switch (type) {
+      case "members": console.log(this.selectedMembers)
+        break;
+      case "groups": console.log(this.selectedGroups)
+        break;
+      case "users": console.log(this.selectedUsers)
+    }
+    //console.log(this.selectedUsers)
   }
 
   search(eventValue:any){
@@ -109,6 +125,7 @@ export class UsersComponent implements OnInit {
       // @ts-ignore
       this.table.filterGlobal(this.getValue(eventValue), 'contains')
     }
+    else this.gTable?.filterGlobal(this.getValue(eventValue), 'contains')
   }
 
   tabChanged(tabChangeEvent: MatTabChangeEvent) {
@@ -138,6 +155,7 @@ export class UsersComponent implements OnInit {
           this.users = this.users.filter((user)=> {
             return user.id !== id
           });
+          this.getGroups()
         },
         error: (err)=> {
           this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
@@ -289,19 +307,6 @@ export class UsersComponent implements OnInit {
     return "admin";
   }
 
-  private getGroups() {
-    this.groupsService.getAllGroups(false)
-      .subscribe({
-        next: (data) => {
-          this.loading = false;
-
-          console.log(data);
-          this.groups = data;
-        },
-        error: (e) => this.notificationService.warn("Error: "+e.error)
-      });
-  }
-
   private getUsers() {
     this.usersService.getAllUsers(false)
       .subscribe({
@@ -332,33 +337,51 @@ export class UsersComponent implements OnInit {
   }
 
   //GROUPS
-  private deleteG(id: number, confirm:boolean) {
-    if (!confirm)
-      this.groupsService.deleteGroup(id)
+
+  private getGroups() {
+    this.groupsService.getAllGroups(false)
+      .subscribe({
+        next: (data) => {
+          this.loading = false;
+          this.groups = data;
+          this.groups.map(group=>{
+            let members: any[] = []
+            group.members?.map(member=>{
+              members.push({dk:group.id+"-"+member.id,id:member.id,email:member.email,trigramme:member.trigramme,roles:member.roles,createdAt:member.createdAt,approved:member.approved,gid:group.id})
+            })
+            group.members = members
+            console.log("Group n°"+group.id+" members: "+JSON.stringify(group.members))
+          })
+          console.log(this.groups);
+        },
+        error: (e) => this.notificationService.warn("Error: "+e.error)
+      });
+  }
+
+  private deleteG(group: any, confirm:boolean) {
+    if (!confirm) {
+      this.emptyGroup(group,false)
+      this.groupsService.deleteGroup(group.id)
         .subscribe({
-          next: (data)=>{
-            this.messageService.add({severity:'success', summary:'Group Deleted', detail:data.message})
-            this.groups = this.groups.filter((group)=> {
-              return group.id !== id
-            });
+          next: (data) => {
+            this.messageService.add({severity: 'success', summary: 'Group Deleted', detail: data.message})
           },
-          error: (err)=> {
-            this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+          error: (err) => {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: err.error.message})
           }
         })
+    }
     else
       this.confirmationService.confirm({
         key:'confirmDialog',
         header: 'Delete Confirmation',
-        message: 'Group n°'+id+' will be deleted. Are you sure that you want to perform this action?',
+        message: 'Group n°'+group.id+' will be deleted. Are you sure that you want to perform this action?',
         accept: () => {
-          this.groupsService.deleteGroup(id)
+          this.emptyGroup(group,false)
+          this.groupsService.deleteGroup(group.id)
             .subscribe({
               next: (data)=>{
                 this.messageService.add({severity:'success', summary:'Group Deleted', detail:data.message})
-                this.groups = this.groups.filter((group)=> {
-                  return group.id !== id
-                });
               },
               error: (err)=> {
                 this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
@@ -388,12 +411,21 @@ export class UsersComponent implements OnInit {
           this.updateG(Group,"admin");
         }
       },
-      {label: 'Delete', icon: 'pi pi-fw pi-user-minus', command: () => {
-          this.deleteG(Group.id,true);
+      {label: 'Empty Group', icon: 'pi pi-user-minus', command: () => {
+          this.emptyGroup(Group,true);
         }
       },
-      {label: 'View Members', icon: 'pi pi-users', command: () => {
-          this.groupMembers();
+      {label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => {
+          this.deleteG(Group, true);
+        }
+      },
+    ];
+  }
+
+  getItemsM(member: any) {
+    return [
+      {label: 'Remove From Group', icon: 'pi pi-user-edit', command: () => {
+          this.removeFromGroup(member,true);
         }
       },
     ];
@@ -435,8 +467,77 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  private getIds(){
+    let ids:any[] = []
+    this.selectedUsers?.map(user=>{
+      if(user.id)
+      ids.push(user.id)
+    })
+    return ids
+  }
 
-  private groupMembers() {
+  private addToGroup() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = "material-popup"
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {scripts: this.selectedUsers};
+    let dialogRef = this.dialog.open(AddtogroupformComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(finalize(()=>this.getGroups())).subscribe(result =>{
+      result.groups.map((group:GroupInterface)=>{
+        if(group.id)
+        {
+          console.log("IDS ARRAYS: "+this.getIds())
+          this.getIds().map(id=>{
+            this.groupsService.addToGroup(group.id,id).subscribe(
+              {
+                next:(data)=>{
+                  this.messageService.add({severity:'success', summary:'Group Updated', detail: "User n°"+id+" added successfully to Group n°"+group.id})
+                },
+                error:(err)=>{
+                  this.messageService.add({severity:'error', summary:'Error',detail:"Couldn't add User n°"+id+" to Group n°"+group.id+":\n"+err.error.message})
+                }
+              }
+            )
+          })
+
+        }
+      })
+    })
+
+  }
+
+  private removeFromGroup(member:any,notify:boolean){
+    this.groupsService.removeFromGroup(member.gid,member.id).subscribe(
+      {
+        next:(data)=>{
+          if(notify)
+          this.messageService.add({severity:'success', summary:'Group Updated', detail: "User n°"+member.id+" removed successfully from Group n°"+member.gid})
+        },
+        error:(err)=>{
+          this.messageService.add({severity:'error', summary:'Error',detail:"Something went wrong with removing User n°"+member.id+" from Group n°"+member.gid+":\n"+err.error.message})
+        }
+      }
+    )
+  }
+
+  private emptyGroup(group:any,notify:boolean){
+    if(notify)
+    this.confirmationService.confirm({
+      key:'confirmDialog',
+      header: 'Delete Confirmation',
+      message: 'Group n°'+group.id+' will be emptied. Are you sure that you want to perform this action?',
+      accept: () => {
+        group.members.forEach((member:any)=>{
+          this.removeFromGroup(member,true)
+          this.getGroups()
+        })
+      },
+    });
+    else group.members.forEach((member:any)=>{
+      this.removeFromGroup(member,false)
+      this.getGroups()
+    })
 
   }
 }
