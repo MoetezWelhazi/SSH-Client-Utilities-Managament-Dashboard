@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'auth', component: AuthenticateComponent },
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard,AdminGuard] },
-  { path: 'servers' , component : ServersComponent , canActivate : [AuthGuard,AdminGuard] },
+  { path: 'servers' , component : ServersComponent , canActivate : [AuthGuard] },
   { path: 'myscripts' , component : MyScriptsComponent, canActivate: [AuthGuard] },
   { path: 'allscripts' , component : AllscriptsComponent, canActivate: [AuthGuard] },
   { path: 'history' , component : HistoryComponent, canActivate: [AuthGuard, AdminGuard] },

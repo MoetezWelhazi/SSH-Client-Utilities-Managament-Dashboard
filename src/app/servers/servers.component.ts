@@ -10,6 +10,8 @@ import { ServerInfo } from '../shared/models/server.interface';
 import { ServersService } from '../shared/services/servers/servers.service';
 import { AddOwnerComponent } from './add-owner/add-owner.component';
 import { RemoveOwnerComponent } from './remove-owner/remove-owner.component';
+import { TokenStorageService } from '../shared/services/auth/token-storage.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-servers',
@@ -20,12 +22,18 @@ export class ServersComponent implements OnInit {
 
   statuses: any[] = [];
 
-  tableOptions = [
+  tableOptionsAdmin = [
     {label: 'Add Server', icon: 'pi pi-align-justify', command: () => { this.add(); } },
     {label: 'Import Servers', icon: 'pi pi-upload', command: () => { this.import(); } },
+    {label: 'Export Servers', icon: 'pi pi-fw pi-download', command: () => {this.export();  } },
     {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.deleteAll();  } },
   ];
 
+  tableOptionsUser = [
+    {label: 'Add Server', icon: 'pi pi-align-justify', command: () => { this.add(); } },
+    {label: 'Import Servers', icon: 'pi pi-upload', command: () => { this.import(); } },
+    {label: 'Export Servers', icon: 'pi pi-download', command: () => {this.export();  } },
+  ];
 
 
   loading: boolean = true;
@@ -36,11 +44,12 @@ export class ServersComponent implements OnInit {
 
   servers: any =[];
 
-  selectedServers? : ServerInfo[];
+  selectedServers? : ServerInfo[]=[];
 
   constructor(private usersService: UsersService ,
               private notificationService:NotificationService,
               public confirmationService:ConfirmationService ,
+              private tokenStorageService: TokenStorageService,
               public messageService: MessageService ,
               private serversService : ServersService,
               public dialogService: DialogService,
@@ -82,29 +91,69 @@ export class ServersComponent implements OnInit {
       }
     });
   }
+  parseFile(event:any){
+
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+    let data = fileReader.result as string;
+    data.replace("\t" , "");
+    let lines = data.split("\n")
+    lines.forEach(line =>{
+      let info = line.split(':');
+      let newServer = new ServerInfo();
+      newServer.login = info[0]
+      newServer.name = info[1]
+      newServer.password = info[2]
+      newServer.description = info[3]
+      newServer.type =  info[4]
+      this.serversService.createServer(newServer)
+          .subscribe({
+            next: (data)=>{
+              this.messageService.add({severity:'success', summary:'Server Added', detail:data.message})
+              this.getServers()
+            },
+            error: (err)=>{
+              this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+            }
+          })
+
+    });
+    }
+    fileReader.readAsText(event.target.files[0]);
+  }
 
   private import(){
     (<HTMLInputElement>document.getElementById("file")).click()
 
       }
   private deleteAll() {
+    if(this.selectedServers){
       this.confirmationService.confirm({
         key:'confirmDialog',
         header: 'Delete Confirmation',
         message: this.selectedServers?.length+' servers will be deleted. Are you sure that you want to perform this action?',
         accept: () => {
-          this.selectedServers?.forEach((server)=>{
-            if (server.id != null) {
-              this.serversService.deleteServer(server.id);
-            }
-          });
-        },
-      });
+         for(let server of this.selectedServers! ){
+              this.serversService.deleteServer(server.id!).subscribe({
+                next: (data)=>{
+                  this.messageService.add({severity:'success', summary:'Server Deleted', detail:data.message})
+                  this.getServers()
+                },
+                error: (err)=>{
+                  this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
+                }
+              })   
+          };
+        }
+      })
+    }
   }
 
   dialogTrip: any;
 
-
+  export() {
+    this.serversService.exportExcel().subscribe(blob => saveAs(blob, "ServerList.xlsx"))
+      }
 
   getMenuPublic(server : ServerInfo)
   {
@@ -114,6 +163,12 @@ export class ServersComponent implements OnInit {
       {label: 'Delete Selected', icon: 'pi pi-fw pi-trash', command: () => {this.delete(server.id!);  } },
     ];
   }
+
+  isAdmin():boolean{
+    // @ts-ignore
+    return this.tokenStorageService.getUser().roles.includes("ROLE_ADMIN")
+  }
+
 
   getMenuPrivate(server : ServerInfo)
   {
@@ -126,7 +181,7 @@ export class ServersComponent implements OnInit {
   }
 
   getServers() {
-    this.serversService.getAllServers(false).subscribe({
+    this.serversService.getServerPerUser().subscribe({
       next:data =>
     {
       this.servers = data;
@@ -194,8 +249,8 @@ export class ServersComponent implements OnInit {
       header: 'Add Owner',
       width: '50%'
     });
-    ref2.onClose.subscribe((user : UserInfo) => {
-      if (user) {
+    ref2.onClose.subscribe((selectedUsers : UserInfo[]) => {
+      for(let user of selectedUsers) {
         this.serversService.addOwner(server.id!,user.id!)
           .subscribe({
             next: (data)=>{
@@ -216,8 +271,8 @@ export class ServersComponent implements OnInit {
       header: 'Remove Owner',
       width: '50%'
     });
-    ref3.onClose.subscribe((user : UserInfo) => {
-      if (user) {
+    ref3.onClose.subscribe((selectedUsers : UserInfo[]) => {
+      for(let user of selectedUsers) {
         this.serversService.removeOwner(server.id!,user.id!)
           .subscribe({
             next: (data)=>{

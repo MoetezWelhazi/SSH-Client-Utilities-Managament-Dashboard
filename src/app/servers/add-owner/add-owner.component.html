@@ -1,4 +1,4 @@
-<mat-card-content>
+<!-- <mat-card-content>
 
 
   <div *ngFor="let user of userlist">
@@ -9,4 +9,94 @@
     </p>
   </div>
 
-</mat-card-content>
+</mat-card-content> -->
+
+
+<mat-dialog-content>
+  <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+            <span>
+              List of Users
+            </span>
+    </mat-card-title>
+    <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal(getValue($event), 'contains')" placeholder="Global Search" />
+        </span>
+  </mat-card-header>
+  <p-table #dt [value]="userlist"
+           dataKey="email"
+           [(selection)]="selectedUsers"
+           (onRowSelect)="onRowSelect()"
+           styleClass="p-datatable-users"
+           [rowHover]="true"
+           [rows]="10"
+           [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10,25,50]"
+           [loading]="loading"
+           responsiveLayout="scroll"
+           [paginator]="true"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0"
+           [globalFilterFields]="['email','trigramme','roles']">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">
+          <div class="flex justify-content-between align-items-center">
+            Id
+            <p-sortIcon field="id"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="email">
+          <div class="flex justify-content-between align-items-center">
+            Email
+            <p-sortIcon field="email"></p-sortIcon>
+            <p-columnFilter type="text" field="email" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="trigramme">
+          <div class="flex justify-content-between align-items-center">
+            Trigram
+            <p-sortIcon field="trigramme"></p-sortIcon>
+            <p-columnFilter type="text" field="trigramme" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
+    
+    
+       
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-User>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="User" ></p-tableCheckbox>
+        </td>
+        <td>
+          <span class="p-column-title">Id</span>
+          {{User.id}}
+        </td>
+        <td>
+          <span class="p-column-title">Email</span>
+          {{User.email}}
+        </td>
+        <td>
+          <span class="p-column-title">Trigram</span>
+          {{User.trigramme}}
+        </td>
+      
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No users found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="button" mat-raised-button color="accent" (click)="addOwner()">Add Owners</button>
+</mat-dialog-actions>

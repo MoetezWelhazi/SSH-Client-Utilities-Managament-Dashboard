@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
     { path: '/myscripts' , icon : "terminal" , title : 'My Scripts', admin:false},
     { path: '/allscripts' , icon : "terminal" , title : 'All Scripts', admin:false},
     { path: '/history' , icon : "history" , title : 'History', admin:true},
-    { path: '/servers' , icon : "dns" , title : 'Servers', admin:true},
+    { path: '/servers' , icon : "dns" , title : 'Servers', admin:false},
     { path: '/users', icon: 'people', title: 'Users' , admin:true},
     ];
 
