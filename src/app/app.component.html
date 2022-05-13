@@ -18,12 +18,42 @@
   <span class="spacer"></span>
   <button
     *ngIf="isAuthenticated$ | async"
-    (click)="logout()"
+    [matMenuTriggerFor]="notificationsMenu"
+
+    mat-mini-fab
+  >
+    <mat-icon>notifications</mat-icon>
+  </button>
+  <button
+    *ngIf="isAuthenticated$ | async"
     class="login"
+    [matMenuTriggerFor]="menu"
     mat-mini-fab
   >
     <mat-icon>person</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item color="accent" (click)="profile()"><mat-icon>account_circle</mat-icon>Profile</button>
+    <button mat-menu-item color="accent" (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+  </mat-menu>
+  <mat-menu #notificationsMenu="matMenu" >
+    <div></div>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let notification of notifications"
+      >
+        <h4 matLine>{{ notification.title | titlecase }}</h4>
+        <p style="font-size: small" matLine>
+          {{ notification.description }}
+        </p>
+        <button
+          mat-icon-button
+          color="primary">
+          <mat-icon class="p-0" >check</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-menu>
 </mat-toolbar>
 
 <mat-sidenav-container

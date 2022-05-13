@@ -3,6 +3,9 @@ import { shareReplay } from 'rxjs/operators';
 
 import { AuthService } from './shared/services/auth/auth.service';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {TokenStorageService} from "./shared/services/auth/token-storage.service";
+import {ProfileComponent} from "./profile/profile.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-root',
@@ -21,10 +24,32 @@ export class AppComponent implements OnInit{
     { path: '/servers' , icon : "dns" , title : 'Servers', admin:false},
     { path: '/users', icon: 'people', title: 'Users' , admin:true},
     ];
+  notifications = [
+    {
+      id: 1,
+      title: 'Welcome!',
+      description: 'Congratulations for being approved!',
+      status: "important",
+    },
+    {
+      id: 2,
+      title: 'Permission Granted!',
+      description: 'You now have access to all myscripts!',
+      status: "new",
+    },
+    {
+      id: 3,
+      title: 'Execution Failed!',
+      description: 'Your scheduled execution has failed!',
+      status: "old",
+    }
+  ];
 
   isAuthenticated$ = this.authService.isAuthenticated$.pipe(shareReplay(1));
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              public dialog: MatDialog
+              ) {
     if(!this.isAuthenticated$)
       window.sessionStorage.setItem("auth-user", JSON.stringify(this.user));
   }
@@ -77,5 +102,18 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     document.body.classList.add('users-background');
     this.openClose()
+  }
+
+  profile() {
+
+    const dialogRef = this.dialog.open(ProfileComponent, {
+      width: '450px',
+      panelClass:"material-popup"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+      console.log('User info updated Successfully!');
+    });
   }
 }

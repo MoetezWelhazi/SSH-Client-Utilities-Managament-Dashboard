@@ -226,12 +226,8 @@ mat-card:not(.dashboard-card) {
   display: flex;
   justify-content: space-around;
 
-  .home-left {
-    width: 33% !important;
-  }
-
-  .home-right {
-    width: 65%;
+  .home {
+    width: 100% !important;
   }
 }
 
@@ -357,6 +353,7 @@ mat-card-actions {
 }
 
 .active-route{
+  border: 6px solid #09c0a3 ;
   color: #09c0a3;
 }
 

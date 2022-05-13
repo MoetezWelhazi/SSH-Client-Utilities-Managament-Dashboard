@@ -1,0 +1,68 @@
+<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Profile</h1>
+<form>
+<mat-dialog-content>
+  <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Email"
+          [(ngModel)]="currentUser.email"
+          type="email"
+          required
+          pattern="(^[a-zA-Z0-9é]+(\.)[a-zA-Z0-9]+@(neoxam|gmail)\.com)?"
+          name="email"
+          #email="ngModel"
+        />
+        <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+          <strong>Entrer un e-mail NeoXam valide</strong>
+        </mat-error>
+      </mat-form-field>
+  <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          [(ngModel)]="currentUser.password"
+          type="password"
+          required
+          minlength="8"
+          name="passwordA"
+          [type]="hide ? 'password' : 'text'"
+          #passwordA = "ngModel"
+        />
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon class="p-0">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint>Minimum length is 8</mat-hint>
+        <mat-error *ngIf="passwordA.invalid && (passwordA.dirty || passwordA.touched)">
+          <strong>Entrer un mot de passe valide</strong>
+        </mat-error>
+      </mat-form-field>
+  <div class="row">
+    <mat-form-field class="col-xl-6" appearance="outline">
+      <mat-label>Trigram</mat-label>
+      <input
+        matInput
+        [(ngModel)]="currentUser.trigramme"
+        type="text"
+        name="trigram"
+        disabled
+      />
+    </mat-form-field>
+    <mat-form-field class="col-xl-6" appearance="outline">
+      <mat-label>Role</mat-label>
+      <input
+        matInput
+        [(ngModel)]="currentUser.roles"
+        type="text"
+        name ="roles"
+        disabled
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-raised-button color="accent" (click)="update()">Update</button>
+</mat-dialog-actions>
+</form>
