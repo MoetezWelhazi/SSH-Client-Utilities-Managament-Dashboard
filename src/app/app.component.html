@@ -4,7 +4,7 @@
       *ngIf="isAuthenticated$ | async"
       mat-mini-fab
       color="accent"
-      (click)="isExpanded = !isExpanded"
+      (click)="this.openClose()"
     >
       <!--(click)="sidenav?.toggle()"-->
 
@@ -27,14 +27,14 @@
 </mat-toolbar>
 
 <mat-sidenav-container
-  autosize="true"
+  id="sidenav-container"
 >
   <mat-sidenav
     #sidenav
+    id="sidenav"
     mode="side"
     disableClose="true"
     [opened]="isAuthenticated$ | async"
-    class="app-sidenav"
   >
     <nav>
       <div
@@ -44,6 +44,7 @@
         class="nav-link"
         *ngIf="(!link.admin)||(isAdmin() && link.admin )"
         [routerLink]="link.path"
+        style="padding-right:2px;"
         routerLinkActive="active-route"
       >
         <mat-icon>
@@ -55,12 +56,13 @@
     </nav>
 
   </mat-sidenav>
-
+  <mat-sidenav-content [style.margin-left]="this.marginLeft" id="container">
   <div class="container-mat">
     <router-outlet>
       <app-loader></app-loader>
     </router-outlet>
   </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 <p-toast position="top-right" [baseZIndex]="5000"></p-toast>
 <p-confirmPopup></p-confirmPopup>

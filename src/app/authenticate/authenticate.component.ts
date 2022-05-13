@@ -12,7 +12,13 @@ export class AuthenticateComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //@ts-ignore
+    document.getElementById("container").classList.remove('re-adjustC-container-mat');
+    // @ts-ignore
+    document.getElementById("container").classList.remove('re-adjustO-container-mat');
+
+  }
 
   ngAfterViewInit() {
     document.body.classList.add('login-background');
@@ -20,6 +26,9 @@ export class AuthenticateComponent implements OnInit {
 
   ngOnDestroy() {
     document.body.classList.remove('login-background');
+    // @ts-ignore
+    document.getElementById("container").classList.add('re-adjustO-container-mat');
+
   }
 
   login(userInfo: UserInfo) {

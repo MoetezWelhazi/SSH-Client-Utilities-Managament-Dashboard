@@ -10,7 +10,8 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit{
-  isExpanded : boolean = true
+  isExpanded : boolean = false
+  marginLeft : any = ""
   title = 'DGU';
   user = {roles:["ROLE_USER"]}
   links = [{ path: '/home', icon: 'home', title: 'Home', admin: false},
@@ -41,10 +42,40 @@ export class AppComponent implements OnInit{
     if(this.isExpanded)
       return title
     else return ""
+  }
+
+  openClose(){
+    this.isExpanded = !this.isExpanded
+    //console.log("EXPANDED: "+this.isExpanded)
+
+    if(this.isExpanded) {
+      // @ts-ignore
+      document.getElementById("sidenav").classList.remove('animate-hide');
+      // @ts-ignore
+      document.getElementById("container").classList.remove('re-adjustC-container-mat');
+      // @ts-ignore
+      document.getElementById("sidenav").classList.add('animate-show');
+      // @ts-ignore
+      document.getElementById("container").classList.add('re-adjustO-container-mat');
+    }
+    else{
+      // @ts-ignore
+      document.getElementById("sidenav").classList.remove('animate-show');
+      // @ts-ignore
+      document.getElementById("container").classList.remove('re-adjustO-container-mat');
+      // @ts-ignore
+      document.getElementById("sidenav").classList.add('animate-hide');
+      this.marginLeft=""
+      // @ts-ignore
+      document.getElementById("container").classList.add('re-adjustC-container-mat');
+
+    }
 
   }
 
+
   ngOnInit(): void {
     document.body.classList.add('users-background');
+    this.openClose()
   }
 }
