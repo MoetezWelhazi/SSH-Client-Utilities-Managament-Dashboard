@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
         data: [30, 5, 7],
         backgroundColor: [
           "#24efce",
-          "#ff1717",
+          "#fd4141",
           "#232323"
         ],
         hoverBackgroundColor: [

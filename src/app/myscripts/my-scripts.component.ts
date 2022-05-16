@@ -62,7 +62,6 @@ export class MyScriptsComponent implements OnInit {
     } else {
       this.messageService.add({severity:"error",summary:"Select Script",detail:"Select a script to modify"})
     }
-    this.resetScript();
   }
 
   updateScript(script: Script) {

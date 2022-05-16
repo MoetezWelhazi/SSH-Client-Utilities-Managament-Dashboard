@@ -1,5 +1,32 @@
 <div class="home-container">
   <div class="home">
+    <mat-card style="display:inline-block; margin-right:10px; width:33%">
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
+            <p-chart height="20vh" type="line" [data]="data" [options]="basicOptions"></p-chart>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+    <mat-card style="display:inline-block; margin-right:10px; width:33%">
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
+            <p-chart height="20vh" type="line" [data]="data1" [options]="basicOptions"></p-chart>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+    <mat-card style="display:inline-block; width:32.5%">
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
+            <p-chart height="20vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
     <mat-card>
       <mat-card-header style="justify-content:space-between">
         <mat-card-title>
@@ -104,24 +131,6 @@
           </tr>
         </ng-template>
       </p-table>
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        <mat-tab-group >
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
-            <p-chart type="line" [data]="data" [options]="basicOptions"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
-            <p-chart type="line" [data]="data1" [options]="basicOptions"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
-            <p-chart height="60vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
-          </mat-tab>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
-            Content 3
-          </mat-tab>
-        </mat-tab-group>
-      </mat-card-content>
     </mat-card>
   </div>
 </div>
