@@ -151,10 +151,6 @@ export class HomeComponent implements OnInit {
     this.getExecutions()
   }
 
-  deleteNotification(id: number) {
-    console.log("Notification N°"+id+" has been deleted");
-  }
-
   onDateSelect(value : any) {
     // @ts-ignore
     this.table.filter(this.formatDate(value), 'date', 'equals')

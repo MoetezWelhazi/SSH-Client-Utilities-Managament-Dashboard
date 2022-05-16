@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card id="details">
   <mat-card-title>
     <span *ngIf="currentScript.id; else elseBlock">
       {{ originalTitle}}
@@ -77,7 +77,7 @@
         <div
           class="app-ace-editor"
           #editor
-          style="width: 100%;height: 275px;"
+          style="width: 100%;min-height: 225px;"
         ></div>
       </section>
       <section>
@@ -89,7 +89,7 @@
         </mat-checkbox>
       </section>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions style="margin-bottom:0;padding-bottom:0;">
       <button
         [disabled]="form.invalid"
         type="submit"

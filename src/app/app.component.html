@@ -4,7 +4,7 @@
       *ngIf="isAuthenticated$ | async"
       mat-mini-fab
       color="accent"
-      (click)="isExpanded = !isExpanded"
+      (click)="this.openClose()"
     >
       <!--(click)="sidenav?.toggle()"-->
 
@@ -18,23 +18,53 @@
   <span class="spacer"></span>
   <button
     *ngIf="isAuthenticated$ | async"
-    (click)="logout()"
+    [matMenuTriggerFor]="notificationsMenu"
+
+    mat-mini-fab
+  >
+    <mat-icon>notifications</mat-icon>
+  </button>
+  <button
+    *ngIf="isAuthenticated$ | async"
     class="login"
+    [matMenuTriggerFor]="menu"
     mat-mini-fab
   >
     <mat-icon>person</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item color="accent" (click)="profile()"><mat-icon>account_circle</mat-icon>Profile</button>
+    <button mat-menu-item color="accent" (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+  </mat-menu>
+  <mat-menu #notificationsMenu="matMenu" >
+    <div></div>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let notification of notifications"
+      >
+        <h4 matLine>{{ notification.title | titlecase }}</h4>
+        <p style="font-size: small" matLine>
+          {{ notification.description }}
+        </p>
+        <button
+          mat-icon-button
+          color="primary">
+          <mat-icon class="p-0" >check</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-menu>
 </mat-toolbar>
 
 <mat-sidenav-container
-  autosize="true"
+  id="sidenav-container"
 >
   <mat-sidenav
     #sidenav
+    id="sidenav"
     mode="side"
     disableClose="true"
     [opened]="isAuthenticated$ | async"
-    class="app-sidenav"
   >
     <nav>
       <div
@@ -44,6 +74,7 @@
         class="nav-link"
         *ngIf="(!link.admin)||(isAdmin() && link.admin )"
         [routerLink]="link.path"
+        style="padding-right:2px;"
         routerLinkActive="active-route"
       >
         <mat-icon>
@@ -55,12 +86,13 @@
     </nav>
 
   </mat-sidenav>
-
+  <mat-sidenav-content [style.margin-left]="this.marginLeft" id="container">
   <div class="container-mat">
     <router-outlet>
       <app-loader></app-loader>
     </router-outlet>
   </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 <p-toast position="top-right" [baseZIndex]="5000"></p-toast>
 <p-confirmPopup></p-confirmPopup>
