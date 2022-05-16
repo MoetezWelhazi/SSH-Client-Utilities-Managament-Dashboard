@@ -15,6 +15,23 @@
           <strong>Entrer un Nom valide</strong>
         </mat-error>
       </mat-form-field>
+
+
+      <mat-form-field class="inputfield" appearance="fill">
+        <mat-label>Ip</mat-label>
+        <input
+          matInput
+          placeholder="Ip"
+          [(ngModel)]="serverInfo.serverIp"
+          type="text"
+          required
+          name="serverIp"
+          #serverIp="ngModel"
+        />
+        <mat-error *ngIf="serverIp.invalid && (serverIp.dirty || serverIp.touched)">
+          <strong>Entrer un Ip valide</strong>
+        </mat-error>
+      </mat-form-field>
       <mat-form-field class="inputfield" appearance="fill">
         <mat-label>Password</mat-label>
         <input

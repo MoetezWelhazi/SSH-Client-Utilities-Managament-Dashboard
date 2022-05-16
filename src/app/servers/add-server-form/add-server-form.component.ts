@@ -17,6 +17,7 @@ export class AddServerFormComponent implements OnInit {
     password : '',
     description : '',
     type : "Public",
+    serverIp : ''
 
   }
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }

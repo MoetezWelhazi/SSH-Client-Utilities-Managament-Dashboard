@@ -47,6 +47,16 @@ export class ExecuteScriptComponent implements OnInit {
 
   }
 
+
+
+  onChange(event:any){
+    console.log(event)
+    this.execution.user = event.value.login
+    this.execution.password = event.value.password
+    this.execution.serverId = event.value.id;
+    console.log(this.execution)
+  }
+
   ngOnInit(): void {
     let destination = '/script/execution/'+this.data.id;
     console.log("STOMP IS LISTENING TO: "+destination);

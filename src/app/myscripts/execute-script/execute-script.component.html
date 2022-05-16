@@ -7,8 +7,8 @@
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="outline">
         <mat-label>Server</mat-label>
-        <mat-select [(ngModel)]="execution.serverId" name="server" #server="ngModel">
-          <mat-option *ngFor="let server of servers" [value]="server.id" >
+        <mat-select [(ngModel)]="execution.serverId" (selectionChange) = "onChange($event)" name="server" #server="ngModel">
+          <mat-option *ngFor="let server of servers" [value]="server" >
             {{server.name}}
           </mat-option>
         </mat-select>
