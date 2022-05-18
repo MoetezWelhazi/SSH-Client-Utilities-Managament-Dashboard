@@ -89,11 +89,11 @@ export class ShareScriptsComponent implements OnInit {
     this.usersService.getAllUsers(false)
       .subscribe({
         next: (data) => {
-          data.forEach((user)=>{
-            let newUser : UserInfo = user;
+          data.forEach((user) => {
+            let newUser: UserInfo = user;
             // @ts-ignore
             newUser.roles = user.roles[0].name;
-            switch(user.approved){
+            switch (user.approved) {
               case null:
                 newUser.approved = "null";
                 break;
@@ -102,15 +102,23 @@ export class ShareScriptsComponent implements OnInit {
                 break;
               case false:
                 newUser.approved = "0";
-            };
+            }
+
             // @ts-ignore
             newUser.createdAt = new Date(user.createdAt)
+            let groups: any[] = []
+            user.groups?.forEach((group:any)=>{
+              if(group.name)
+                groups.push(group.name)
+              else groups.push(group)
+            })
+            newUser.groups = groups
           });
           this.loading = false;
           //console.log(data);
           this.users = data;
         },
-        error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
+        error: (e) => this.notificationService.warn("An error has occurred: " + e.error)
       });
   }
 

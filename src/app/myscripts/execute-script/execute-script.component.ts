@@ -17,8 +17,6 @@ import {ServerInfo} from "../../shared/models/server.interface";
   styleUrls: ['./execute-script.component.scss']
 })
 export class ExecuteScriptComponent implements OnInit {
-  public executionProgress: any ={}
-
   hide=true;
   console: string = "Press Execute to run the script...";
   execution: Execution = {
@@ -29,12 +27,10 @@ export class ExecuteScriptComponent implements OnInit {
     executorId:0,
   }
   selectedServer = '';
-
   servers?: ServerInfo[]
   command: string = "";
   args = [""];
   nArgs = 0
-
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any, args: any},
               public dialogRef: MatDialogRef<ExecuteScriptComponent>,
@@ -43,11 +39,7 @@ export class ExecuteScriptComponent implements OnInit {
               private serversService: ServersService,
               private clipboard: Clipboard,
               private messageService:MessageService,
-              ) {
-
-  }
-
-
+              ) {}
 
   onChange(event:any){
     console.log(event)
@@ -66,8 +58,6 @@ export class ExecuteScriptComponent implements OnInit {
     err=>{
       console.log("JOE BIDEN, WAKE UP(error message): ",err.message)
     })
-    //console.log("DATA.ID: "+this.data.id)
-    //console.log("DATA.SCRIPT: "+this.data.script.name)
     this.execution.scriptId = this.data.script.id;
     this.execution.executorId = this.data.id;
     this.serversService.getAllServers(false).subscribe(

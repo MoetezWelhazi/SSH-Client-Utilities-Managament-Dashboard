@@ -22,7 +22,8 @@ export class AppComponent implements OnInit{
     { path: '/allscripts' , icon : "terminal" , title : 'All Scripts', admin:false},
     { path: '/history' , icon : "history" , title : 'History', admin:true},
     { path: '/servers' , icon : "dns" , title : 'Servers', admin:false},
-    { path: '/users', icon: 'people', title: 'Users' , admin:true},
+    { path: '/users', icon: 'person', title: 'Users' , admin:true},
+    { path: '/groups', icon: 'people', title: 'Groups' , admin:true},
     ];
   notifications = [
     {

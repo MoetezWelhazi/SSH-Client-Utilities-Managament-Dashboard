@@ -6,5 +6,6 @@ export interface UserInfo {
     roles?: {};
     accessToken?: string;
     approved?:any;
+    groups?:any[];
     createdAt?: Date;
 }

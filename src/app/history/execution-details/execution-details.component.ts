@@ -18,7 +18,7 @@ export class ExecutionDetailsComponent implements OnInit {
     user:'',
     port:22,
     serverId:0,
-    password:'',
+    password:'moetez',
     executorId:0,
   }
 
@@ -30,6 +30,7 @@ export class ExecutionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.execution = this.data.execution
+    this.execution.password="moetez"
   }
   copyTerminal(text:any) {
     this.clipboard.copy(text);

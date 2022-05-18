@@ -49,6 +49,7 @@ import { RemoveOwnerComponent } from './servers/remove-owner/remove-owner.compon
 import { AddgroupformComponent } from './users/addgroupform/addgroupform.component';
 import { AddtogroupformComponent } from './users/addtogroupform/addtogroupform.component';
 import { ProfileComponent } from './profile/profile.component';
+import { GroupsComponent } from './groups/groups.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { ProfileComponent } from './profile/profile.component';
     AddgroupformComponent,
     AddtogroupformComponent,
     ProfileComponent,
+    GroupsComponent,
   ],
   providers: [
     AuthService,

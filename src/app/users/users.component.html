@@ -1,12 +1,15 @@
 <mat-card>
   <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+      <span>
+        Users List
+      </span>
+    </mat-card-title>
     <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="search($event)" placeholder="Search..." />
     </span>
   </mat-card-header>
-  <mat-tab-group (selectedTabChange)="tabChanged($event)">
-    <mat-tab><ng-template mat-tab-label><div class="display-6">Users</div></ng-template>
       <p-table #dt [value]="users"
              dataKey="id"
              [(selection)]="selectedUsers"
@@ -21,7 +24,7 @@
              [paginator]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [filterDelay]="0"
-             [globalFilterFields]="['email','trigramme','roles']">
+             [globalFilterFields]="['email','trigramme','roles','groups']">
 
       <ng-template pTemplate="header">
         <tr>
@@ -53,6 +56,13 @@
               Roles
               <p-sortIcon field="roles"></p-sortIcon>
               <p-columnFilter type="text" field="roles" display="menu" class="ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="groups">
+            <div class="flex justify-content-between align-items-center">
+              Groups
+              <p-sortIcon field="groups"></p-sortIcon>
+              <p-columnFilter type="text" field="groups" display="menu" class="ml-auto"></p-columnFilter>
             </div>
           </th>
           <th pSortableColumn="createdAt">
@@ -109,6 +119,10 @@
             {{getRoles(User.roles) | uppercase}}
           </td>
           <td>
+            <span class="p-column-title">Roles</span>
+            {{User.groups}}
+          </td>
+          <td>
             <span class="p-column-title">Date</span>
             {{User.createdAt | date: 'short'}}
           </td>
@@ -130,158 +144,4 @@
         </tr>
       </ng-template>
     </p-table>
-    </mat-tab>
-    <mat-tab><ng-template mat-tab-label><div class="display-6">Groups</div></ng-template>
-      <p-table #gt [value]="groups"
-               dataKey="name"
-               [(selection)]="selectedGroups"
-               (onRowSelect)="onRowSelect('groups')"
-               styleClass="p-datatable-users"
-               [rows]="10"
-               [showCurrentPageReport]="true"
-               [rowsPerPageOptions]="[5,10,25,50]"
-               [loading]="loading"
-               responsiveLayout="scroll"
-               [paginator]="true"
-               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-               [filterDelay]="0"
-               [globalFilterFields]="['name','description']">
-
-        <ng-template pTemplate="header">
-          <tr>
-            <th style="width: 3rem"></th>
-            <th>
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
-            <th pSortableColumn="id">
-              <div class="flex justify-content-between align-items-center">
-                Id
-                <p-sortIcon field="id"></p-sortIcon>
-              </div>
-            </th>
-            <th pSortableColumn="name">
-              <div class="flex justify-content-between align-items-center">
-                Name
-                <p-sortIcon field="name"></p-sortIcon>
-                <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
-              </div>
-            </th>
-            <th pSortableColumn="description">
-              <div class="flex justify-content-between align-items-center">
-                Description
-                <p-sortIcon field="description"></p-sortIcon>
-                <p-columnFilter type="text" field="description" display="menu" class="ml-auto"></p-columnFilter>
-              </div>
-            </th>
-            <th pSortableColumn="size">
-              <div class="flex justify-content-between align-items-center">
-                Size
-                <p-sortIcon field="size"></p-sortIcon>
-              </div>
-            </th>
-            <th style="width: 8rem">
-              <div style="text-align: center">
-                <button pButton type="button"  class="p-button-secondary" icon="pi pi-bars"
-                        (click)="menu.toggle($event)">
-                </button>
-                <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="groupOptions"></p-menu>
-              </div>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-Group let-expanded="expanded">
-          <tr>
-            <td>
-              <button type="button" pButton pRipple [pRowToggler]="Group" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-            </td>
-            <td>
-              <p-tableCheckbox [value]="Group" ></p-tableCheckbox>
-            </td>
-            <td>
-              <span class="p-column-title">Id</span>
-              {{Group.id}}
-            </td>
-            <td>
-              <span class="p-column-title">Name</span>
-              {{Group.name}}
-            </td>
-            <td>
-              <span class="p-column-title">Description</span>
-              {{Group.description}}
-            </td>
-            <td>
-              <span class="p-column-title">Size</span>
-              {{getSize(Group) }}
-            </td>
-            <td style="text-align: center">
-              <button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
-                      (click)="menu.toggle($event)">
-              </button>
-              <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItemsG(Group)"></p-menu>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="rowexpansion" let-Group>
-          <tr>
-            <td colspan="8">
-              <div>
-                <p-table [value]="Group.members"
-                         dataKey="dk"
-                         (onRowSelect)="onRowSelect('members')"
-                         [(selection)]="selectedMembers"
-                         [rowHover]="true"
-                >
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th style="width:3rem"></th>
-                      <th pSortableColumn="dk">DataKey <p-sortIcon field="dk"></p-sortIcon></th>
-                      <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
-                      <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-                      <th pSortableColumn="trigram">Trigram <p-sortIcon field="trigram"></p-sortIcon></th>
-                      <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
-                      <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
-                      <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                      <th style="width: 4rem"></th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-member>
-                    <tr>
-                      <td><p-tableCheckbox [value]="member"></p-tableCheckbox></td>
-                      <td>{{member.dk}}</td>
-                      <td>{{member.id}}</td>
-                      <td>{{member.email}}</td>
-                      <td>{{member.trigramme}}</td>
-                      <td><span class="p-column-title">Roles</span>
-                        {{getRoles(member.roles) | uppercase}}
-                      </td>
-                      <td>{{member.createdAt | date: 'short' }}</td>
-                      <td>
-                        <span class="p-column-title">Status</span>
-                        <span [class]="'user-badge status-' + (member.approved ?'1':'0')">{{getStatus(member.approved)}}</span>
-                      </td>
-                      <td><button pButton type="button" dropdownToggle  class="p-button-secondary" icon="pi pi-cog"
-                                  (click)="menu.toggle($event)">
-                      </button>
-                        <p-menu #menu [popup]="true" appendTo="body" [showTransitionOptions]="'125ms'" [hideTransitionOptions]="'125ms'" [model]="getItemsM(member)"></p-menu>
-                      </td>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="emptymessage">
-                    <tr>
-                      <td colspan="6">This group is empty.</td>
-                    </tr>
-                  </ng-template>
-                </p-table>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="8">No groups found.</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </mat-tab>
-  </mat-tab-group>
 </mat-card>
