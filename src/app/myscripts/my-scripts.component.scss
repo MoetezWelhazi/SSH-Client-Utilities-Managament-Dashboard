@@ -3,12 +3,12 @@
   justify-content: space-around;
 
   .scripts-list {
-    width: 44%;
-    height:calc(100vh - 50px);
+    width: 45%;
+    height:calc(100vh - 95px);
   }
 
   .script-details {
-    width: 54%;
-
+    width: 53%;
+    height:calc(100vh - 95px) !important;
   }
 }

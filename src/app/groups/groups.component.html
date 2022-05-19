@@ -1,8 +1,21 @@
+<mat-card>
+  <mat-card-header style="justify-content:space-between">
+    <mat-card-title>
+      <span>
+        Groups List
+      </span>
+    </mat-card-title>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" (input)="gt.filterGlobal(this.getValue($event),'contains')" placeholder="Search..." >
+    </span>
+  </mat-card-header>
   <ng-template mat-tab-label><div class="display-6">Groups</div></ng-template>
   <p-table #gt [value]="groups"
            dataKey="name"
+           scrollHeight="61.5vh"
            [(selection)]="selectedGroups"
-           styleClass="p-datatable-users"
+           styleClass="p-datatable-users p-datatable-sm"
            [rows]="10"
            [rowHover]="true"
            [showCurrentPageReport]="true"
@@ -74,9 +87,10 @@
         </td>
       </tr>
     </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="8">No groups found.</td>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No groups found.</td>
+      </tr>
+    </ng-template>
   </p-table>
+</mat-card>

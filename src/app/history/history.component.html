@@ -11,26 +11,24 @@
           </span>
     </mat-card-header>
     <p-table #dt [value]="Executions"
-    dataKey="script"
-    [(selection)]="selectedExecution"
-    (onRowSelect)="onRowSelect($event)"
-    styleClass="p-datatable-executions"
-    [rowHover]="true"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[5,10,25,50]"
-    [loading]="loading"
-    responsiveLayout="scroll"
-    [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [filterDelay]="0"
-    [globalFilterFields]="['script','server','result']">
+             scrollHeight="61vh"
+             dataKey="script"
+             [(selection)]="selectedExecution"
+             (onRowSelect)="onRowSelect($event)"
+             styleClass="p-datatable-executions p-datatable-sm"
+             [rowHover]="true"
+             [rows]="10"
+             [showCurrentPageReport]="true"
+             [rowsPerPageOptions]="[5,10,25,50]"
+             [loading]="loading"
+             responsiveLayout="scroll"
+             [paginator]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0"
+             [globalFilterFields]="['script','server','result']">
 
 <ng-template pTemplate="header">
 <tr>
- <th>
-   <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
- </th>
  <th pSortableColumn="script">
    <div class="flex justify-content-between align-items-center">
      Script
@@ -80,10 +78,7 @@
 </tr>
 </ng-template>
 <ng-template pTemplate="body" let-Execution let-rowIndex="rowIndex">
-<tr [pSelectableRow]="Execution" [pSelectableRowIndex]="rowIndex" class="p-selectable-row">
- <td>
-   <p-tableCheckbox [value]="Execution" ></p-tableCheckbox>
- </td>
+<tr class="p-selectable-row">
  <td>
    <span class="p-column-title">Script</span>
    {{Execution.script.name}}
@@ -104,7 +99,7 @@
    <span class="p-column-title">Result</span>
    <span [class]="'execution-badge type-' + Execution.result">{{Execution.result}}</span>
  </td>
- <td style="text-align: center">
+ <td style="text-align: center!important">
    <button pButton type="button" class="p-button-secondary" (click)="details(Execution)" icon="pi pi-cog"></button>
  </td>
 </tr>

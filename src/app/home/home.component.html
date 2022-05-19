@@ -1,33 +1,36 @@
 <div class="home-container">
   <div class="home">
-    <mat-card style="display:inline-block; margin-right:10px; width:33%">
+    <mat-card style="display:inline-block; margin-right:10px; width:32%">
+      <mat-card-header>
+        <mat-card-title>
+          <span>Errors</span>
+        </mat-card-title>
+      </mat-card-header>
       <mat-card-content>
-        <mat-tab-group>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Errors</div></ng-template>
-            <p-chart height="20vh" type="line" [data]="data" [options]="basicOptions"></p-chart>
-          </mat-tab>
-        </mat-tab-group>
+        <p-chart height="20vh" type="line" [data]="data" [options]="options"></p-chart>
       </mat-card-content>
     </mat-card>
-    <mat-card style="display:inline-block; margin-right:10px; width:33%">
+    <mat-card style="display:inline-block; margin-right:10px; width:32%">
+      <mat-card-header>
+        <mat-card-title>
+          <span>Executions</span>
+        </mat-card-title>
+      </mat-card-header>
       <mat-card-content>
-        <mat-tab-group>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Executions</div></ng-template>
-            <p-chart height="20vh" type="line" [data]="data1" [options]="basicOptions"></p-chart>
-          </mat-tab>
-        </mat-tab-group>
+        <p-chart height="20vh" type="line" [data]="data1" [options]="options1"></p-chart>
       </mat-card-content>
     </mat-card>
-    <mat-card style="display:inline-block; width:32.5%">
+    <mat-card style="display:inline-block; width:max(26vw , 34%)">
+      <mat-card-header>
+        <mat-card-title>
+          <span>Servers</span>
+        </mat-card-title>
+      </mat-card-header>
       <mat-card-content>
-        <mat-tab-group>
-          <mat-tab><ng-template mat-tab-label><div class="display-6">Servers</div></ng-template>
-            <p-chart height="20vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
-          </mat-tab>
-        </mat-tab-group>
+        <p-chart height="20vh" type="pie" [data]="data2" [options]="pieOption"></p-chart>
       </mat-card-content>
     </mat-card>
-    <mat-card>
+    <mat-card style="margin-top:0">
       <mat-card-header style="justify-content:space-between">
         <mat-card-title>
             <span>
@@ -43,7 +46,8 @@
                dataKey="script"
                [(selection)]="selectedExecution"
                (onRowSelect)="onRowSelect($event)"
-               styleClass="p-datatable-executions"
+               scrollHeight="42.5vh"
+               styleClass="p-datatable-executions p-datatable-sm"
                [rowHover]="true"
                [rows]="5"
                [showCurrentPageReport]="true"

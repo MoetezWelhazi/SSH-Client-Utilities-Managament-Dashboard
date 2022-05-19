@@ -80,9 +80,6 @@
     </div>
     <div class="vr"></div>
     <div id="right-container">
-      <!--<code>
-        <pre class="language-bash">Bash {{this.data.script.name + " " + command}}</pre>
-      </code>-->
       <textarea readOnly class="language-bash">Bash {{this.data.script.name + " " + command}}</textarea>
       <textarea
         matInput
@@ -91,7 +88,7 @@
         type="text"
         name="code"
         readonly
-        style="height:80%; width:100% !important;"
+        style="height:80%; width:-webkit-fill-available;"
       >
         </textarea>
     </div>

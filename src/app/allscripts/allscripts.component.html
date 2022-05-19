@@ -12,9 +12,10 @@
   </mat-card-header>
   <p-table #dt [value]="scripts"
            dataKey="name"
+           scrollHeight="61.5vh"
            [(selection)]="selectedScripts"
            (onRowSelect)="onRowSelect()"
-           styleClass="p-datatable-users"
+           styleClass="p-datatable-users p-datatable-sm"
            [rowHover]="true"
            [rows]="10"
            [showCurrentPageReport]="true"

@@ -67,6 +67,7 @@ export class GroupsComponent implements OnInit {
             this.messageService.add({severity: 'error', summary: 'Error', detail: err.error.message})
           }
         })
+
     }
     else
       this.confirmationService.confirm({
@@ -84,6 +85,7 @@ export class GroupsComponent implements OnInit {
                 this.messageService.add({severity:'error', summary:'Error',detail:err.error.message})
               }
             });
+          this.getGroups()
         },
       });
   }
@@ -160,6 +162,7 @@ export class GroupsComponent implements OnInit {
             this.deleteG(group.id,false);
           }
         });
+        this.getGroups()
       },
     });
   }
@@ -195,6 +198,10 @@ export class GroupsComponent implements OnInit {
       this.removeFromGroup(member,false)
       this.getGroups()
     })
+  }
+
+  getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
   }
 }
 

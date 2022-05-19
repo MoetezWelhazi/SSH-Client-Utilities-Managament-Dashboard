@@ -12,18 +12,14 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
   constructor(private tokenStorage : TokenStorageService,
               private historyService: HistoryService,
               private messageService: MessageService) {
   }
 
   hide = true;
-
   userInfo = this.tokenStorage.getUser();
-
   selectedExecution? : Execution;
-
   loading: boolean = false;
 
   @ViewChild('dt') table: Table | undefined;
@@ -33,9 +29,7 @@ export class HomeComponent implements OnInit {
     {label: 'Success', value: 'Success'},
     {label: 'Critical-Failure', value: 'Critical-Failure'}
   ]
-
   Executions?: any
-
   notifications = [
     {
       id: 1,
@@ -56,7 +50,6 @@ export class HomeComponent implements OnInit {
       status: "old",
     }
   ];
-
   data = {
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday', 'Saturday'],
     datasets: [
@@ -68,58 +61,7 @@ export class HomeComponent implements OnInit {
       }
     ]
   };
-  data1 = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday', 'Saturday'],
-    datasets: [
-      {
-        label: 'Executions per day',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        borderColor: '#0ce1b4' ,
-        lineTension: .4,
-      }
-    ]
-  }
-  data2 = {
-    labels: ['Online','Down','Offline'],
-    datasets: [
-      {
-        data: [30, 5, 7],
-        backgroundColor: [
-          "#24efce",
-          "#fd4141",
-          "#232323"
-        ],
-        hoverBackgroundColor: [
-          "#2afddb",
-          "#fd4141",
-          "#313131"
-        ]
-      }
-    ]
-  }
-  data3 = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday', 'Saturday'],
-    datasets: [
-      {
-        label: 'Error Rate of Executions %',
-        data: [28, 48, 40, 19, 86, 27, 90],
-        borderColor: '#0ce1b4' ,
-        lineTension: 0.5,
-      }
-    ]
-  }
-
-  pieOption = {
-    plugins: {
-      legend: {
-        labels: {
-          color: '#495057'
-        }
-      }
-    }
-  }
-
-  basicOptions = {
+  options = {
     plugins: {
       legend: {
         labels: {
@@ -142,6 +84,72 @@ export class HomeComponent implements OnInit {
         },
         grid: {
           color: '#ebedef'
+        }
+      }
+    }
+  }
+  data1 = {
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday', 'Saturday'],
+    datasets: [
+      {
+        label: 'Executions per day',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        borderColor: '#0ce1b4' ,
+        lineTension: .4,
+      }
+    ]
+  }
+  options1 = {
+    plugins: {
+      legend: {
+        labels: {
+          color: '#495057'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#495057'
+        },
+        grid: {
+          color: '#ebedef'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#495057'
+        },
+        grid: {
+          color: '#ebedef'
+        }
+      }
+    }
+  }
+  data2 = {
+    labels: ['Online','Down','Offline'],
+    datasets: [
+      {
+        data: [30, 5, 7],
+        backgroundColor: [
+          "#24efce",
+          "#fd4141",
+          "#232323"
+        ],
+        hoverBackgroundColor: [
+          "#2afddb",
+          "#fd4141",
+          "#313131"
+        ]
+      }
+    ]
+  }
+
+  pieOption = {
+    plugins: {
+      legend: {
+        labels: {
+          color: '#495057'
         }
       }
     }

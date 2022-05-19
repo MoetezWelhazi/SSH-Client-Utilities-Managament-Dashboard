@@ -11,21 +11,21 @@
     </span>
   </mat-card-header>
       <p-table #dt [value]="users"
-             dataKey="id"
-             [(selection)]="selectedUsers"
-             (onRowSelect)="onRowSelect('users')"
-             styleClass="p-datatable-users"
-             [rowHover]="true"
-             [rows]="10"
-             [showCurrentPageReport]="true"
-             [rowsPerPageOptions]="[5,10,25,50]"
-             [loading]="loading"
-             responsiveLayout="scroll"
-             [paginator]="true"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [filterDelay]="0"
-             [globalFilterFields]="['email','trigramme','roles','groups']">
-
+               dataKey="id"
+               scrollHeight="61.5vh"
+               [(selection)]="selectedUsers"
+               (onRowSelect)="onRowSelect('users')"
+               styleClass="p-datatable-users p-datatable-sm"
+               [rowHover]="true"
+               [rows]="10"
+               [showCurrentPageReport]="true"
+               [rowsPerPageOptions]="[5,10,25,50]"
+               [loading]="loading"
+               responsiveLayout="scroll"
+               [paginator]="true"
+               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [filterDelay]="0"
+               [globalFilterFields]="['email','trigramme','roles','groups']">
       <ng-template pTemplate="header">
         <tr>
           <th>
