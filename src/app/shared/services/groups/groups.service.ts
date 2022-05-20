@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from '../notifications/notification.service';
 import { HttpClient } from "@angular/common/http";
 import { GroupInterface } from "../../models/group.interface";
+import {UserInfo} from "../../models/auth.interface";
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -22,6 +23,10 @@ export class GroupsService {
       this.notificationService.notify('Get All Groups HTTP Call');
     }
     return this.http.get<GroupInterface[]>(this.getUrl());
+  }
+
+  getGroup(gid:any){
+    return this.http.get<UserInfo[]>(this.getUrlWithID(gid));
   }
 
   createGroup(group: GroupInterface) {

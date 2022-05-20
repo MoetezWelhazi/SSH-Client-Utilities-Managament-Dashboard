@@ -5,9 +5,10 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {NotificationService} from "../shared/services/notifications/notification.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {AddgroupformComponent} from "../users/addgroupform/addgroupform.component";
-import {MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AddtogroupformComponent} from "../users/addtogroupform/addtogroupform.component";
 import {finalize} from "rxjs";
+import {MembersComponent} from "./members/members.component";
 
 @Component({
   selector: 'app-groups',
@@ -26,6 +27,7 @@ export class GroupsComponent implements OnInit {
                 public messageService: MessageService ,
                 public confirmationService: ConfirmationService,
                 private notificationService:NotificationService,
+                public dialog: MatDialog,
                 public dialogService: DialogService
 
   ) { }
@@ -110,6 +112,10 @@ export class GroupsComponent implements OnInit {
           this.updateG(Group,"admin");
         }
       },
+      {label: 'Members', icon: 'pi pi-users', command: () => {
+          this.getMembers(Group);
+        }
+      },
       {label: 'Empty Group', icon: 'pi pi-user-minus', command: () => {
           this.emptyGroup(Group,true);
         }
@@ -165,6 +171,15 @@ export class GroupsComponent implements OnInit {
         this.getGroups()
       },
     });
+  }
+
+  private getMembers(group:any){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = "material-popup"
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {gid:group.id,name:group.name};
+    let dialogRef = this.dialog.open(MembersComponent, dialogConfig);
   }
 
   private removeFromGroup(member:any,notify:boolean){

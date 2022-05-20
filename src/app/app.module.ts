@@ -50,6 +50,7 @@ import { AddgroupformComponent } from './users/addgroupform/addgroupform.compone
 import { AddtogroupformComponent } from './users/addtogroupform/addtogroupform.component';
 import { ProfileComponent } from './profile/profile.component';
 import { GroupsComponent } from './groups/groups.component';
+import { MembersComponent } from './groups/members/members.component';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { GroupsComponent } from './groups/groups.component';
     AddtogroupformComponent,
     ProfileComponent,
     GroupsComponent,
+    MembersComponent,
   ],
   providers: [
     AuthService,

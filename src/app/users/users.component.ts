@@ -129,7 +129,6 @@ export class UsersComponent implements OnInit {
     this.table?.filterGlobal(this.getValue(eventValue), 'contains')
   }
 
-
   getStatus(status: any) {
     if (status == 'null')
       return "Refused";
