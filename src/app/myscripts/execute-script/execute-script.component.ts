@@ -51,13 +51,14 @@ export class ExecuteScriptComponent implements OnInit {
 
   ngOnInit(): void {
     let destination = '/script/execution/'+this.data.id;
-    console.log("STOMP IS LISTENING TO: "+destination);
+    this.executionWebsocketService.activate()
     this.executionWebsocketService.watch(destination).subscribe((data:Message)=>{
       this.console=data.body;
     },
     err=>{
       console.log("JOE BIDEN, WAKE UP(error message): ",err.message)
     })
+    console.log("STOMP IS LISTENING TO: "+destination);
     this.execution.scriptId = this.data.script.id;
     this.execution.executorId = this.data.id;
     this.serversService.getAllServers(false).subscribe(
@@ -96,5 +97,12 @@ export class ExecuteScriptComponent implements OnInit {
   copyTerminal(text:string) {
     this.clipboard.copy(text);
     this.messageService.add({severity:"info", summary:"Console Copied", detail:"Contents copied"})
+  }
+
+  disconnect() {
+    this.executionWebsocketService.deactivate().then(result =>{
+      this.dialogRef.close()
+      }
+    )
   }
 }

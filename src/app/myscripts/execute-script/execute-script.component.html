@@ -1,4 +1,4 @@
-<button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
+<button type="button" mat-button class="close" (click)="disconnect()" ><mat-icon>close</mat-icon></button>
 <h1 mat-dialog-title>Execute {{this.data.script.name}}</h1>
 <form class="loginform" (submit)="executeScript()" >
 <mat-dialog-content>
@@ -99,7 +99,7 @@
     <button type="button" mat-raised-button color="accent" (click)="copyTerminal(this.console)">Copy</button>
     <div class="vr mx-1"></div>
     <button type="button" mat-raised-button color="accent" (click)="clearTerminal()">Clear</button>
-    <button type="button" mat-raised-button class="cancel" color="accent" mat-dialog-close>Cancel</button>
+    <button type="button" mat-raised-button class="cancel" color="accent" (click)="disconnect()" >Cancel</button>
   </mat-dialog-actions>
 </form>
 
