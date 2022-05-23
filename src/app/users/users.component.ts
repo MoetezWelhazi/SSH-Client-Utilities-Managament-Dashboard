@@ -36,12 +36,12 @@ export class UsersComponent implements OnInit {
       }
     },
     {
-      label: 'Approve Selected', icon: 'pi pi-fw pi-check', command: () => {
+      label: 'Activate Users', icon: 'pi pi-fw pi-check', command: () => {
         this.approveAll();
       }
     },
     {
-      label: 'Refuse Selected', icon: 'pi pi-fw pi-times', command: () => {
+      label: 'Disactivate Users', icon: 'pi pi-fw pi-times', command: () => {
         this.refuseAll();
       }
     },
@@ -81,9 +81,9 @@ export class UsersComponent implements OnInit {
 
     this.getUsers()
     this.statuses = [
-      {label: 'Approved', value: '1'},
-      {label: 'Waiting', value: '0'},
-      {label: 'Refused', value: 'null'}
+      {label: 'Active', value: '1'},
+      {label: 'Waiting Approval', value: '0'},
+      {label: 'Inactive', value: 'null'}
     ]
   }
 
@@ -131,10 +131,10 @@ export class UsersComponent implements OnInit {
 
   getStatus(status: any) {
     if (status == 'null')
-      return "Refused";
+      return "Inactive";
     if (status == '1')
-      return "Approved";
-    return "Waiting";
+      return "Active";
+    return "Waiting Approval";
   }
 
   private delete(id: number, confirm: boolean) {
@@ -155,7 +155,7 @@ export class UsersComponent implements OnInit {
       this.confirmationService.confirm({
         key: 'confirmDialog',
         header: 'Delete Confirmation',
-        message: 'User n°' + id + ' will be deleted. Are you sure that you want to perform this action?',
+        message: 'User n°' + id + ' will be  permanently deleted. Are you sure that you want to perform this action?',
         accept: () => {
           this.usersService.deleteUser(id)
             .subscribe({
@@ -214,12 +214,12 @@ export class UsersComponent implements OnInit {
         }
       },
       {
-        label: 'Approve', icon: 'pi pi-check', command: () => {
+        label: 'Activate', icon: 'pi pi-check', command: () => {
           this.update(User, "approved");
         }
       },
       {
-        label: 'Refuse', icon: 'pi pi-times', command: () => {
+        label: 'Disactivate', icon: 'pi pi-times', command: () => {
           this.update(User, "null");
         }
       },
