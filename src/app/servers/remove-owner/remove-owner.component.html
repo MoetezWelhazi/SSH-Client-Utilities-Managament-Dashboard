@@ -38,7 +38,7 @@
            [paginator]="true"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [filterDelay]="0"
-           [globalFilterFields]="['email','trigramme','roles']">
+           [globalFilterFields]="['email','trigramme','groups']">
 
     <ng-template pTemplate="header">
       <tr>
@@ -65,6 +65,13 @@
             <p-columnFilter type="text" field="trigramme" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
+        <th pSortableColumn="groups">
+          <div class="flex justify-content-between align-items-center">
+            Group
+            <p-sortIcon field="groups"></p-sortIcon>
+            <p-columnFilter type="text" field="groups" display="menu" class="ml-auto"></p-columnFilter>
+          </div>
+        </th>
     
     
        
@@ -86,6 +93,10 @@
         <td>
           <span class="p-column-title">Trigram</span>
           {{User.trigramme}}
+        </td>
+        <td>
+          <span class="p-column-title">Group</span>
+          {{User.groups}}
         </td>
       
       </tr>

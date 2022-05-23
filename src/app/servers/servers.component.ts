@@ -106,6 +106,7 @@ export class ServersComponent implements OnInit {
       newServer.password = info[2]
       newServer.description = info[3]
       newServer.type =  info[4]
+      newServer.serverIp = info[5]
       this.serversService.createServer(newServer)
           .subscribe({
             next: (data)=>{

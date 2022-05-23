@@ -15,4 +15,5 @@ export interface Execution {
   existStatus?: string;
   args?: string;
   details?:string;
+  id?:string;
 }
