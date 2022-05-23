@@ -46,6 +46,16 @@ export class AddOwnerComponent implements OnInit {
           this.userlist = data;
           console.log(data);
           this.loading = false;
+          data.forEach((user:UserInfo) =>{
+            user.groups?.forEach((group:any)=>{
+       
+              if(group.name)
+                user.groups = group.name
+              else user.groups= group.name
+            })
+     
+          })
+          
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
       });

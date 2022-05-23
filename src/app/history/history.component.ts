@@ -68,7 +68,7 @@ export class HistoryComponent implements OnInit {
     {
       data.forEach((execution:Execution)=>{
         if(execution.executor.trigramme)
-        execution.executor = execution.executor.trigramme
+        execution.executor = execution.executor.email
       })
       this.Executions = data;
       this.loading = false

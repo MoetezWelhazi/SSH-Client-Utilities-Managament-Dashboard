@@ -25,38 +25,38 @@
              [paginator]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [filterDelay]="0"
-             [globalFilterFields]="['script','server','result']">
+             [globalFilterFields]="['script.name','server.name','executor.trigramme' , 'result']">
 
 <ng-template pTemplate="header">
 <tr>
- <th pSortableColumn="script">
+ <th pSortableColumn="script.name">
    <div class="flex justify-content-between align-items-center">
      Script
-     <p-sortIcon field="script"></p-sortIcon>
-     <p-columnFilter type="text" field="script" display="menu" class="ml-auto"></p-columnFilter>
+     <p-sortIcon field="script.name"></p-sortIcon>
+     <p-columnFilter type="text" field="script.name" display="menu" class="ml-auto"></p-columnFilter>
    </div>
  </th>
- <th pSortableColumn="server">
+ <th pSortableColumn="server.name">
    <div class="flex justify-content-between align-items-center">
      Server
-     <p-sortIcon field="server"></p-sortIcon>
-     <p-columnFilter type="text" field="server" display="menu" class="ml-auto"></p-columnFilter>
+     <p-sortIcon field="server.name"></p-sortIcon>
+     <p-columnFilter type="text" field="server.name" display="menu" class="ml-auto"></p-columnFilter>
    </div>
  </th>
 
- <th pSortableColumn="executor">
+ <th pSortableColumn="executor.trigramme">
     <div class="flex justify-content-between align-items-center">
       Executor
-      <p-sortIcon field="executor"></p-sortIcon>
-      <p-columnFilter type="text" field="executor" display="menu" class="ml-auto"></p-columnFilter>
+      <p-sortIcon field="executor.trigramme"></p-sortIcon>
+      <p-columnFilter type="text" field="executor.trigramme" display="menu" class="ml-auto"></p-columnFilter>
     </div>
   </th>
 
- <th pSortableColumn="date">
+ <th pSortableColumn="createdAt">
    <div class="flex justify-content-between align-items-center">
      Date
-     <p-sortIcon field="date"></p-sortIcon>
-     <p-columnFilter type="date" field="date" display="menu" class="ml-auto"></p-columnFilter>
+     <p-sortIcon field="createdAt"></p-sortIcon>
+     <p-columnFilter type="createdAt" field="date" display="menu" class="ml-auto"></p-columnFilter>
    </div>
    </th>
  <th pSortableColumn="result">

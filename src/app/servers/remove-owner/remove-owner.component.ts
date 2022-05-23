@@ -41,6 +41,15 @@ export class RemoveOwnerComponent implements OnInit {
           console.log("list of owners");
           console.log(data);
           this.loading = false;
+          data.forEach((user:UserInfo) =>{
+            user.groups?.forEach((group:any)=>{
+       
+              if(group.name)
+                user.groups = group.name
+              else user.groups= group.name
+            })
+     
+          })
         },
         error: (e) => this.notificationService.warn("An error has occurred: "+e.error)
       });

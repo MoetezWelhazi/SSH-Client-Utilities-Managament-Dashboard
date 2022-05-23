@@ -25,6 +25,7 @@
           [(ngModel)]="serverInfo.serverIp"
           type="text"
           required
+          pattern = "((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$"
           name="serverIp"
           #serverIp="ngModel"
         />

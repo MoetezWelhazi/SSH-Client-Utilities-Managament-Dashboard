@@ -1,5 +1,5 @@
 <button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
-<h1 mat-dialog-title>Execution Details</h1>
+<h1 mat-dialog-title>Re-execute Execution N°{{execution.id}}</h1>
 <h2> {{execution.script.name}} | {{execution.createdAt | date: 'short'}} | {{execution.result}}  | Exit Status: {{execution.existStatus | json}}</h2>
 <form class="loginform" (submit)="reExecuteScript()" >
   <mat-dialog-content>
