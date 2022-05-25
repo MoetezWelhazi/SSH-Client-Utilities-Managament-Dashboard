@@ -30,7 +30,6 @@ export class ExecutionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.execution = this.data.execution
-    this.execution.password="moetez"
   }
   copyTerminal(text:any) {
     this.clipboard.copy(text);

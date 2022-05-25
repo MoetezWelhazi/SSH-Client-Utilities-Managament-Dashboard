@@ -4,7 +4,6 @@ import {UserInfo} from "../../shared/models/auth.interface";
 import {UsersService} from "../../shared/services/users/users.service";
 import {NotificationService} from "../../shared/services/notifications/notification.service";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {DialogService} from "primeng/dynamicdialog";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Script} from "../../shared/models/script.interface";
 
