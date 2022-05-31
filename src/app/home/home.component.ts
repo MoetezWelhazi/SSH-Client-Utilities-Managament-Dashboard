@@ -5,6 +5,8 @@ import {Table} from "primeng/table";
 import {HistoryService} from "../shared/services/history/history.service";
 import {Execution} from "../shared/models/execution";
 import {MessageService} from "primeng/api";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ExecutionDetailsComponent } from '../history/execution-details/execution-details.component';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,8 @@ import {MessageService} from "primeng/api";
 export class HomeComponent implements OnInit {
   constructor(private tokenStorage : TokenStorageService,
               private historyService: HistoryService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              public dialog: MatDialog) {
   }
 
   hide = true;
@@ -205,6 +208,11 @@ export class HomeComponent implements OnInit {
   }
 
   reExecute(Execution: any) {
-    console.log(Execution)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = "material-popup"
+    dialogConfig.data = { execution: Execution};
+    let dialogRef = this.dialog.open(ExecutionDetailsComponent, dialogConfig);
   }
 }

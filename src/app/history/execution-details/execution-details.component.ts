@@ -48,6 +48,7 @@ export class ExecutionDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data)
     this.execution = this.data.execution
   }
   copyTerminal(text:any) {

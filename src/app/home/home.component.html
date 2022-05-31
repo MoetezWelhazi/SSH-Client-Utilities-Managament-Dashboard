@@ -57,25 +57,25 @@
                [paginator]="true"
                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                [filterDelay]="0"
-               [globalFilterFields]="['script','server','result']">
+               [globalFilterFields]="['script.name','server.name','result']">
 
         <ng-template pTemplate="header">
           <tr>
             <th>
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th pSortableColumn="script">
+            <th pSortableColumn="script.name">
               <div class="flex justify-content-between align-items-center">
                 Script
-                <p-sortIcon field="script"></p-sortIcon>
-                <p-columnFilter type="text" field="script" display="menu" class="ml-auto"></p-columnFilter>
+                <p-sortIcon field="script.name"></p-sortIcon>
+                <p-columnFilter type="text" field="script.name" display="menu" class="ml-auto"></p-columnFilter>
               </div>
             </th>
-            <th pSortableColumn="server">
+            <th pSortableColumn="server.name">
               <div class="flex justify-content-between align-items-center">
                 Server
-                <p-sortIcon field="server"></p-sortIcon>
-                <p-columnFilter type="text" field="server" display="menu" class="ml-auto"></p-columnFilter>
+                <p-sortIcon field="server.name"></p-sortIcon>
+                <p-columnFilter type="text" field="server.name" display="menu" class="ml-auto"></p-columnFilter>
               </div>
             </th>
             <th pSortableColumn="date">
