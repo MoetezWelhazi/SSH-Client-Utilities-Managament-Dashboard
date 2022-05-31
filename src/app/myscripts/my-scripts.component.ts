@@ -85,7 +85,6 @@ export class MyScriptsComponent implements OnInit {
   }
 
   removeScript(sId: number) {
-
     this.scriptsService.removeScript(sId,this.tokenStorageService.getUser().id).pipe(
       tap(() => this.loadScripts(false))
     ).subscribe(
