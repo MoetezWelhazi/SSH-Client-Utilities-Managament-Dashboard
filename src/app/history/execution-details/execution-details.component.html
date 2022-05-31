@@ -1,7 +1,7 @@
 <button type="button" mat-button class="close" mat-dialog-close ><mat-icon>close</mat-icon></button>
-<h1 mat-dialog-title>Re-execute Execution N°{{execution.id}}</h1>
+<h1 mat-dialog-title>Execution N°{{execution.id}} Details</h1>
 <h2> {{execution.script.name}} | {{execution.createdAt | date: 'short'}} | {{execution.result}}  | Exit Status: {{execution.existStatus | json}}</h2>
-<form class="loginform" (submit)="reExecuteScript()" >
+<form class="loginform" (submit)="reExecuteScript(execution)"  >
   <mat-dialog-content>
     <div id="main-container">
       <div id="left-container">
@@ -108,7 +108,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="primary" style="color: white">Re-execute</button>
+    <button type="submit" [disabled]="(passwordA.invalid)||(user.invalid)||(port.invalid)" class="px-c" mat-raised-button color="primary" (Click)="reExecuteScript(execution)" style="color: white">Re-execute</button>
     <button type="button" mat-raised-button color="accent" (click)="copyTerminal(this.execution.details)">Copy</button>
     <div class="vr mx-1"></div>
     <button type="button" mat-raised-button class="cancel" color="accent" mat-dialog-close>Exit</button>

@@ -51,6 +51,7 @@ import { AddtogroupformComponent } from './users/addtogroupform/addtogroupform.c
 import { ProfileComponent } from './profile/profile.component';
 import { GroupsComponent } from './groups/groups.component';
 import { MembersComponent } from './groups/members/members.component';
+import {reexecuteComponent} from './history/execution-details/re-execute/re-execute.component'
 
 
 @NgModule({
@@ -95,12 +96,15 @@ import { MembersComponent } from './groups/members/members.component';
     DragDropFileUploadDirective,
     HistoryComponent,
     ExecutionDetailsComponent,
+    reexecuteComponent,
     PreviewScriptComponent,
     AddgroupformComponent,
     AddtogroupformComponent,
     ProfileComponent,
     GroupsComponent,
     MembersComponent,
+   
+
   ],
   providers: [
     AuthService,

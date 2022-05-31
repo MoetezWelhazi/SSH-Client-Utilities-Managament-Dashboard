@@ -7,8 +7,8 @@
     <mat-card-content>
       <mat-form-field class="inputfield" appearance="outline">
         <mat-label>Server</mat-label>
-        <mat-select  (selectionChange) = "onChange($event)" name="server">
-          <mat-option *ngFor="let server of servers" [value]="server" >
+        <mat-select [(ngModel)]="data.execution.server.id" (selectionChange) = "onChange($event)" name="server" #server="ngModel">
+          <mat-option *ngFor="let server of servers" [value]="server.id" >
             {{server.name}}
           </mat-option>
         </mat-select>
@@ -18,7 +18,7 @@
         <input
           matInput
           placeholder="User"
-          [(ngModel)]="execution.user"
+          [(ngModel)]="data.execution.server.login"
           type="text"
           required
           name="user"
@@ -33,7 +33,7 @@
         <input
           matInput
           placeholder="Password"
-          [(ngModel)]="execution.password"
+          [(ngModel)]="data.execution.server.password"
           type="password"
           required
           minlength="5"
@@ -73,7 +73,7 @@
           type="text"
           name="arg"
           #argInput
-          [(ngModel)]="command"
+          [(ngModel)]="data.args"
         />
       </mat-form-field>
     </mat-card-content>

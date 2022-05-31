@@ -1,23 +1,31 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Execution } from "../../shared/models/execHistory.interface";
+import { Execution } from "src/app/shared/models/execHistory.interface";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Script } from "../../shared/models/script.interface";
+import { Script } from "src/app/shared/models/script.interface";
 import { Message } from '@stomp/stompjs';
-import { ScriptsService } from "../../shared/services/scripts/scripts.service";
+import { ScriptsService } from "src/app/shared/services/scripts/scripts.service";
 import { MessageService } from "primeng/api";
-import { RxStompService } from "../../shared/services/websocket/rxstomp.service";
-import {ServersService} from "../../shared/services/servers/servers.service";
-import {ServerInfo} from "../../shared/models/server.interface";
+import { RxStompService } from "src/app/shared/services/websocket/rxstomp.service";
+import {ServersService} from "src/app/shared/services/servers/servers.service";
+import {ServerInfo} from "src/app/shared/models/server.interface";
 
 
 @Component({
-  selector: 'app-execute-script',
-  templateUrl: './execute-script.component.html',
-  styleUrls: ['./execute-script.component.scss']
+  selector: 'app-re-execute',
+  templateUrl: './re-execute.component.html',
+  styleUrls: ['./re-execute.component.scss']
 })
-export class ExecuteScriptComponent implements OnInit {
-  hide=true;
+export class reexecuteComponent implements OnInit {
+  
+  hide:boolean=true;
+  currentScript: Script ={
+    id:undefined,
+    name:"",
+    description:"",
+    code:"",
+    type:true
+  };
   console: string = "Press Execute to run the script...";
   execution: Execution = {
     user:'',
@@ -26,14 +34,15 @@ export class ExecuteScriptComponent implements OnInit {
     password:'',
     executorId:0,
   }
+  
   selectedServer = '';
   servers?: ServerInfo[]
   command: string = "";
   args = [""];
   nArgs = 0
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any, args: any},
-              public dialogRef: MatDialogRef<ExecuteScriptComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {script: Script, id:any, args: any,execution:Execution},
+              public dialogRef: MatDialogRef<reexecuteComponent>,
               private executionWebsocketService: RxStompService,
               private scriptsService: ScriptsService,
               private serversService: ServersService,
@@ -42,16 +51,20 @@ export class ExecuteScriptComponent implements OnInit {
               ) {}
 
   onChange(event:any){
+    console.log(event)
     this.execution.user = event.value.login
     this.execution.password = event.value.password
     this.execution.serverId = event.value.id;
+    console.log(this.execution)
   }
 
   ngOnInit(): void {
+    console.log(JSON.stringify(this.data))
+
     let destination = '/script/execution/'+this.data.id;
     this.executionWebsocketService.activate()
     this.executionWebsocketService.watch(destination).subscribe((data:Message)=>{
-      this.console=data.body;
+    this.console=data.body;
     },
     err=>{
       console.log("JOE BIDEN, WAKE UP(error message): ",err.message)

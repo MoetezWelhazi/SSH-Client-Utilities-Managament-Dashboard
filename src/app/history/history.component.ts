@@ -7,6 +7,7 @@ import { HistoryService } from '../shared/services/history/history.service';
 import { MessageService } from "primeng/api";
 import { Execution } from "../shared/models/execHistory.interface";
 import {ExecutionDetailsComponent} from "./execution-details/execution-details.component";
+import { reexecuteComponent } from './execution-details/re-execute/re-execute.component';
 
 @Component({
   selector: 'app-history',
