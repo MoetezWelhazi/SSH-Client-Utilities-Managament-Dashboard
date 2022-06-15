@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 import { NotificationService } from "../notifications/notification.service";
 import { TokenStorageService } from "./token-storage.service";
 
-const BASE_URL = 'http://localhost:8081';
+const BASE_URL = 'http://localhost:8086';
 
 
 @Injectable({

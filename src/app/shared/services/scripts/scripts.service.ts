@@ -6,7 +6,7 @@ import {Execution} from "../../models/execHistory.interface";
 import {Upload} from "../../models/upload.interface";
 import {ScriptShare} from "../../models/share.interface";
 
-const BASE_URL = 'http://localhost:8081';
+const BASE_URL = 'http://localhost:8086';
 
 @Injectable({
   providedIn: 'root'
